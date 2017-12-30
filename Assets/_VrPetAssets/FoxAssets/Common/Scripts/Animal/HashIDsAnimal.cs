@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 namespace MalbersAnimations
 {
         public class HashIDsAnimal : MonoBehaviour
@@ -14,7 +14,8 @@ namespace MalbersAnimations
  
         [HideInInspector]    public static int dodgeHash =      Animator.StringToHash("Dodge");
         [HideInInspector]    public static int fallHash =       Animator.StringToHash("Fall");
-     // [HideInInspector]    public static int groundedHash =   Animator.StringToHash("Grounded");
+        [HideInInspector]    public static int fallBackHash =   Animator.StringToHash("FallBack");
+        // [HideInInspector]    public static int groundedHash =   Animator.StringToHash("Grounded");
         [HideInInspector]    public static int slopeHash = Animator.StringToHash("Slope");
 
         [HideInInspector]    public static int shiftHash =      Animator.StringToHash("Shift");
