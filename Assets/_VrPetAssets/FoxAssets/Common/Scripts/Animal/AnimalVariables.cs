@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using MalbersAnimations.Events;
@@ -167,7 +167,7 @@ namespace MalbersAnimations
              maxHeight;
 
         protected Pivots[] pivots;
-        protected Pivots _Chest, _Hip;
+        protected Pivots _Chest, _Hip, _Pelvis;
 
         protected List<AttackTrigger> Attack_Triggers;              //List of all the Damage Triggers on this Animal.
 
@@ -455,6 +455,10 @@ namespace MalbersAnimations
         public Pivots Pivot_Chest
         {
             get { return _Chest; }
+        }
+        public Pivots Pivot_Pelvis
+        {
+            get { return _Pelvis; }
         }
 
         public bool IsAttacking

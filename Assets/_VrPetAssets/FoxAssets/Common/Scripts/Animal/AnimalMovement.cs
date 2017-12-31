@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MalbersAnimations
 {
-    //Animal Logic
+    //Animal Logics
     public partial class Animal
     {
         #region Tag Hashs
@@ -65,6 +65,7 @@ namespace MalbersAnimations
 
             _Hip = pivots[0];
             _Chest = pivots[1];
+            _Pelvis = pivots[3];
 
             groundSpeed = (int)StartSpeed;                  //convert to int the Start Speed
             SpeedCount = (int)StartSpeed - 1;
@@ -105,6 +106,7 @@ namespace MalbersAnimations
 
                 anim_.SetBool(HashIDsAnimal.damagedHash, damaged);
                 anim_.SetBool(HashIDsAnimal.fallHash, fall);
+                anim_.SetBool(HashIDsAnimal.fallBackHash, fallback);
                 anim_.SetBool(HashIDsAnimal.stunnedHash, stun);
                 anim_.SetBool(HashIDsAnimal.action, action);
                 anim_.SetBool(HashIDsAnimal.stunnedHash, stun);
@@ -311,7 +313,7 @@ namespace MalbersAnimations
         protected virtual void Falling()
         {
             //Don't Calcultate Fall Ray if the animal on any of these states
-            if (CurrentAnimState.IsTag("Idle")) return;        
+            if (CurrentAnimState.IsTag("Idle")) return;
             if (CurrentAnimState.IsTag("Sleep")) return;
             if (CurrentAnimState.IsTag("Action")) return;
 
@@ -319,29 +321,47 @@ namespace MalbersAnimations
 
             float Multiplier = _Chest.multiplier * scaleFactor;
 
-            if (CurrentAnimState.IsTag("Jump") || CurrentAnimState.IsTag("Fall"))
-            {
-                Multiplier *= FallRayMultiplier;
-            }
+            //if (CurrentAnimState.IsTag("Jump") || CurrentAnimState.IsTag("Fall"))
+            //{
+            //    Multiplier *= FallRayMultiplier;
+            //}
 
-            //Set the Fall Ray a bit farther from the front feet.
+            //Set the Fall Ray a bit farther from the front feet. Disabled for now, though it's original form is preserved.
+            //_fallVector = _Chest.GetPivot +
+            //    (_transform.forward.normalized * (Shift ? GroundSpeed + 1 : GroundSpeed) * FallRayDistance * ScaleFactor);
+            //if (debug) Debug.DrawRay(_fallVector, -transform.up * Multiplier, Color.magenta);
+            //if (Physics.Raycast(_fallVector, -_transform.up, out hitpos, Multiplier, GroundLayer))
+            //{
+            //    fall = false;
+            //    if (Vector3.Angle(hitpos.normal, UpVector) > maxAngleSlope && isJumping()) fall = true; //if the ray found ground but the ground is too steep
+            //}
+            //else
+            //{
+            //    fall = true;
+            //}
 
+            // The following checks straight down from both the _Chest pivot and the _Pelvis pivot to see if the fox should fall. If there is ground, but it is too steep, it falls anyway.
+            if (debug) Debug.DrawRay(_Chest.GetPivot, -transform.up * Multiplier, Color.magenta);
 
-
-            _fallVector = _Chest.GetPivot +
-                (_transform.forward.normalized * (Shift ? GroundSpeed + 1 : GroundSpeed) * FallRayDistance * ScaleFactor);
-
-            if (debug) Debug.DrawRay(_fallVector, -transform.up * Multiplier, Color.magenta);
-
-            if (Physics.Raycast(_fallVector, -_transform.up, out hitpos, Multiplier, GroundLayer))
-            {
-                fall = false;
-                if (Vector3.Angle(hitpos.normal, UpVector) > maxAngleSlope && isJumping()) fall = true; //if the ray found ground but is to Sloppy
+            if (!Physics.Raycast(_Chest.GetPivot + (_transform.forward.normalized * GroundSpeed * FallRayDistance * ScaleFactor * .5f), -_transform.up, out hitpos, Multiplier, GroundLayer) ||
+            (Vector3.Angle(hitpos.normal, UpVector) > maxAngleSlope && isJumping()))
+                {
+                fall = true;
             }
             else
             {
-                fall = true;
+                fall = false;
             }
+
+            if (!Physics.Raycast(_Pelvis.GetPivot + (_transform.forward.normalized * GroundSpeed * FallRayDistance * ScaleFactor * -.3f), -_transform.up, out hitpos, Multiplier, GroundLayer))
+            {
+                fallback = true;
+            }
+            else
+            {
+                fallback = false;
+            }
+
         }
 
         private float waterlevel = 0;
