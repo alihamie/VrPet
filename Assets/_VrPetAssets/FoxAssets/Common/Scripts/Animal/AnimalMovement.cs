@@ -87,7 +87,7 @@ namespace MalbersAnimations
                 anim_.SetBool(HashIDsAnimal.shiftHash, shift);
                 anim_.SetBool(HashIDsAnimal.standHash, stand);
                 anim_.SetBool(HashIDsAnimal.jumpHash, jump);
-
+                anim_.SetBool(HashIDsAnimal.readyToPlay, readyToPlay);
                 if (attack1) //Just Attack again when the Attack delay time has transcurred.
                 {
                     CurrentAttackDelay = Time.time;

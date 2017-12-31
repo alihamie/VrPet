@@ -170,7 +170,7 @@ public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = m_grabbedKinematic;
-        rb.velocity = linearVelocity;
+        rb.velocity =  transform.forward * 5;
         rb.angularVelocity = angularVelocity;
         m_grabbedBy = null;
         m_grabbedCollider = null;
@@ -186,7 +186,7 @@ public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             {
 				throw new ArgumentException("Grabbables cannot have zero grab points and no collider -- please add a grab point or collider.");
             }
-
+            
             // Create a default grab point
             m_grabPoints = new Collider[1] { collider };
         }

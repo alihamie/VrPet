@@ -27,7 +27,7 @@ namespace MalbersAnimations
         public AnimationCurve AlignCurve = new AnimationCurve(K);
 
         public bool AlignPos = true, AlignRot = true, AlignLookAt = false;
-
+        bool firstTimeGrab = true;
         protected List<Collider> _colliders;
         protected Animal animal;
 
@@ -58,16 +58,53 @@ namespace MalbersAnimations
 
         void OnTriggerEnter(Collider other)
         {
-            Animal animal = other.GetComponentInParent<Animal>();
+            if (this.enabled == false)
+                return;
 
-            if (other.gameObject.layer != 20) return;                           //Just use the Colliders with the Animal Layer on it
-                
-            if (!animal) return;                                                //If there's no animal script found skip all
+            Animal animal = other.GetComponentInParent<Animal>();
+            AnimalAIControl animalAIControl = other.GetComponentInParent<AnimalAIControl>();
+
+            if (animalAIControl !=null  && animalAIControl.isWandering == true)
+            {
+                return;
+            }
+
+           
+
+            if (other.gameObject.layer != 20)
+            {
+                return;                           //Just use the Colliders with the Animal Layer on it
+            }
+
+            if (!animal)
+            {
+                return;
+            }//If there's no animal script found skip all
+
+            int id = ID;
+            if (firstTimeGrab && this.tag == "GrabableItem")
+
+            {
+                id = 25;
+                firstTimeGrab = false;
+            }
+
+
+            if (this.tag == "GrabableItem")
+            {
+
+                animalAIControl.SetClosestGrabbableItem(this.transform);
+            }
 
             if (_colliders == null)
+            {
                 _colliders = new List<Collider>();                              //Check all the colliders that enters the Action Zone Trigger
+            }
 
-            if (HeadOnly && !other.name.ToLower().Contains("head")) return;     //If is Head Only and no head was found Skip
+            if (HeadOnly && !other.name.ToLower().Contains("head"))
+            {
+                return;     //If is Head Only and no head was found Skip
+            }
 
             if (_colliders.Find(item => item == other) == null)                 //if the entering collider is not already on the list add it
             {
@@ -83,7 +120,7 @@ namespace MalbersAnimations
             animal.OnAction.AddListener(OnActionListener);          //Listen when the animal activate the Action Input
 
             OnEnter.Invoke(animal);
-            animal.ActionEmotion(ID);
+            animal.ActionEmotion(id);
 
             if (automatic && animal.CurrentAnimState.IsTag("Locomotion"))       //Just activate when is on the Locomotion State if this is automatic
             {
@@ -93,6 +130,7 @@ namespace MalbersAnimations
                 //this.animal = null;
                 OnActionListener();
             }
+            this.enabled = false;
         }
 
         void OnTriggerExit(Collider other)
@@ -104,10 +142,7 @@ namespace MalbersAnimations
 
             if (HeadOnly && !other.name.Contains("Head")) return;
 
-            if (_colliders.Find(item => item == other))     //Remove the collider that entered off the list.
-            {
-                _colliders.Remove(other);
-            }
+            RemoveCollider(other);
 
             if (_colliders.Count == 0)
             {
@@ -116,6 +151,15 @@ namespace MalbersAnimations
                 animal.ActionEmotion(-1);                           //Reset the Action ID
                 this.animal = null;
             }
+        }
+
+        public void RemoveCollider(Collider other)
+        {
+            if (_colliders.Find(item => item == other))     //Remove the collider that entered off the list.
+            {
+                _colliders.Remove(other);
+            }
+
         }
 
         /// <summary>
@@ -128,11 +172,25 @@ namespace MalbersAnimations
             if (AutomaticDisabled > 0)
             {
                 GetComponent<Collider>().enabled = false;
+                //Rigidbody rg = GetComponent<Rigidbody>();
+
+                //if (rg != null && this.tag == "GrabableItem")
+                //{
+                //    if(rg.isKinematic == false)
+                //    {
+                //        rg.isKinematic = true;
+                //    }
+                //}
+
                 yield return null;
                 yield return null;
                 animal.ActionEmotion(-1);
                 yield return new WaitForSeconds(AutomaticDisabled);
                 GetComponent<Collider>().enabled = true;
+                //if (rg != null && this.tag == "GrabableItem")
+                //{
+                //    GetComponent<Rigidbody>().isKinematic = false;
+                //}
             }
             this.animal = null;     //Reset animal
             _colliders = null;      //Reset Colliders

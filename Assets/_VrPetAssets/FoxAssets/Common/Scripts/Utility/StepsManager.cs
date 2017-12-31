@@ -5,17 +5,17 @@ namespace MalbersAnimations
     /// <summary>
     /// This will manage the steps sounds and tracks for each animal, on each feet there's a Script StepTriger (Basic)
     /// </summary>
-    public class StepsManager : MonoBehaviour
+    public class StepsManager : MonoBehaviour, IAnimatorListener
     {
         public ParticleSystem Tracks;
         public ParticleSystem Dust;
         public int DustParticles = 30;
 
-        private Quaternion manualOffset = new Quaternion(1f, 3f, 0, 0);
-
         public AudioClip[] clips;
         [Tooltip("Distance to Instantiate the tracks on a terrain")]
         public float trackOffset = 0.0085f;
+
+        private Quaternion manualOffset = new Quaternion(1f, 3f, 0, 0);
 
         protected bool active = true;
         //Is Called by any of the "StepTrigger" Script on a feet when they collide with the ground.
@@ -59,9 +59,14 @@ namespace MalbersAnimations
         /// Disable this script, ex.. deactivate when is sleeping or death
         /// </summary>
         /// <param name="value"></param>
-        public virtual void EnableSteps(bool value)
+        public void EnableSteps(bool value)
         {
             active = value;
+        }
+
+        public void OnAnimatorBehaviourMessage(string message, object value)
+        {
+            this.InvokeWithParams(message, value);
         }
     }
 }

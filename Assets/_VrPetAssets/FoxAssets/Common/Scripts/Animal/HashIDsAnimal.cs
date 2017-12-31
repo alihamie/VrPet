@@ -11,7 +11,7 @@ namespace MalbersAnimations
         [HideInInspector]    public static int standHash =      Animator.StringToHash("Stand");
 
         [HideInInspector]    public static int jumpHash =       Animator.StringToHash("_Jump");
- 
+        [HideInInspector]    public static int readyToPlay =    Animator.StringToHash("ReadyToPlay");
         [HideInInspector]    public static int dodgeHash =      Animator.StringToHash("Dodge");
         [HideInInspector]    public static int fallHash =       Animator.StringToHash("Fall");
         [HideInInspector]    public static int fallBackHash =   Animator.StringToHash("FallBack");
