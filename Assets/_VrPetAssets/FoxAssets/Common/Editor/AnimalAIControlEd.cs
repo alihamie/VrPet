@@ -55,6 +55,10 @@ namespace MalbersAnimations
             EditorGUILayout.PropertyField(serializedObject.FindProperty("debug"), new GUIContent("Debug"));
             EditorGUILayout.EndVertical();
 
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("isWandering"), new GUIContent("isWandering"));
+            EditorGUILayout.EndVertical();
+
 
 
             EditorGUILayout.EndVertical();

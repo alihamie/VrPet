@@ -271,6 +271,15 @@ namespace MalbersAnimations
             StartCoroutine(ToggleJump());
         }
 
+
+        /// <summary>
+        /// Activate the Jump and deactivate it 2 frames later
+        /// </summary>
+        public virtual void SetReadyToPlay()
+        {
+            StartCoroutine(ToggleReadyToPlay());
+        }
+
         /// <summary>
         /// Set an Action using their Action ID (Find the IDs on the Animator Actions Transitions)
         /// </summary>
@@ -306,6 +315,13 @@ namespace MalbersAnimations
             yield return null;
             yield return null;
             Jump = false;
+        }
+
+        internal IEnumerator ToggleReadyToPlay()
+        {
+            readyToPlay = true;
+            yield return new WaitForSeconds(30);
+            readyToPlay = false;
         }
 
 

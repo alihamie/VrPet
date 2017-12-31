@@ -5,7 +5,7 @@ namespace MalbersAnimations
     /// <summary>
     /// This will manage the steps sounds and tracks for each animal, on each feet there's a Script StepTriger (Basic)
     /// </summary>
-    public class StepsManager : MonoBehaviour
+    public class StepsManager : MonoBehaviour, IAnimatorListener
     {
         public ParticleSystem Tracks;
         public ParticleSystem Dust;
@@ -57,9 +57,14 @@ namespace MalbersAnimations
         /// Disable this script, ex.. deactivate when is sleeping or death
         /// </summary>
         /// <param name="value"></param>
-        public virtual void EnableSteps(bool value)
+        public void EnableSteps(bool value)
         {
             active = value;
+        }
+
+        public void OnAnimatorBehaviourMessage(string message, object value)
+        {
+            this.InvokeWithParams(message, value);
         }
     }
 }

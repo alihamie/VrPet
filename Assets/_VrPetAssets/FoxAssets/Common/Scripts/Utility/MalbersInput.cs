@@ -218,7 +218,9 @@ namespace MalbersAnimations
             if (isActive("Stun")) character.Stun = GetInput("Stun");             //Get the Stun button change the variable entry to manipulate how the stun works
             if (isActive("Death")) character.Death = GetInput("Death");            //Get the Death button change the variable entry to manipulate how the death works
             if (isActive("Damaged")) character.Damaged = GetInput("Damaged");
+            if (isActive("ReadyToPlay")) {
 
+            } //character.ReadyToPlay = GetInput("ReadyToPlay");
             if (isActive("Speed1"))     //Walk
             {
                 bool s1 = GetInput("Speed1");

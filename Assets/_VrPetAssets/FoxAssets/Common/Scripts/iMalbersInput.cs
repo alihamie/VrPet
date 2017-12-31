@@ -20,7 +20,7 @@ namespace MalbersAnimations
         bool Fly { get; set; }
 
         bool Death { get; set; }
-
+        bool ReadyToPlay { get; set; }
         bool Attack1 { get; set; }
         bool Attack2 { get; set; }
         bool Stun { get; set; }

@@ -12,12 +12,10 @@ namespace MalbersAnimations
         public string Parameter = "IDInt";
         public int Range;
 
-        override public void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
+        override public void OnStateEnter(Animator animator,AnimatorStateInfo info, int stateMachinePathHash)
         {
             int newParam = Random.Range(1, Range + 1);
             animator.SetInteger(Parameter, newParam);
-
-            //Debug.Log(newParam);
 
             Animal animal = animator.GetComponent<Animal>();
             if (animal) animal.SetIntID(newParam);

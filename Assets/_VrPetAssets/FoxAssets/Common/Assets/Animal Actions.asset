@@ -26,3 +26,15 @@ MonoBehaviour:
     ID: 10
   - name: Lie
     ID: 11
+  - name: ReadyToPlay
+    ID: 22
+  - name: GrabBall
+    ID: 19
+  - name: JumpCatch
+    ID: 21
+  - name: DropBall
+    ID: 18
+  - name: PlayfullGrab
+    ID: 25
+  - name: WindowEvent
+    ID: 28

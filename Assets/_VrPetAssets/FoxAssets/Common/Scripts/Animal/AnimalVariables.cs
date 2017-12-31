@@ -55,6 +55,7 @@ namespace MalbersAnimations
             speed2,                //Trot (Set by Input)
             speed3,                //Run  (Set by Input)
             jump,                  //Jump (Set by Input)
+            readyToPlay,           //Set when user grabs an interactive item
             fly,                   //Fly  (Set by Input)
             shift,                 //Sprint or Speed Swap (Set by Input)
             down,                  //Crouch or Swim Underwater (Set by Input)
@@ -312,6 +313,12 @@ namespace MalbersAnimations
             get { return jump; }
             set { jump = value; }
         }
+
+        public bool ReadyToPlay
+        {
+            get { return readyToPlay; }
+            set { readyToPlay = value; }
+        }
         public bool Shift
         {
             get { return shift; }
@@ -501,6 +508,6 @@ namespace MalbersAnimations
 
         //UnityEditor Variables
         [HideInInspector] public bool ShowEventsEditor;
-
+        
     }
 }

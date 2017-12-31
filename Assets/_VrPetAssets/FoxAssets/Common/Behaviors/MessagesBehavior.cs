@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace MalbersAnimations
 {
@@ -23,6 +24,8 @@ namespace MalbersAnimations
     {
         public bool UseSendMessage;
 
+
+        public float timeToWait;
         public MesssageItem[] onEnterMessage;   //Store messages to send it when Enter the animation State
         public MesssageItem[] onExitMessage;    //Store messages to send it when Exit  the animation State
         public MesssageItem[] onTimeMessage;    //Store messages to send on a specific time  in the animation State
@@ -114,7 +117,10 @@ namespace MalbersAnimations
             }
         }
 
-
+        private IEnumerator Test(float s)
+        {
+            yield return new WaitForSeconds(s);
+        }
 
         /// <summary>
         /// Send messages to all scripts with IBehaviourListener to this animator 

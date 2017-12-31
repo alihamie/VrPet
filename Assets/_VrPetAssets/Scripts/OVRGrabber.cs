@@ -19,10 +19,10 @@ limitations under the License.
 
 ************************************************************************************/
 
+using MalbersAnimations;
 using MalbersAnimations.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-
 /// <summary>
 /// Allows grabbing and throwing of objects with the OVRGrabbable component on them.
 /// </summary>
@@ -33,6 +33,7 @@ public class OVRGrabber : MonoBehaviour
     public float grabBegin = 0.55f;
     public float grabEnd = 0.35f;
     public LookAt lookAt;
+    public AnimalAIControl aiAgent;
     // Demonstrates parenting the held object to the hand's transform when grabbed.
     // When false, the grabbed object is moved every FixedUpdate using MovePosition. 
     // Note that MovePosition is required for proper physics simulation. If you set this to true, you can
@@ -68,7 +69,7 @@ public class OVRGrabber : MonoBehaviour
 	protected Dictionary<OVRGrabbable, int> m_grabCandidates = new Dictionary<OVRGrabbable, int>();
 	protected bool operatingWithoutOVRCameraRig = true;
     protected OVRGrabbable currentGrabbaleObject;
-
+    public Transform ReadyToPlayArea;
 
     /// <summary>
     /// The currently grabbed object.
@@ -230,7 +231,9 @@ public class OVRGrabber : MonoBehaviour
 
             m_grabbedObj = grabbable;
             m_grabbedObj.GrabBegin(this, grabbableCollider);
-            lookAt.Target = m_grabbedObj.transform;
+            //lookAt.Target = m_grabbedObj.transform;
+            aiAgent.SetTarget( ReadyToPlayArea);
+            aiAgent.isWandering = false;
             m_lastPos = transform.position;
             m_lastRot = transform.rotation;
 
@@ -259,6 +262,7 @@ public class OVRGrabber : MonoBehaviour
                 m_grabbedObjectRotOff = m_gripTransform.localRotation;
                 if(m_grabbedObj.snapOffset)
                 {
+                    m_grabbedObj.transform.Rotate(Vector3.up, 90);
                     m_grabbedObjectRotOff = m_grabbedObj.snapOffset.rotation * m_grabbedObjectRotOff;
                 }
             }
@@ -325,6 +329,9 @@ public class OVRGrabber : MonoBehaviour
     protected void GrabbableRelease(Vector3 linearVelocity, Vector3 angularVelocity)
     {
         m_grabbedObj.GrabEnd(linearVelocity, angularVelocity);
+        aiAgent.isWandering = false;
+        aiAgent.SetTarget(m_grabbedObj.transform);
+        aiAgent.GetComponentInParent<Animator>().SetBool("ThrewItem", true);
         if(m_parentHeldObject) m_grabbedObj.transform.parent = null;
         m_grabbedObj = null;
     }

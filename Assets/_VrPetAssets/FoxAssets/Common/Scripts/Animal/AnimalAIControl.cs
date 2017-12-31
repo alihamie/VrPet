@@ -19,22 +19,25 @@ namespace MalbersAnimations
         protected Animal Target_is_Animal;          //To check if the target is an animal
         protected ActionZone Target_is_ActionZone;  //To check if the Target is an Action Zone
         protected MWayPoint Target_is_Waypoint;     //To check if the Target is a Way Point
+        protected bool Target_is_DropArea;
         #endregion
 
         public Transform target;                    //The Target
         Transform deltaTarget;                      //Used to check if the Target has changed
-
+        private Transform closestGrabableItem;
         public bool AutoSpeed = true;               
         public float ToTrot = 6f;
         public float ToRun = 8f;
 
-        public bool debug = false;                //Debuging 
+        public bool debug = true;                //Debuging 
+        public bool isWandering = false;
 
         bool isInActionState;                     //Check if is making any Animation Action
         bool StartingAction;                      //Check if Start the animation  
 
         protected float DefaultStoppingDistance;
         Transform NextTarget;
+       
 
         /// <summary>
         /// Important for changing Waypoints
@@ -42,6 +45,9 @@ namespace MalbersAnimations
         private bool isMoving = false;
 
         protected float RemainingDistance;
+
+        private float wanderTimer;
+        private float timer;
 
         /// <summary>
         /// the navmeshAgent asociate to this GameObject
@@ -58,6 +64,7 @@ namespace MalbersAnimations
             }
         }
 
+
         void Start(){ StartAgent();  }
 
         /// <summary>
@@ -65,9 +72,12 @@ namespace MalbersAnimations
         /// </summary>
         protected virtual void StartAgent()
         {
+            wanderTimer = 3;
+            timer = wanderTimer;
             animal = GetComponent<Animal>();
             Agent.updateRotation = false;
             Agent.updatePosition = false;
+            isWandering = true;
             DefaultStoppingDistance = Agent.stoppingDistance; //Save the Stoping Distance
         }
 
@@ -75,7 +85,7 @@ namespace MalbersAnimations
         {
             DisableAgent();                                             
             TryActionZone();
-
+            timer += Time.deltaTime;
             Agent.nextPosition = agent.transform.position;                      //Update the Agent Position to the Transform position
 
 
@@ -91,22 +101,37 @@ namespace MalbersAnimations
         {
             if (deltaTarget != target)
             {
+                if (deltaTarget != null)
+                {
+                    ActionZone Prev_Target_ActionZon = deltaTarget ? deltaTarget.GetComponent<ActionZone>() : null;
+                    if (Prev_Target_ActionZon)
+                    {
+                        Prev_Target_ActionZon.enabled = false;
+                    }
+
+                }
                 deltaTarget = target;
                 //if (debug) Debug.Log("Target Updated: "+ target.name);
 
                 Target_is_Animal = deltaTarget ? deltaTarget.GetComponent<Animal>() : null;
                 Target_is_ActionZone = deltaTarget ? deltaTarget.GetComponent<ActionZone>() : null;
                 Target_is_Waypoint = deltaTarget ? deltaTarget.GetComponent<MWayPoint>() : null;
-
+                Target_is_DropArea = deltaTarget ? deltaTarget.tag == "DropArea" : false;
                 Agent.stoppingDistance = DefaultStoppingDistance;
 
                 if (Target_is_ActionZone)
                 {
+                    Target_is_ActionZone.enabled = true;
                     Agent.stoppingDistance = Target_is_ActionZone.stoppingDistance;
                 }
                 else if (Target_is_Waypoint)
                 {
                     Agent.stoppingDistance = Target_is_Waypoint.StoppingDistance;
+                }
+
+                if (Target_is_DropArea)
+                {
+                    Agent.stoppingDistance = 0.1f;
                 }
             }
         }
@@ -163,7 +188,7 @@ namespace MalbersAnimations
             }
         }
 
-
+        Vector3 pos;
         /// <summary>
         /// Updates the Agents using he animation root motion
         /// </summary>
@@ -171,7 +196,23 @@ namespace MalbersAnimations
         {
             Vector3 Direction = Vector3.zero;                             //Set the Direction to Zero         
 
-            if (target != null) Agent.SetDestination(target.position);
+            if(isWandering)
+            {
+                if (timer >= wanderTimer)
+                {
+                    pos = RandomNavSphere(transform.position, 300, -1);
+                    timer = 0;
+                }
+                if (pos != null)
+                {
+                    Agent.SetDestination(pos);
+                }
+
+            }
+            else if (target != null)
+            {
+                Agent.SetDestination(target.position);
+            }
 
             RemainingDistance = Agent.remainingDistance;
 
@@ -201,6 +242,19 @@ namespace MalbersAnimations
             CheckOffMeshLinks();                                     //Jump/Fall behaviour 
         }
 
+
+        public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+        {
+            Vector3 randDirection = Random.insideUnitSphere * dist;
+
+            randDirection += origin;
+
+            NavMeshHit navHit;
+
+            NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+
+            return navHit.position;
+        }
 
         /// <summary>
         /// Manage all Off Mesh Links
@@ -277,6 +331,16 @@ namespace MalbersAnimations
             UpdateTarget();
         }
 
+        public void SetClosestGrabbableItem(Transform item)
+        {
+            this.closestGrabableItem = item;
+        }
+
+        public Transform GetClosestGrabableItem()
+        {
+            return this.closestGrabableItem;
+        }
+
         /// <summary>
         /// Stop movement of this agent along its current path.
         /// </summary>
@@ -337,6 +401,7 @@ namespace MalbersAnimations
                 }
             }
         }
+
 #endif
     }
 }
