@@ -11,6 +11,8 @@ namespace MalbersAnimations
         public ParticleSystem Dust;
         public int DustParticles = 30;
 
+        private Quaternion manualOffset = new Quaternion(1f, 3f, 0, 0);
+
         public AudioClip[] clips;
         [Tooltip("Distance to Instantiate the tracks on a terrain")]
         public float trackOffset = 0.0085f;
@@ -37,7 +39,7 @@ namespace MalbersAnimations
                     if (Tracks)
                     {
                         ParticleSystem.EmitParams ptrack = new ParticleSystem.EmitParams();
-                        ptrack.rotation3D = (Quaternion.FromToRotation(-foot.transform.forward, footRay.normal) * foot.transform.rotation).eulerAngles; //Get The Rotation
+                        ptrack.rotation3D = (Quaternion.FromToRotation(-foot.transform.forward, footRay.normal) * foot.transform.rotation * manualOffset).eulerAngles; //Get The Rotation
                         ptrack.position = new Vector3(foot.transform.position.x, footRay.point.y + trackOffset, foot.transform.position.z); //Get The Position
                         Tracks.Emit(ptrack, 1);
                     }
