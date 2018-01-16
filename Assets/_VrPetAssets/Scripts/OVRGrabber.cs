@@ -34,6 +34,7 @@ public class OVRGrabber : MonoBehaviour
     public float grabEnd = 0.35f;
     public LookAt lookAt;
     public AnimalAIControl aiAgent;
+    public Transform UiTablet;
     // Demonstrates parenting the held object to the hand's transform when grabbed.
     // When false, the grabbed object is moved every FixedUpdate using MovePosition. 
     // Note that MovePosition is required for proper physics simulation. If you set this to true, you can
@@ -165,6 +166,7 @@ public class OVRGrabber : MonoBehaviour
         m_lastRot = transform.rotation;
 
         bool triggeredPrimaryIndex= OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, m_controller);
+        bool touchPadTrigger = OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad, m_controller);
 
 #if (UNITY_EDITOR)
 
@@ -175,10 +177,19 @@ public class OVRGrabber : MonoBehaviour
         }
 #endif
 
+        if (touchPadTrigger)
+        {
+            ToggleTablet();
+        }
+
         if (triggeredPrimaryIndex)
         {
             CheckForGrabOrRelease(triggeredPrimaryIndex);
         }
+    }
+    public void ToggleTablet()
+    {
+        UiTablet.gameObject.SetActive(!UiTablet.gameObject.activeInHierarchy);
     }
 
     void OnDestroy()
@@ -209,7 +220,20 @@ public class OVRGrabber : MonoBehaviour
         }
     }
 
-    protected virtual void GrabBegin()
+
+    public void GrabBegin(OVRGrabbable grabableObject)
+    {
+        grabableObject.IsGrabable = true;
+        this.SetCurrentGrabableObject(grabableObject);
+        GrabBegin();
+    }
+
+    public OVRGrabbable GetCurrentGrababbleObject()
+    {
+        return this.currentGrabbaleObject;
+    }
+
+    public virtual void GrabBegin()
     {
         if (this.currentGrabbaleObject == null || !this.currentGrabbaleObject.IsGrabable)
         {
@@ -334,6 +358,7 @@ public class OVRGrabber : MonoBehaviour
         aiAgent.GetComponentInParent<Animator>().SetBool("ThrewItem", true);
         if(m_parentHeldObject) m_grabbedObj.transform.parent = null;
         m_grabbedObj = null;
+        SetCurrentGrabableObject(null);
     }
 
     protected virtual void GrabVolumeEnable(bool enabled)

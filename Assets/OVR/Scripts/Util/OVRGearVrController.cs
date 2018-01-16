@@ -62,6 +62,7 @@ public class OVRGearVrController : MonoBehaviour
             if (controllerConnected)
             {
                 OVRGrab.activeController = this.gameObject;
+               
             }
         }
 

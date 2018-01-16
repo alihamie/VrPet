@@ -50,6 +50,7 @@ public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     /// </summary>
     public bool IsGrabable
     {
+        set { this.isGrabable = value; }
         get { return this.isGrabable; }
     }
 
