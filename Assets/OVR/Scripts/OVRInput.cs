@@ -327,7 +327,7 @@ public static class OVRInput
 		}
 
         // Promote TrackedRemote to Active if one is connected and no other controller is active
-		if (activeControllerType == Controller.None)
+		if (activeControllerType > 0)
 		{
             if ((connectedControllerTypes & Controller.RTrackedRemote) != 0)
             {

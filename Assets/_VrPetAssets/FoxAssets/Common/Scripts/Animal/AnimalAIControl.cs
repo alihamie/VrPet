@@ -326,6 +326,7 @@ namespace MalbersAnimations
         /// </summary>
         public void SetTarget(Transform target)
         {
+            isWandering = false;
             this.target = target;
             isMoving = false;
             UpdateTarget();

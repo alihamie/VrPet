@@ -355,7 +355,7 @@ public class OVRGrabber : MonoBehaviour
         m_grabbedObj.GrabEnd(linearVelocity, angularVelocity);
         aiAgent.isWandering = false;
         aiAgent.SetTarget(m_grabbedObj.transform);
-        aiAgent.GetComponentInParent<Animator>().SetBool("ThrewItem", true);
+        
         if(m_parentHeldObject) m_grabbedObj.transform.parent = null;
         m_grabbedObj = null;
         SetCurrentGrabableObject(null);

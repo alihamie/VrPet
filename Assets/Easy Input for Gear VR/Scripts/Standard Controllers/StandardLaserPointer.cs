@@ -22,6 +22,7 @@ namespace EasyInputVR.StandardControllers
         public bool colliderRaycast;
         public LayerMask layersToCheck;
 
+        bool laserInteraction = true;
         GameObject laserPointer;
         LineRenderer line;
         RaycastHit rayHit;
@@ -102,14 +103,18 @@ namespace EasyInputVR.StandardControllers
 
             laserPointer.transform.localRotation = motion.currentOrientation;
 
-            if (motion.currentPos != Vector3.zero)
+            if (motion.currentPos != Vector3.zero && laserInteraction == true)
             {
                 line.enabled = true;
+                if (reticle != null)
+                    reticle.SetActive(true);
             }
             else
             {
                 //not valid so disable and don't bother with the raycast so return
                 line.enabled = false;
+                if (reticle != null)
+                    reticle.SetActive(false);
                 return;
             }
 
@@ -127,18 +132,18 @@ namespace EasyInputVR.StandardControllers
                     if (lastHitGameObject == null)
                     {
                         //we weren't hitting anything before and now we are
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit,lastHitGameObject, true, true, false);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit,lastHitGameObject, true, true, false, laserPointer.transform);
                     }
                     else if (lastHitGameObject == rayHit.transform.gameObject)
                     {
 
                         //we are hitting the same object as last frame
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false, laserPointer.transform);
                     }
                     else if (lastHitGameObject != rayHit.transform.gameObject)
                     {
                         //we are hitting a different object than last frame
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, true);     
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, true, laserPointer.transform);     
                     }
 
                     lastHitGameObject = rayHit.transform.gameObject;
@@ -175,7 +180,7 @@ namespace EasyInputVR.StandardControllers
                     //raycast enabled but didn't hit anything
                     if (lastHitGameObject != null)
                     {
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, false, false, true);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, false, false, true, laserPointer.transform);
                         lastHitGameObject = null;
                         lastRayHit = EasyInputConstants.NOT_VALID;
                     }
@@ -215,6 +220,16 @@ namespace EasyInputVR.StandardControllers
         public void setInitialScale(Vector3 scale)
         {
             initialReticleSize = scale;
+        }
+
+        public void startLaser()
+        {
+            laserInteraction = true;
+        }
+
+        public void stopLaser()
+        {
+            laserInteraction = false;
         }
 
 

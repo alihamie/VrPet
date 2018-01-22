@@ -19,7 +19,19 @@ public static class CreateAxesEditor
         //if we are in the master example scene add all the scenes to the build settings
         if (EditorSceneManager.GetActiveScene().name.Contains("MasterExample"))
         {
-            EditorBuildSettingsScene[] newBuildSettings = new EditorBuildSettingsScene[9];
+            var temp = EditorBuildSettings.scenes;
+
+            if ((temp != null && temp.Length > 0))
+            {
+                if (temp[0].path.Equals("Assets/Easy Input for Gear VR/Scenes/MasterExample.unity"))
+                {
+                    //we already have our scenes in
+                    EditorApplication.hierarchyWindowChanged -= addOtherExamplesToBuildSettings;
+                    return;
+                }
+            }
+
+            EditorBuildSettingsScene[] newBuildSettings = new EditorBuildSettingsScene[temp.Length + 9];
             newBuildSettings[0] = new EditorBuildSettingsScene("Assets/Easy Input for Gear VR/Scenes/MasterExample.unity", true);
             newBuildSettings[1] = new EditorBuildSettingsScene("Assets/Easy Input for Gear VR/Scenes/SpecificExamples/tiltGearVRControllerExample.unity", true);
             newBuildSettings[2] = new EditorBuildSettingsScene("Assets/Easy Input for Gear VR/Scenes/SpecificExamples/controlsExample.unity", true);
@@ -29,6 +41,12 @@ public static class CreateAxesEditor
             newBuildSettings[6] = new EditorBuildSettingsScene("Assets/Easy Input for Gear VR/Scenes/SpecificExamples/GVRcontrollerDiagnosticExample.unity", true);
             newBuildSettings[7] = new EditorBuildSettingsScene("Assets/Easy Input for Gear VR/Scenes/SpecificExamples/bowlingExample.unity", true);
             newBuildSettings[8] = new EditorBuildSettingsScene("Assets/Easy Input for Gear VR/Scenes/SpecificExamples/pointerExample.unity", true);
+
+            //put the old ones at the end
+            for (int i = 0;i< temp.Length; i++)
+            {
+                newBuildSettings[i + 9] = temp[i];
+            }
 
 
             EditorBuildSettings.scenes = newBuildSettings;
