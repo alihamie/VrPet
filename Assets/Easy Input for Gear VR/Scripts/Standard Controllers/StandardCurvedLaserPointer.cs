@@ -7,7 +7,7 @@ namespace EasyInputVR.StandardControllers
 {
 
     [AddComponentMenu("EasyInputGearVR/Standard Controllers/StandardCurvedLaserPointer")]
-    public class StandardCurvedLaserPointer : MonoBehaviour
+    public class StandardCurvedLaserPointer : StandardBaseLaser
     {
         public float heightOffset = 0f;
         public Material laserMaterial;
@@ -36,6 +36,8 @@ namespace EasyInputVR.StandardControllers
         GameObject lastHitGameObject;
         Vector3 lastRayHit;
         Vector3 uiHitPosition;
+        bool showReticle;
+        bool showLaser = true;
 
 
         void OnEnable()
@@ -58,6 +60,12 @@ namespace EasyInputVR.StandardControllers
             if (reticle != null)
             {
                 initialReticleSize = reticle.transform.localScale;
+                reticle.GetComponent<MeshRenderer>().material.color = reticleColor;
+                showReticle = true;
+            }
+            else
+            {
+                showReticle = false;
             }
 
             previous.transform.position = laserPointer.transform.position;
@@ -100,9 +108,12 @@ namespace EasyInputVR.StandardControllers
 
         void localMotion(EasyInputVR.Core.Motion motion)
         {
+            //if null or not active don't do anything
             if (laserPointer == null || !this.gameObject.activeInHierarchy)
                 return;
 
+
+            //update the position and rotation of the laser pointer (not the laser itself)
             offsetPosition = motion.currentPos;
             offsetPosition.y += heightOffset;
 
@@ -111,10 +122,12 @@ namespace EasyInputVR.StandardControllers
             else
                 laserPointer.transform.localPosition = offsetPosition;
 
-
             laserPointer.transform.localRotation = motion.currentOrientation;
 
-            if (motion.currentPos != Vector3.zero)
+
+
+            //check if we should show the laser and if not return
+            if (motion.currentPos != Vector3.zero && showLaser)
             {
                 line.enabled = true;
             }
@@ -124,6 +137,8 @@ namespace EasyInputVR.StandardControllers
                 return;
             }
 
+
+            //calculations for the laser
             end = EasyInputConstants.NOT_VALID;
 
             //set the number of positions like we aren't going to hit anything
@@ -169,18 +184,18 @@ namespace EasyInputVR.StandardControllers
                         if (lastHitGameObject == null)
                         {
                             //we weren't hitting anything before and now we are
-                            EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, false);
+                            EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, false, laserPointer.transform);
                         }
                         else if (lastHitGameObject == rayHit.transform.gameObject)
                         {
 
                             //we are hitting the same object as last frame
-                            EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false);
+                            EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false, laserPointer.transform);
                         }
                         else if (lastHitGameObject != rayHit.transform.gameObject)
                         {
                             //we are hitting a different object than last frame
-                            EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, true);
+                            EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, true, laserPointer.transform);
                         }
 
                         lastHitGameObject = rayHit.transform.gameObject;
@@ -203,7 +218,7 @@ namespace EasyInputVR.StandardControllers
             //hit something
             if (end != EasyInputConstants.NOT_VALID)
             {
-                if (reticle != null)
+                if (reticle != null && showReticle)
                 {
                     reticle.SetActive(true);
                     reticle.transform.position = end;
@@ -219,7 +234,7 @@ namespace EasyInputVR.StandardControllers
                     //raycast enabled but didn't hit anything
                     if (lastHitGameObject != null)
                     {
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, false, false, true);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, false, false, true, laserPointer.transform);
                         lastHitGameObject = null;
                         lastRayHit = EasyInputConstants.NOT_VALID;
                     }
@@ -233,9 +248,6 @@ namespace EasyInputVR.StandardControllers
                 }
 
             }
-
-            if (reticle != null)
-                reticle.GetComponent<MeshRenderer>().material.color = reticleColor;
 
             //UI based interactions
             if (UIRaycast && InputModule != null && (motion.currentPos != Vector3.zero))
@@ -258,6 +270,22 @@ namespace EasyInputVR.StandardControllers
         public void setInitialScale(Vector3 scale)
         {
             initialReticleSize = scale;
+        }
+
+        public override void TurnOffLaserAndReticle()
+        {
+            showLaser = false;
+            showReticle = false;
+            if (reticle != null && this.gameObject.activeInHierarchy)
+                reticle.SetActive(false);
+        }
+
+        public override void TurnOnLaserAndReticle()
+        {
+            showLaser = true;
+            showReticle = true;
+            if (reticle != null && this.gameObject.activeInHierarchy)
+                reticle.SetActive(true);
         }
 
 

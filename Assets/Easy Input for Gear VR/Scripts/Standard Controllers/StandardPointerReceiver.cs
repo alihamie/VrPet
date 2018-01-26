@@ -36,17 +36,17 @@ namespace EasyInputVR.StandardControllers
         {
         }
 
-        public override void Hover(Vector3 hitPosition)
+        public override void Hover(Vector3 hitPosition, Transform pointerTransform)
         {
             onHover.Invoke(hitPosition);
         }
 
-        public override void HoverEnter(Vector3 hitPosition)
+        public override void HoverEnter(Vector3 hitPosition, Transform pointerTransform)
         {
             onHoverEnter.Invoke(hitPosition);
         }
 
-        public override void HoverExit(Vector3 hitPosition)
+        public override void HoverExit(Vector3 hitPosition, Transform pointerTransform)
         {
             onHoverExit.Invoke(hitPosition);
         }

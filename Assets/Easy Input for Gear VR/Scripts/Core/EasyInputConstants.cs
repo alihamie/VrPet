@@ -9,6 +9,9 @@ namespace EasyInputVR.Core
         public enum CONTROLLER_AXIS { LeftStick = 0, RightStick = 1, DPad = 2, LeftTrigger = 3, RightTrigger = 4 };
         public enum CONTROLLER_BUTTON { AButton = 0, BButton = 1, XButton = 2, YButton = 3, LeftBumper = 4, RightBumper = 5, StartButton = 6, LeftStickPush = 7, RightStickPush = 8, Back = 9, GearVRTouchClick = 10, GearVRTrigger = 11, GearVRHMDPadTap = 12 };
         public enum ACTION_CONDITION { GearVRTouchClickPressed = 10, GearVRTriggerPressed = 11, GearVRHmdPressed = 12, TouchpadTouched = 13};
+        public enum BUTTON_CONDITION { GearVRTouchClickPressed = 10, GearVRTriggerPressed = 11, GearVRHmdPressed = 12};
+        public enum TELEPORT_MODE {AlwaysShowLaser = 0, ShowLaserOnConditionStart = 1 };
+        public enum DIRECTION_MODE {FourDirectionsOnly = 0, EightDirectionsWithDiagonals = 1 };
         public enum COMPONENT_AXIS { XAxis = 0, YAxis = 1, ZAxis = 2 };
         public enum TOUCH_DEVICE { HMD = 0, MotionController = 1};
         public enum TOUCH_TYPE { Miscellaneous = 0, QuickPress = 1, LongPress = 2, DoublePress = 3, Swipe = 4};
@@ -18,6 +21,9 @@ namespace EasyInputVR.Core
         public enum ACTION_TYPE { Position = 0, Rotation = 1, LocalPosition = 2, LocalRotation = 3, LocalScale = 4 };
         public enum INPUT_MODULE_BUTTON_MODE {FireAtRepeatRate = 0, FireOnceAtButtonUp = 1, FireOnceAtButtonDown = 2 };
         public enum DPAD_MODE {RegisterAlways = 0, RegisterOnlyWhenNotClicking = 1 };
+        public enum REGISTER_MODE {RegisterAlways = 0, RegisterOnlyWhenClicking = 1 };
+        public enum ROTATION_MODE {None = 0, TwistLocalXAxis =1, TwistLocalYAxis =2, TwistLocalZAxis = 3 };
+        public enum DROP_MODE {Drop=0, ThrowLatestVelocity = 1, ThrowAvgLastTwoFrames = 2 }
 
 
         //constants

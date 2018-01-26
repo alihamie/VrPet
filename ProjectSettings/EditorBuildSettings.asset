@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/_VrPetAssets/Scenes/GameScenes/NewInteraction.unity
+    guid: 6af449a5710635741ad979d6d5462c23
   - enabled: 1
-    path: Assets/_VrPetAssets/Scenes/GameScenes/Living_Room.unity
-    guid: c68cfd30fe0314569a93fc344982880a
+    path: Assets/_VrPetAssets/Scenes/GameScenes/RobertInteraction1.unity
+    guid: 5139d0155b4abac43a0ca3dfbd2160de

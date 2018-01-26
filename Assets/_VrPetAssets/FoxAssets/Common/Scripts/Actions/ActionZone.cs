@@ -64,6 +64,8 @@ namespace MalbersAnimations
             Animal animal = other.GetComponentInParent<Animal>();
             AnimalAIControl animalAIControl = other.GetComponentInParent<AnimalAIControl>();
 
+
+
             if (animalAIControl !=null  && animalAIControl.isWandering == true)
             {
                 return;

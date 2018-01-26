@@ -1,0 +1,267 @@
+fileFormatVersion: 2
+guid: b2bead9faad4faa42812d57dbf9515f7
+timeCreated: 1514770438
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: backbutton
+    100002: button_exit
+    100004: button_exit1
+    100006: button_exit2
+    100008: button_exit3
+    100010: button_exit4
+    100012: buttons
+    100014: camerabutton
+    100016: directionalLight1
+    100018: directionalLight2
+    100020: exitdoorbutton
+    100022: group
+    100024: imagePlane1
+    100026: locator10
+    100028: locator11
+    100030: locator6
+    100032: locator7
+    100034: mainscreen
+    100036: nurbsCube1
+    100038: pCube1
+    100040: pCube2
+    100042: pCylinder1
+    100044: pCylinder10
+    100046: pCylinder2
+    100048: pCylinder3
+    100050: polySurface5
+    100052: polySurface7
+    100054: screen_flip
+    100056: screen_flip2
+    100058: screen_flip_main
+    100060: screen_main
+    100062: screen_main1
+    100064: screen_sub
+    100066: settingsbutton
+    100068: sidescreen
+    100070: sidescreen2
+    100072: //RootNode
+    100074: tabletbody
+    100076: transform1
+    100078: transform10
+    100080: transform11
+    100082: transform12
+    100084: transform13
+    100086: transform14
+    100088: transform2
+    100090: transform3
+    100092: transform4
+    100094: transform5
+    100096: transform6
+    100098: transform7
+    100100: transform8
+    100102: transform9
+    400000: backbutton
+    400002: button_exit
+    400004: button_exit1
+    400006: button_exit2
+    400008: button_exit3
+    400010: button_exit4
+    400012: buttons
+    400014: camerabutton
+    400016: directionalLight1
+    400018: directionalLight2
+    400020: exitdoorbutton
+    400022: group
+    400024: imagePlane1
+    400026: locator10
+    400028: locator11
+    400030: locator6
+    400032: locator7
+    400034: mainscreen
+    400036: nurbsCube1
+    400038: pCube1
+    400040: pCube2
+    400042: pCylinder1
+    400044: pCylinder10
+    400046: pCylinder2
+    400048: pCylinder3
+    400050: polySurface5
+    400052: polySurface7
+    400054: screen_flip
+    400056: screen_flip2
+    400058: screen_flip_main
+    400060: screen_main
+    400062: screen_main1
+    400064: screen_sub
+    400066: settingsbutton
+    400068: sidescreen
+    400070: sidescreen2
+    400072: //RootNode
+    400074: tabletbody
+    400076: transform1
+    400078: transform10
+    400080: transform11
+    400082: transform12
+    400084: transform13
+    400086: transform14
+    400088: transform2
+    400090: transform3
+    400092: transform4
+    400094: transform5
+    400096: transform6
+    400098: transform7
+    400100: transform8
+    400102: transform9
+    2300000: backbutton
+    2300002: camerabutton
+    2300004: exitdoorbutton
+    2300006: mainscreen
+    2300008: pCylinder10
+    2300010: pCylinder2
+    2300012: polySurface7
+    2300014: settingsbutton
+    2300016: sidescreen
+    2300018: sidescreen2
+    2300020: tabletbody
+    3300000: backbutton
+    3300002: camerabutton
+    3300004: exitdoorbutton
+    3300006: mainscreen
+    3300008: pCylinder10
+    3300010: pCylinder2
+    3300012: polySurface7
+    3300014: settingsbutton
+    3300016: sidescreen
+    3300018: sidescreen2
+    3300020: tabletbody
+    4300000: pCylinder2
+    4300002: tabletbody
+    4300004: mainscreen
+    4300006: polySurface7
+    4300008: sidescreen2
+    4300010: sidescreen
+    4300012: camerabutton
+    4300014: backbutton
+    4300016: exitdoorbutton
+    4300018: settingsbutton
+    4300020: pCylinder10
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: backbuttontexture
+    second: {fileID: 2100000, guid: 21bc67de836ef6e4194c0792666dd789, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: body
+    second: {fileID: 2100000, guid: 497e5fcbbbc00f043aee580376f555c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: buttonbase
+    second: {fileID: 2100000, guid: a4b8530cdfd0bb1458f8e5878a5e3784, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: camera
+    second: {fileID: 2100000, guid: 3ebf7ab15e5a93f45ab51f1dd714d729, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: exitdoortexture
+    second: {fileID: 2100000, guid: e804a1b7065a2f84b827fa556f4ebf5a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: 633ff90c7be0fe641b1d656fc8051ae7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: phongE1
+    second: {fileID: 2100000, guid: f9a7337cf7aa9244dae15a5da41843d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: screen
+    second: {fileID: 2100000, guid: 9bad61bedb9ae6248a73d89541e31ef8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: screentexture
+    second: {fileID: 2100000, guid: 160192745aae97d4a9a30bcd78c41ad9, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

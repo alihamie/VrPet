@@ -45,7 +45,8 @@ namespace EasyInputVR.StandardControllers
 
             end = EasyInputConstants.NOT_VALID;
 
-            if (colliderRaycast && Physics.Raycast(hmd.transform.position, hmd.transform.forward, out rayHit, reticleDistance, layersToCheck))
+            //Physics based interactions
+            if (colliderRaycast && Physics.Raycast(this.transform.position, this.transform.forward, out rayHit, reticleDistance, layersToCheck))
             {
                 end = rayHit.point;
                 if (rayHit.transform != null && rayHit.transform.gameObject != null)
@@ -53,18 +54,18 @@ namespace EasyInputVR.StandardControllers
                     if (lastHitGameObject == null)
                     {
                         //we weren't hitting anything before and now we are
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, false);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, false, hmd.transform);
                     }
                     else if (lastHitGameObject == rayHit.transform.gameObject)
                     {
 
                         //we are hitting the same object as last frame
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false, hmd.transform);
                     }
                     else if (lastHitGameObject != rayHit.transform.gameObject)
                     {
                         //we are hitting a different object than last frame
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, true);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, true, true, hmd.transform);
                     }
 
                     lastHitGameObject = rayHit.transform.gameObject;
@@ -88,7 +89,7 @@ namespace EasyInputVR.StandardControllers
                     //raycast enabled but didn't hit anything
                     if (lastHitGameObject != null)
                     {
-                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, false, false, true);
+                        EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, false, false, true, hmd.transform);
                         lastHitGameObject = null;
                         lastRayHit = EasyInputConstants.NOT_VALID;
                     }
