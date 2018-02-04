@@ -7,7 +7,7 @@ namespace EasyInputVR.StandardControllers
 {
 
     [AddComponentMenu("EasyInputGearVR/Standard Controllers/StandardLookDpadController")]
-    public class StandardLookDpadController : MonoBehaviour
+    public class StandardLookDpadController : StandardBaseMovement
     {
         [Range(0f, 1f)]
         public float deadZone = .2f;
@@ -16,6 +16,7 @@ namespace EasyInputVR.StandardControllers
         public GameObject lookObject;
 
         //runtime variables
+        bool blockInput = false;
         Vector3 actionVector3;
         float horizontal;
         float vertical;
@@ -52,6 +53,9 @@ namespace EasyInputVR.StandardControllers
 
         void localAxis(InputTouch touch)
         {
+            if (blockInput)
+                return;
+
             if (dpadMode == EasyInputConstants.DPAD_MODE.RegisterAlways || isClicking == false)
             {
 
@@ -99,6 +103,16 @@ namespace EasyInputVR.StandardControllers
             {
                 isClicking = false;
             }
+        }
+
+        public override void blockMovement()
+        {
+            blockInput = true;
+        }
+
+        public override void unblockMovement()
+        {
+            blockInput = false;
         }
 
 

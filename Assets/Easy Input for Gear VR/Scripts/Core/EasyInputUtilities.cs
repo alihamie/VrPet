@@ -200,7 +200,7 @@ namespace EasyInputVR.Core
             return newSmoothedValue;
         }
 
-        public static void notifyEvents(RaycastHit rayHit, Vector3 lastRayHit, GameObject lastHitGameObject, bool hover, bool hoverEnter, bool hoverExit)
+        public static void notifyEvents(RaycastHit rayHit, Vector3 lastRayHit, GameObject lastHitGameObject, bool hover, bool hoverEnter, bool hoverExit, Transform pointer)
         {
 
             if (hoverExit)
@@ -209,7 +209,7 @@ namespace EasyInputVR.Core
 
                 foreach (var receiver in exitReceivers)
                 {
-                    receiver.HoverExit(lastRayHit);
+                    receiver.HoverExit(lastRayHit, pointer);
                 }
             }
 
@@ -219,9 +219,9 @@ namespace EasyInputVR.Core
                 foreach (var receiver in receivers)
                 {
                     if (hover)
-                        receiver.Hover(rayHit.point);
+                        receiver.Hover(rayHit.point, pointer);
                     if (hoverEnter)
-                        receiver.HoverEnter(rayHit.point);
+                        receiver.HoverEnter(rayHit.point, pointer);
                 }
             }
         }

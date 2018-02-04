@@ -203,7 +203,7 @@ namespace MalbersAnimations
                     pos = RandomNavSphere(transform.position, 300, -1);
                     timer = 0;
                 }
-                if (pos != null)
+                if (pos != Vector3.zero)
                 {
                     Agent.SetDestination(pos);
                 }
@@ -326,6 +326,7 @@ namespace MalbersAnimations
         /// </summary>
         public void SetTarget(Transform target)
         {
+            isWandering = false;
             this.target = target;
             isMoving = false;
             UpdateTarget();

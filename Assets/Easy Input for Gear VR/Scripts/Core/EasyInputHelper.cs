@@ -116,6 +116,17 @@ namespace EasyInputVR.Core
             mInstance.myMotion.totalVelSinceLastReset = Vector3.zero;
         }
 
+        public static void recenterController()
+        {
+#if UNITY_EDITOR
+            mInstance.myMotion.currentOrientationEuler = Vector3.zero;
+            mInstance.myMotion.currentOrientation = Quaternion.Euler(mInstance.myMotion.currentOrientationEuler);
+#endif
+#if !UNITY_EDITOR && UNITY_ANDROID
+            OVRInput.RecenterController();
+#endif
+        }
+
         public static Camera returnUICamera()
         {
             EasyInputModule[] inputmodules = Resources.FindObjectsOfTypeAll<EasyInputModule>();
@@ -203,7 +214,19 @@ namespace EasyInputVR.Core
                 this.gameObject.AddComponent<OVRManager>();
             }
 #endif
-#if !UNITY_5_3
+#if !UNITY_5_3 && (UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7 || UNITY_2017_1)
+            var devices = UnityEngine.VR.VRSettings.supportedDevices;
+            foreach (var device in devices)
+            {
+                if (device == "Oculus")
+                {
+                    isGearVR = true;
+                    //add OVRManager
+                    this.gameObject.AddComponent<OVRManager>();
+                }
+            }
+#endif
+#if !UNITY_5_3 && !UNITY_5_4 && !UNITY_5_5 && !UNITY_5_6 && !UNITY_5_7 && !UNITY_2017_1
             var devices = UnityEngine.XR.XRSettings.supportedDevices;
             foreach (var device in devices)
             {
@@ -215,7 +238,6 @@ namespace EasyInputVR.Core
                 }
             }
 #endif
-
 #endif
         }
 
@@ -242,7 +264,7 @@ namespace EasyInputVR.Core
         void populateMyTouch()
         {
 #if UNITY_EDITOR
-            currentlyTouching = (Input.GetMouseButton(0) && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftAlt));
+            currentlyTouching = (Input.GetMouseButton(0) && !Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftAlt) && !Input.GetKey(KeyCode.RightControl));
             touchDevice = (Input.GetKey(KeyCode.H)) ? EasyInputConstants.TOUCH_DEVICE.HMD : EasyInputConstants.TOUCH_DEVICE.MotionController;
             if (currentlyTouching)
             {
@@ -632,7 +654,7 @@ namespace EasyInputVR.Core
                 }
             }
             //motion simulation
-            else if (Input.GetKey(KeyCode.LeftControl) && Input.GetMouseButton(0))
+            else if ((Input.GetKey(KeyCode.LeftControl)|| Input.GetKey(KeyCode.RightControl)) && Input.GetMouseButton(0))
             {
                 //motion simulation
                 isController = true;
@@ -658,9 +680,18 @@ namespace EasyInputVR.Core
 
             if (delta != EasyInputConstants.NOT_TOUCHING && delta != Vector2.zero)
             {
-                OrientationDelta.z = 0f;
-                OrientationDelta.y = delta.x;
-                OrientationDelta.x = delta.y;
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftAlt))
+                {
+                    OrientationDelta.z = 0f;
+                    OrientationDelta.y = delta.x;
+                    OrientationDelta.x = delta.y;
+                }
+                else if (Input.GetKey(KeyCode.RightControl))
+                {
+                    OrientationDelta.z = -delta.x;
+                    OrientationDelta.y = 0f;
+                    OrientationDelta.x = 0f;
+                }
             }
             else
             {

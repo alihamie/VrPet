@@ -7,7 +7,7 @@ namespace EasyInputVR.StandardControllers
 {
 
     [AddComponentMenu("EasyInputGearVR/Standard Controllers/StandardTouchpadController")]
-    public class StandardTouchpadController : MonoBehaviour
+    public class StandardTouchpadController : StandardBaseMovement
     {
         public EasyInputConstants.AXIS axisHorizontal = EasyInputConstants.AXIS.XAxis;
         public EasyInputConstants.AXIS axisVertical = EasyInputConstants.AXIS.YAxis;
@@ -15,6 +15,7 @@ namespace EasyInputVR.StandardControllers
         public float sensitivity = 1f;
 
         //runtime variables
+        bool blockInput;
         Vector2 lastFrameTouch = EasyInputConstants.NOT_TOUCHING;
         Vector3 actionVector3;
         float horizontal;
@@ -53,6 +54,9 @@ namespace EasyInputVR.StandardControllers
                 return;
             }
 
+            if (blockInput)
+                return;
+
             //otherwise is a continuation
             horizontal = (touch.currentTouchPosition.x - lastFrameTouch.x) * sensitivity * Time.deltaTime * 100f;
             vertical = (touch.currentTouchPosition.y - lastFrameTouch.y) * sensitivity * Time.deltaTime * 100f;
@@ -82,6 +86,16 @@ namespace EasyInputVR.StandardControllers
             }
 
             lastFrameTouch = touch.currentTouchPosition;
+        }
+
+        public override void blockMovement()
+        {
+            blockInput = true;
+        }
+
+        public override void unblockMovement()
+        {
+            blockInput = false;
         }
 
 

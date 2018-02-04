@@ -11,7 +11,7 @@ public class GearVRSettings : EditorWindow
 
     const string buildTarget = "Build Target (android recommended)";
     const string virRealitySupported = "Virtual Reality Supported (true recommended)";
-    const string minimumAndroidSdk = "Minumum Supported Android SDK (level 24 recommended)";
+    const string minimumAndroidSdk = "Minumum Supported Android SDK (level 21 recommended)";
     const string oculussdk = "Oculus Utilites aren't downloaded and imported (required for Gear VR)";
     const string oculussig = "Oculus Signature file isn't provided (required for Gear VR testing)";
 
@@ -19,7 +19,7 @@ public class GearVRSettings : EditorWindow
 
     const BuildTarget myBuildTarget = BuildTarget.Android;
     const bool virtualRealitySupported = true;
-    const int minAndroidSdk = 24;
+    const int minAndroidSdk = 21;
 
     static GearVRSettings window;
 

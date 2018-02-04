@@ -12,14 +12,19 @@ namespace EasyInputVR.StandardControllers
     {
 
         public EasyInputConstants.ACTION_CONDITION teleportCondition = EasyInputConstants.ACTION_CONDITION.GearVRTriggerPressed;
+        public EasyInputConstants.TELEPORT_MODE teleportMode = EasyInputConstants.TELEPORT_MODE.AlwaysShowLaser;
         public GameObject teleportObject;
+        public StandardBaseLaser laser;
         public float yAxisOffset = 0f;
         public float timeLockout = 2f;
 
         bool fireEvent;
         bool clicking;
+        bool stoppedClicking;
+        bool stoppedTouching;
         float lastTeleport = 0f;
         Vector2 touchPos;
+        Vector3 lastHitPosition;
 
 
         void OnEnable()
@@ -54,29 +59,85 @@ namespace EasyInputVR.StandardControllers
         }
 
 
-        // Update is called once per frame
         void Update()
         {
+            if (teleportMode == EasyInputConstants.TELEPORT_MODE.ShowLaserOnConditionStart)
+            {
+                if (teleportCondition == EasyInputConstants.ACTION_CONDITION.TouchpadTouched)
+                {
+                    if (touchPos == EasyInputConstants.NOT_TOUCHING)
+                    {
+                        //not touching no laser
+                        laser.TurnOffLaserAndReticle();
+                    }
+                    else
+                    {
+                        laser.TurnOnLaserAndReticle();
+                    }
+
+                    //check to see if we just stopped
+                    if (stoppedTouching && lastHitPosition != EasyInputConstants.NOT_VALID && (Time.time - lastTeleport) > timeLockout)
+                    {
+                        //teleport
+                        lastTeleport = Time.time;
+                        lastHitPosition.y += yAxisOffset;
+                        teleportObject.transform.position = lastHitPosition;
+                    }
+                }
+                else
+                {
+                    if (!clicking)
+                    {
+                        //not clicking no laser
+                        laser.TurnOffLaserAndReticle();
+                    }
+                    else
+                    {
+                        laser.TurnOnLaserAndReticle();
+                    }
+
+                    //check to see if we just stopped
+                    if (stoppedClicking && lastHitPosition != EasyInputConstants.NOT_VALID && (Time.time - lastTeleport) > timeLockout)
+                    {
+                        //teleport
+                        lastTeleport = Time.time;
+                        lastHitPosition.y += yAxisOffset;
+                        teleportObject.transform.position = lastHitPosition;
+                    }
+                }
+            }
+
+
+
+            //done processing reset variable
+            stoppedClicking = false;
+            stoppedTouching = false;
+            lastHitPosition = EasyInputConstants.NOT_VALID;
         }
 
 
-        public override void Hover(Vector3 hitPosition)
+        public override void Hover(Vector3 hitPosition, Transform pointerTransform)
         {
-            if (conditionsMet() && (Time.time - lastTeleport) > timeLockout)
+            lastHitPosition = hitPosition;
+            if (teleportMode == EasyInputConstants.TELEPORT_MODE.AlwaysShowLaser)
             {
-                //teleport
-                lastTeleport = Time.time;
-                hitPosition.y += yAxisOffset;
-                teleportObject.transform.position = hitPosition;
+                //if we're always showing the laser we teleport on button down
+                if (conditionsMet() && (Time.time - lastTeleport) > timeLockout)
+                {
+                    //teleport
+                    lastTeleport = Time.time;
+                    hitPosition.y += yAxisOffset;
+                    teleportObject.transform.position = hitPosition;
+                }
             }
         }
 
-        public override void HoverEnter(Vector3 hitPosition)
+        public override void HoverEnter(Vector3 hitPosition, Transform pointerTransform)
         {
 
         }
 
-        public override void HoverExit(Vector3 hitPosition)
+        public override void HoverExit(Vector3 hitPosition, Transform pointerTransform)
         {
         }
 
@@ -88,13 +149,17 @@ namespace EasyInputVR.StandardControllers
         void localTouchEnd(InputTouch touch)
         {
             touchPos = EasyInputConstants.NOT_TOUCHING;
+            stoppedTouching = true;
         }
 
 
         void clickEnd(ButtonClick button)
         {
             if ((int)button.button == (int)teleportCondition)
+            {
                 clicking = false;
+                stoppedClicking = true;
+            }
         }
 
         void click(ButtonClick button)
