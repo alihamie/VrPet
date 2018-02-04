@@ -214,7 +214,19 @@ namespace EasyInputVR.Core
                 this.gameObject.AddComponent<OVRManager>();
             }
 #endif
-#if !UNITY_5_3
+#if !UNITY_5_3 && (UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7 || UNITY_2017_1)
+            var devices = UnityEngine.VR.VRSettings.supportedDevices;
+            foreach (var device in devices)
+            {
+                if (device == "Oculus")
+                {
+                    isGearVR = true;
+                    //add OVRManager
+                    this.gameObject.AddComponent<OVRManager>();
+                }
+            }
+#endif
+#if !UNITY_5_3 && !UNITY_5_4 && !UNITY_5_5 && !UNITY_5_6 && !UNITY_5_7 && !UNITY_2017_1
             var devices = UnityEngine.XR.XRSettings.supportedDevices;
             foreach (var device in devices)
             {
@@ -226,7 +238,6 @@ namespace EasyInputVR.Core
                 }
             }
 #endif
-
 #endif
         }
 

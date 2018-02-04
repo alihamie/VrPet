@@ -186,7 +186,7 @@ namespace MalbersAnimations
 
                 yield return null;
                 yield return null;
-                animal.ActionEmotion(-1);
+                //animal.ActionEmotion(-1);
                 yield return new WaitForSeconds(AutomaticDisabled);
                 GetComponent<Collider>().enabled = true;
                 //if (rg != null && this.tag == "GrabableItem")

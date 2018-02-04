@@ -1336,6 +1336,8 @@ MonoBehaviour:
   throwSensitivity: 1
   blockMovementWhenGrabbing: 1
   movementObject: {fileID: 1899193293}
+  forceDepthToDistance: 1
+  forcedDistance: 1
   allowClickForDepth: 1
   clickDeadzone: 0.4
   clickSensitivity: 0.1

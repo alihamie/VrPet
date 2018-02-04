@@ -1,4 +1,5 @@
-﻿using MalbersAnimations;
+﻿using EasyInputVR.StandardControllers;
+using MalbersAnimations;
 using UnityEngine;
 
 public class FoxItemInteraction : MonoBehaviour
@@ -43,6 +44,12 @@ public class FoxItemInteraction : MonoBehaviour
             }
             aiControl.isWandering = false;
             aiControl.target = player;
+            StandardGrabReceiver grabReceiver = grabbedItem.GetComponent<StandardGrabReceiver>();
+
+            if (grabReceiver)
+            {
+                grabReceiver.SetIsGrabbed(true);
+            }
         }
 
     }
@@ -62,9 +69,17 @@ public class FoxItemInteraction : MonoBehaviour
         if (aiControl != null)
         {
             aiControl.isWandering = true;
-            grabbedItem = null;
             aiControl.SetClosestGrabbableItem(null);
+            
         }
+        StandardGrabReceiver grabReceiver = grabbedItem.GetComponent<StandardGrabReceiver>();
+
+        if (grabReceiver)
+        {
+            grabReceiver.SetIsGrabbed(false);
+        }
+
+        grabbedItem = null;
     }
 
 }

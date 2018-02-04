@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_VrPetAssets/Scenes/GameScenes/NewInteraction.unity
     guid: 6af449a5710635741ad979d6d5462c23
-  - enabled: 1
+  - enabled: 0
     path: Assets/_VrPetAssets/Scenes/GameScenes/RobertInteraction1.unity
     guid: 5139d0155b4abac43a0ca3dfbd2160de
+  - enabled: 1
+    path: Assets/Easy Input for Gear VR/Scenes/SpecificExamples/tiltGearVRControllerExample.unity
+    guid: 606d6bee5e8901b4ebf08de0b1c6f8ce

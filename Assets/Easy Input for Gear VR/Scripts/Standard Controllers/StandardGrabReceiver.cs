@@ -9,13 +9,14 @@ namespace EasyInputVR.StandardControllers
     [AddComponentMenu("EasyInputGearVR/Standard Controllers/StandardGrabReceiver")]
     public class StandardGrabReceiver : StandardBaseReceiver
     {
+
         public EasyInputConstants.BUTTON_CONDITION grabCondtion = EasyInputConstants.BUTTON_CONDITION.GearVRTriggerPressed;
-        public bool snapIntoPosition;
-        public Transform snapPoint;
         public EasyInputConstants.DROP_MODE dropCondition = EasyInputConstants.DROP_MODE.Drop;
         public float throwSensitivity = 1f;
         public bool blockMovementWhenGrabbing;
         public StandardBaseMovement movementObject;
+        public bool forceDepthToDistance;
+        public float forcedDistance = 1f;
         public bool allowClickForDepth;
         public float clickDeadzone = .4f;
         public float clickSensitivity = 1f;
@@ -34,6 +35,7 @@ namespace EasyInputVR.StandardControllers
         public EasyInputConstants.ROTATION_MODE twistMode = EasyInputConstants.ROTATION_MODE.None;
         public float twistSensitivity = 1f;
         public FoxTargetManager foxTargetManager;
+
         Rigidbody myRigidbody;
         bool clicking;
         bool padClick;
@@ -54,7 +56,12 @@ namespace EasyInputVR.StandardControllers
         Vector3 threeFramesAgoPosition;
         Vector3 lastHitPosition;
         Vector3 initialOffset;
+        bool isGrabbedByFox = false;
 
+        public void SetIsGrabbed(bool isGrabbed)
+        {
+            this.isGrabbedByFox = isGrabbed;
+        }
 
 
         void OnEnable()
@@ -91,6 +98,11 @@ namespace EasyInputVR.StandardControllers
                     else if (currentDistance < minDepthDistance)
                         currentDistance = minDepthDistance;
                 }
+
+                //check if we are forcing a distance
+                if (forceDepthToDistance)
+                    currentDistance = forcedDistance;
+
                 this.transform.position = (laserTransform.position + laserTransform.forward * currentDistance) + initialOffset;
 
                 //we're grabbing the object so we don't want gravity or other objects to move or spin the object
@@ -245,30 +257,22 @@ namespace EasyInputVR.StandardControllers
                 movementObject.unblockMovement();
         }
 
-        void clickStart(ButtonClick button)
+        public void SimulateClick()
         {
 
-            if ((int)button.button == (int)grabCondtion && hovering)
+        }
+
+        void clickStart(ButtonClick button)
+        {
+            if ((int)button.button == (int)grabCondtion && hovering && !isGrabbedByFox)
             {
                 clicking = true;
-                if (this.transform.tag == "GrabableItem")
-                {
-                    foxTargetManager.GoToPlayArea();
-                }
-
-                if (snapIntoPosition)
-                {
-                    this.transform.SetParent(snapPoint);
-                    this.transform.position = snapPoint.position;
-                }
-                else
-                {
-                    initialOffset = this.transform.position - lastHitPosition;
-                    initialPosition = this.transform.position;
-                    initialRotation = this.transform.localRotation;
-                    if (laserTransform != null)
-                        initialTwist = laserTransform.localRotation.eulerAngles.z;
-                }
+                this.foxTargetManager.GoToPlayArea();
+                initialOffset = this.transform.position - lastHitPosition;
+                initialPosition = this.transform.position;
+                initialRotation = this.transform.localRotation;
+                if (laserTransform != null)
+                    initialTwist = laserTransform.localRotation.eulerAngles.z;
             }
 
             if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTouchClick)
@@ -280,24 +284,14 @@ namespace EasyInputVR.StandardControllers
 
         void clickEnd(ButtonClick button)
         {
-            //if (grabMode == false)
-            //{
-            //    return;
-            //}
-
-            if ((int)button.button == (int)grabCondtion)
+            if ((int)button.button == (int)grabCondtion && grabMode)
             {
-                foxTargetManager.GoToFetchItem(this.transform);
                 clicking = false;
                 previousClicking = false;
                 grabMode = false;
+                this.foxTargetManager.GoToFetchItem(this.transform);
                 if (myRigidbody != null)
                 {
-                    if (snapIntoPosition)
-                    {
-                        myRigidbody.transform.SetParent(null);
-                    }
-
                     if (dropCondition == EasyInputConstants.DROP_MODE.Drop)
                     {
                         myRigidbody.velocity = Vector3.zero;

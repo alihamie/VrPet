@@ -33,21 +33,4 @@ public class TabletFunctionality : MonoBehaviour {
             screenManager.GoBack();
         }
     }
-
-    public void SpawnGrabableObject(OVRGrabbable item)
-    {
-        if (OVRGrab.activeController != null)
-        {
-            OVRGrabber grabber = OVRGrab.activeController.GetComponent<OVRGrabber>();
-
-            if (grabber.grabbedObject != null)
-            {
-                return;
-            }
-            grabber.GrabBegin(item);
-            BackButton();
-            grabber.ToggleTablet();
-
-        }
-    }
 }

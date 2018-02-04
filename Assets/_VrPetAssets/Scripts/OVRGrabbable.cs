@@ -2,14 +2,14 @@
 
 Copyright   :   Copyright 2014 Oculus VR, LLC. All Rights reserved.
 
-Licensed under the Oculus VR Rift SDK License Version 3.3 (the "License");
+Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
 you may not use the Oculus VR Rift SDK except in compliance with the License,
 which is provided at the time of installation or download, or which
 otherwise accompanies this software in either electronic or hard copy form.
 
 You may obtain a copy of the License at
 
-http://www.oculus.com/licenses/LICENSE-3.3
+https://developer.oculus.com/licenses/sdk-3.4.1
 
 Unless required by applicable law or agreed to in writing, the Oculus VR SDK
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,17 +21,16 @@ limitations under the License.
 
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// An object that can be grabbed and thrown by OVRGrabber.
 /// </summary>
-public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class OVRGrabbable : MonoBehaviour
 {
-
-   
     [SerializeField]
-    protected bool m_snapPosition = true;
+    protected bool m_allowOffhandGrab = true;
+    [SerializeField]
+    protected bool m_snapPosition = false;
     [SerializeField]
     protected bool m_snapOrientation = false;
     [SerializeField]
@@ -42,52 +41,13 @@ public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     protected bool m_grabbedKinematic = false;
     protected Collider m_grabbedCollider = null;
     protected OVRGrabber m_grabbedBy = null;
-    protected OVRGrabber grabber = null;
 
-    private bool isGrabable = false;
-    /// <summary>
-    /// If true, the object can currently be grabbed.
-    /// </summary>
-    public bool IsGrabable
+	/// <summary>
+	/// If true, the object can currently be grabbed.
+	/// </summary>
+    public bool allowOffhandGrab
     {
-        set { this.isGrabable = value; }
-        get { return this.isGrabable; }
-    }
-
-    public void OnPointerEnter(PointerEventData data)
-    {
-        Debug.unityLogger.Log("VRPET", "Pointer enter");
-        ToggleIsGrabable();
-    }
-
-    public void OnPointerExit(PointerEventData data)
-    {
-        Debug.unityLogger.Log("VRPET", "Pointer exit");
-        ToggleIsGrabable();
-    }
-
-    public void ToggleIsGrabable()
-    {
-        this.isGrabable = !this.isGrabable;
-
-        Debug.unityLogger.Log("VRPET", "isGrabable is now" + this.isGrabable);
-
-        if (OVRGrab.activeController != null)
-        {
-            OVRGrabber grabber = OVRGrab.activeController.GetComponent<OVRGrabber>();
-            if (grabber != null)
-            {
-                grabber.SetCurrentGrabableObject(this);
-            }
-            else
-            {
-                Debug.unityLogger.Log("VRPET", "Active controller doesn't have grabber");
-            }
-        }
-        else
-        {
-            Debug.unityLogger.Log("VRPET", "Active controller is null");
-        }
+        get { return m_allowOffhandGrab; }
     }
 
 	/// <summary>
@@ -171,7 +131,7 @@ public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = m_grabbedKinematic;
-        rb.velocity =  transform.forward * 5;
+        rb.velocity = linearVelocity;
         rb.angularVelocity = angularVelocity;
         m_grabbedBy = null;
         m_grabbedCollider = null;
@@ -187,7 +147,7 @@ public class OVRGrabbable : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             {
 				throw new ArgumentException("Grabbables cannot have zero grab points and no collider -- please add a grab point or collider.");
             }
-            
+
             // Create a default grab point
             m_grabPoints = new Collider[1] { collider };
         }
