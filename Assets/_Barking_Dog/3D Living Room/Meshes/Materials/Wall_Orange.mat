@@ -9,7 +9,7 @@ Material:
   m_Name: Wall_Orange
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION _NORMALMAP
-  m_LightmapFlags: 1
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -72,5 +72,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.32941177, g: 0.47450984, b: 0.5019608, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.85172415, g: 0.41342118, b: 0.09282836, a: 1}
+    - _EmissionColor: {r: 0.19655173, g: 0.1487662, b: 0.028851623, a: 1}
