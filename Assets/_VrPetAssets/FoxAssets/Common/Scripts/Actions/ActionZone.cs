@@ -64,14 +64,10 @@ namespace MalbersAnimations
             Animal animal = other.GetComponentInParent<Animal>();
             AnimalAIControl animalAIControl = other.GetComponentInParent<AnimalAIControl>();
 
-
-
             if (animalAIControl !=null  && animalAIControl.isWandering == true)
             {
                 return;
             }
-
-           
 
             if (other.gameObject.layer != 20)
             {
@@ -119,6 +115,18 @@ namespace MalbersAnimations
                 this.animal = animal;
             }
 
+            StartCoroutine(startAnimation(animal,id,animalAIControl));
+        }
+
+        IEnumerator startAnimation(Animal animal, int id,AnimalAIControl ai)
+        {
+            Rigidbody rigidbody = this.GetComponent<Rigidbody>();
+            this.enabled = false;
+            while (rigidbody != null && rigidbody.velocity.magnitude > 0.2f && ai.Agent.remainingDistance < 0.5f)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
             animal.OnAction.AddListener(OnActionListener);          //Listen when the animal activate the Action Input
 
             OnEnter.Invoke(animal);
@@ -132,7 +140,8 @@ namespace MalbersAnimations
                 //this.animal = null;
                 OnActionListener();
             }
-            this.enabled = false;
+           
+
         }
 
         void OnTriggerExit(Collider other)
@@ -163,6 +172,7 @@ namespace MalbersAnimations
             }
 
         }
+
 
         /// <summary>
         /// This will disable the Collider on the action zone

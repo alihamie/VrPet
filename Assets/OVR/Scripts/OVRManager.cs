@@ -895,7 +895,7 @@ public class OVRManager : MonoBehaviour
 		if (instance != null)
 		{
 			enabled = false;
-			DestroyImmediate(this);
+			//DestroyImmediate(this);
 			return;
 		}
 

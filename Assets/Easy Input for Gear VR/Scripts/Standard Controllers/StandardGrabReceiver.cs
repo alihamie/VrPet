@@ -257,11 +257,6 @@ namespace EasyInputVR.StandardControllers
                 movementObject.unblockMovement();
         }
 
-        public void SimulateClick()
-        {
-
-        }
-
         void clickStart(ButtonClick button)
         {
             if ((int)button.button == (int)grabCondtion && hovering && !isGrabbedByFox)

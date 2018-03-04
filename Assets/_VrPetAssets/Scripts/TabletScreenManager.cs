@@ -11,10 +11,13 @@ public class TabletScreenManager : MonoBehaviour {
 
     private const int GAMEDETAILSCREEN = 1;
 
+    private Transform lastClickedScreen;
+
 	// Use this for initialization
 	void Awake ()
     {
         currentScreen = initialScreen;
+        lastClickedScreen = initialScreen;
         currentScreen.gameObject.SetActive(true);
 	}
 
@@ -26,16 +29,16 @@ public class TabletScreenManager : MonoBehaviour {
         {
             nextScreen.gameObject.SetActive(true);
         }
-
+        lastClickedScreen = currentScreen;
         currentScreen = nextScreen;
     }
 
-    public void GoBack()
+    public void GoBack(Transform screenToGoBackfrom)
     {
+        lastClickedScreen = screenToGoBackfrom;
         currentScreen.gameObject.SetActive(false);
         currentScreen = initialScreen;
         currentScreen.gameObject.SetActive(true);
     }
-
 
 }

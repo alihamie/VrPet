@@ -24,4 +24,9 @@ public class FoxTargetManager : MonoBehaviour {
         animalAi.GetComponentInParent<Animator>().SetBool("ThrewItem", true);
         animalAi.SetTarget(item);
     }
+
+    public void WanderAgain()
+    {
+        animalAi.isWandering = true;
+    }
 }

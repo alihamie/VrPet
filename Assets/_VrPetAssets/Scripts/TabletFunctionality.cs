@@ -1,36 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TabletFunctionality : MonoBehaviour {
 
 
     TabletScreenManager screenManager;
-	// Use this for initialization
-	void Start () {
+    public Transform car;
+    private Vector3 carInitialPosition;
+    public bool isCarActive;
+    public FoxTargetManager targetManager;
+    // Use this for initialization
+    void Start () {
         screenManager = this.GetComponent<TabletScreenManager>();
+        carInitialPosition = car.transform.position;
+        isCarActive = false;
 	}
 	
-	// Update is called once per frame
-	void Update () {
 
-
-		
-	}
-
-    public void GamePlayButton()
+    public void ToggleCarbutton()
     {
-        if (screenManager != null)
+        this.car.gameObject.SetActive(!this.car.gameObject.activeSelf);
+        this.car.transform.position =  carInitialPosition;
+        isCarActive = this.car.gameObject.activeSelf;
+        if (isCarActive)
         {
-            screenManager.NavigateToGameDetailScreen();
+            chaseCar();
         }
     }
 
-    public void BackButton()
+    public void ResetScene()
     {
-        if (screenManager != null)
-        {
-            screenManager.GoBack();
-        }
+        SceneManager.LoadScene("RobertInteraction1");
+    }
+
+    private void chaseCar()
+    {
+        targetManager.GoToFetchItem(car);
     }
 }

@@ -40,6 +40,9 @@ public class OVRScreenFade : MonoBehaviour
 	private Material fadeMaterial = null;
     private bool isFading = false;
 
+    public delegate void FadeState();
+    public FadeState FadeOutExit;
+
     public float currentAlpha { get; private set; }
 
 	void Awake()
@@ -54,6 +57,11 @@ public class OVRScreenFade : MonoBehaviour
     public void FadeOut()
     {
         StartCoroutine(Fade(0,1));
+    }
+
+    public void FadeIn()
+    {
+        StartCoroutine(Fade(1, 0));
     }
 
 
@@ -75,6 +83,7 @@ public class OVRScreenFade : MonoBehaviour
             StartCoroutine(Fade(1,0));
         }
     }
+
 
 	/// <summary>
 	/// Cleans up the fade material
@@ -118,6 +127,11 @@ public class OVRScreenFade : MonoBehaviour
             SetMaterialAlpha();
 			yield return new WaitForEndOfFrame();
 		}
+
+        if (endAlpha > startAlpha && FadeOutExit != null)
+        {
+            FadeOutExit();
+        }
 	}
 
     /// <summary>

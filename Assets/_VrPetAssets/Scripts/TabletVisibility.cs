@@ -10,6 +10,7 @@ public class TabletVisibility : MonoBehaviour
     private Transform UiTablet;
     private bool padClick = false;
     private bool prevPadClick = false;
+
     private void Awake()
     {
         UiTablet = this.transform.GetChild(0);
@@ -28,7 +29,7 @@ public class TabletVisibility : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (padClick == true && prevPadClick == false)
+        if (padClick == true && prevPadClick == false && PlayerState.CURRENTSTATE != PlayerState.PLAYERSTATE.DRIVING)
         {
             ToggleTablet();
         }

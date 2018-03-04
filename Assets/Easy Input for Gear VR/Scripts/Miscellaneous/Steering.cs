@@ -9,14 +9,13 @@ namespace EasyInputVR.Misc
     [AddComponentMenu("EasyInputGearVR/Miscellaneous/Steering")]
     public class Steering : MonoBehaviour
     {
-
         Rigidbody myRigidbody;
         Vector3 myOrientation = Vector3.zero;
         bool gasPressed;
         bool brakePressed;
         float horizontal, vertical;
         float normalizeDegrees = 90f;
-        float sensitivity = 10f;
+        float sensitivity = 7f;
         Vector3 actionVectorPosition;
         Vector3 computerVector;
 
@@ -49,10 +48,12 @@ namespace EasyInputVR.Misc
             //gas
             if (gasPressed)
             {
-                if (myRigidbody.velocity.magnitude > 1f)
-                    myRigidbody.AddForce(myRigidbody.velocity * sensitivity * .1f);
-                else
-                    myRigidbody.AddForce((this.transform.position - Camera.main.transform.position) * sensitivity * 5f);
+                //transform.position += transform.forward * 0.03f;
+                myRigidbody.AddRelativeForce(Vector3.forward * 2f);
+                //if (myRigidbody.velocity.magnitude > 1f)
+                //    myRigidbody.AddRelativeForce(myRigidbody.velocity * sensitivity * .1f);
+                //else
+                //    myRigidbody.AddRelativeForce((this.transform.position - Camera.main.transform.position) * sensitivity * 5f);
             }
 
             //brake
@@ -71,7 +72,6 @@ namespace EasyInputVR.Misc
 
         public void steerBall(Vector3 myOrientation)
         {
-
 
             if (myOrientation != Vector3.zero)
             {
@@ -94,12 +94,12 @@ namespace EasyInputVR.Misc
                 vertical = 0f;
             }
 
-            actionVectorPosition.x = horizontal;
-            actionVectorPosition.y = 0f;
-            actionVectorPosition.z = vertical;
+            actionVectorPosition.x = 0f;
+            actionVectorPosition.y = horizontal;
+            actionVectorPosition.z = 0f;
 
-            myRigidbody.AddForce(actionVectorPosition);
-
+            //myRigidbody.AddForce(actionVectorPosition);
+            transform.Rotate(actionVectorPosition);
         }
 
         void localMotion(EasyInputVR.Core.Motion motion)

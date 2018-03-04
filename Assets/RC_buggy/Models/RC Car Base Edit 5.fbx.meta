@@ -1,0 +1,179 @@
+fileFormatVersion: 2
+guid: b58f1d7fcc41d6f4b8e202881ad99591
+timeCreated: 1518253849
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Antenna_1
+    100002: Antenna_2
+    100004: Antenna_3
+    100006: Antenna_3_end
+    100008: Antenna_Bone
+    100010: Antenna_Root
+    100012: //RootNode
+    100014: RC_Antenna
+    100016: RC_Chair
+    100018: RC_Frame
+    100020: RC_Steering_Wheel
+    100022: RC_Wheels_LF
+    100024: RC_Wheels_LR
+    100026: RC_Wheels_RF
+    100028: RC_Wheels_RR
+    400000: Antenna_1
+    400002: Antenna_2
+    400004: Antenna_3
+    400006: Antenna_3_end
+    400008: Antenna_Bone
+    400010: Antenna_Root
+    400012: //RootNode
+    400014: RC_Antenna
+    400016: RC_Chair
+    400018: RC_Frame
+    400020: RC_Steering_Wheel
+    400022: RC_Wheels_LF
+    400024: RC_Wheels_LR
+    400026: RC_Wheels_RF
+    400028: RC_Wheels_RR
+    2300000: RC_Chair
+    2300002: RC_Frame
+    2300004: RC_Steering_Wheel
+    2300006: RC_Wheels_LF
+    2300008: RC_Wheels_LR
+    2300010: RC_Wheels_RF
+    2300012: RC_Wheels_RR
+    3300000: RC_Chair
+    3300002: RC_Frame
+    3300004: RC_Steering_Wheel
+    3300006: RC_Wheels_LF
+    3300008: RC_Wheels_LR
+    3300010: RC_Wheels_RF
+    3300012: RC_Wheels_RR
+    4300000: RC_Antenna
+    4300002: RC_Chair
+    4300004: RC_Wheels_LR
+    4300006: RC_Frame
+    4300008: RC_Wheels_LF
+    4300010: RC_Wheels_RF
+    4300012: RC_Wheels_RR
+    4300014: RC_Steering_Wheel
+    9500000: //RootNode
+    13700000: RC_Antenna
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc cage
+    second: {fileID: 2100000, guid: 5837338404b7cbd4a8a0d1fa1780c336, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc frame
+    second: {fileID: 2100000, guid: 44de2493046f72b43a996c07de29f085, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc hood
+    second: {fileID: 2100000, guid: 8429ac410432af04e9724e6b63955fe2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc light
+    second: {fileID: 2100000, guid: d029a1abe0e589c47a6ca51e48233c8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc seat
+    second: {fileID: 2100000, guid: 9ef361cb1e802ae4e8a057c7a8cba81c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc spring
+    second: {fileID: 2100000, guid: 4d6e85a59635d4d4e8af958f174cfea4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc steering column.002
+    second: {fileID: 2100000, guid: 7fd44821330902345a1e1d0385a38bc1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rc steering wheel.002
+    second: {fileID: 2100000, guid: fd8ccab2c0db29546a9027606e982e11, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

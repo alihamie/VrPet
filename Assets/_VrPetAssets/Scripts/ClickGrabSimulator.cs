@@ -9,7 +9,7 @@ public class ClickGrabSimulator : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public StandardGrabReceiver grabItem;
     public GameObject pointer;
-    bool hovering;
+    bool hovering = false;
 
     private void Update()
     {

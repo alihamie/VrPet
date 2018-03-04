@@ -64,7 +64,10 @@ namespace MalbersAnimations
                     if (UseSendMessage)
                         DeliverMessage(onExitM, animator);
                     else
-                        foreach (var item in listeners) DeliverListener(onExitM, item);
+                        foreach (var item in listeners)
+                        {
+                            DeliverListener(onExitM, item);
+                        }
                 }
             }
         }
