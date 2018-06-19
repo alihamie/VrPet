@@ -17,6 +17,8 @@ public class FoxSounds : MonoBehaviour
         foxAudio = foxHead.GetComponent<AudioSource>();
     }
 
+    // This function is called directly by the fox's animations so that multiple possible sounds can be chosen from the list of sound effects currently attached to this script on the fox.
+    // Splitting the string to get the start and end of the range is how I worked around the fact that I can only pass a single argument when calling a function from an animation.
     public void VoiceFox(string startEndClipRange)
     {
         setText = startEndClipRange.Split();
