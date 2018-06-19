@@ -32456,7 +32456,7 @@ AnimationClip:
   m_GenerateMotionCurves: 0
   m_Events:
   - time: 2.4333334
-    functionName: VoxFox
+    functionName: VoiceFox
     data: 3 6
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
