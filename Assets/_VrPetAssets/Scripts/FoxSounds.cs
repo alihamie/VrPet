@@ -6,11 +6,11 @@ public class FoxSounds : MonoBehaviour
 {
 
     public GameObject foxHead;
-    public const float foxVolume = .4f;
-    public AudioClip[] foxClips;
+    public float foxVolume = .4f;
+    public FoxSoundList[] soundListReferences;
 
     private AudioSource foxAudio;
-    private string[] setText;
+    AudioClip[] _foxSound;
 
     void Start()
     {
@@ -19,9 +19,9 @@ public class FoxSounds : MonoBehaviour
 
     // This function is called directly by the fox's animations so that multiple possible sounds can be chosen from the list of sound effects currently attached to this script on the fox.
     // Splitting the string to get the start and end of the range is how I worked around the fact that I can only pass a single argument when calling a function from an animation.
-    public void VoiceFox(string startEndClipRange)
+    public void VoiceFox(int listNumber)
     {
-        setText = startEndClipRange.Split();
-        foxAudio.PlayOneShot(foxClips[Random.Range(int.Parse(setText[0]), int.Parse(setText[1]))], foxVolume);
+        _foxSound = soundListReferences[listNumber].FoxSound;
+        foxAudio.PlayOneShot(_foxSound[Random.Range(0, _foxSound.Length)]);
     }
 }

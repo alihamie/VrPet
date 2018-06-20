@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AmbientSound : MonoBehaviour {
-    public AudioClip[] clips;
+    AudioClip[] clips;
     public GameObject startPoint;
     public GameObject endPoint;
-    private Vector3 startPos;
-    private Vector3 endPos;
-    public const float delayTime = 2f;
-    public const float delayRand = .5f;
+    Vector3 startPos;
+    Vector3 endPos;
+    public float delayTime = 2f;
+    public float delayRand = .5f;
     public float delayCount = 2f;
-    public const float volume = .5f;
+    public float volume = .5f;
+    public string clipFolderPath;
 
     void Start () {
+        clips = Resources.LoadAll<AudioClip>(clipFolderPath);
         delayCount = Time.time + delayCount;
         startPos = startPoint.transform.position;
         endPos = endPoint.transform.position;
