@@ -7,18 +7,26 @@ public class FoxSounds : MonoBehaviour
 
     public GameObject foxHead;
     public float foxVolume = .4f;
-    public FoxSoundList[] soundListReferences;
+    public Transform foxSoundMasterList;
 
-    private AudioSource foxAudio;
+    FoxSoundList[] soundListReferences;
+    AudioSource foxAudio;
     AudioClip[] _foxSound;
+    int numberOfChildren;
 
     void Start()
     {
+        //So, we get the Fox's AudioSource to the play the audio, we get the children of the Fox's SFX Master List and add their FoxSoundList component to "THE LIST"(TM).
         foxAudio = foxHead.GetComponent<AudioSource>();
+        int numberOfChildren = foxSoundMasterList.childCount;
+        soundListReferences = new FoxSoundList[numberOfChildren];
+        for (int i = 0; i < numberOfChildren; i++)
+        {
+            soundListReferences[i] = foxSoundMasterList.GetChild(i).GetComponent<FoxSoundList>();
+        }
     }
 
-    // This function is called directly by the fox's animations so that multiple possible sounds can be chosen from the list of sound effects currently attached to this script on the fox.
-    // Splitting the string to get the start and end of the range is how I worked around the fact that I can only pass a single argument when calling a function from an animation.
+    //Then it's as simple as choosing an entry on the list to play with an animation even attached to an animation. Or you can just call it whenever you think is appropriate. I use playoneshot here, it won't interrupt itself.
     public void VoiceFox(int listNumber)
     {
         _foxSound = soundListReferences[listNumber].FoxSound;
