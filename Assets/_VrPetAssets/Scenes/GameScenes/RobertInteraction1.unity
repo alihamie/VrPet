@@ -650,7 +650,7 @@ WheelCollider:
   m_Mass: 1
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 1.02
+    m_ExtremumSlip: 1.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
@@ -3888,6 +3888,91 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6aacb349af157442ebc4e122e8d6b9bd, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &504297917 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1396898955052148, guid: 2aab04f90fa7a784690a76b9ec528f6d,
+    type: 2}
+  m_PrefabInternal: {fileID: 772885749}
+--- !u!82 &504297918
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 504297917}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 6e3332bc2fecaf949985e7b6bc5969f4, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!4 &517939954
 Transform:
   m_ObjectHideFlags: 0
@@ -5373,7 +5458,7 @@ WheelCollider:
   m_Mass: 1
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 1.02
+    m_ExtremumSlip: 1.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
@@ -5678,7 +5763,7 @@ WheelCollider:
   m_Mass: 1
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 1.02
+    m_ExtremumSlip: 1.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
@@ -5907,6 +5992,11 @@ Prefab:
       propertyPath: m_Size.z
       value: 0.49
       objectReference: {fileID: 0}
+    - target: {fileID: 114406312531383734, guid: 2aab04f90fa7a784690a76b9ec528f6d,
+        type: 2}
+      propertyPath: engineNoiseSource
+      value: 
+      objectReference: {fileID: 504297918}
     m_RemovedComponents:
     - {fileID: 146025406030821126, guid: 2aab04f90fa7a784690a76b9ec528f6d, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 2aab04f90fa7a784690a76b9ec528f6d, type: 2}
@@ -12009,7 +12099,7 @@ WheelCollider:
   m_Mass: 1
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 1.02
+    m_ExtremumSlip: 1.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5

@@ -9,6 +9,7 @@ namespace EasyInputVR.Misc
     [AddComponentMenu("EasyInputGearVR/Miscellaneous/Steering")]
     public class Steering : MonoBehaviour
     {
+        //Gameobjects and gameobject accessories. And some miscellaneous.
         Rigidbody myRigidbody;
         public Transform steeringWheel;
         public WheelCollider[] wheelColliders = new WheelCollider[4];
@@ -18,19 +19,26 @@ namespace EasyInputVR.Misc
         Quaternion wheelAngle;
         Vector3 wheelPosition;
 
+        // The settings. They don't need to be changed.
+        float lowestSpeed = -4f;
+        float maxSpeed = 8f;
+        float timeUntilMaxSpeed = 6f;
         const float sensitivity = .6f;
-        const float maxSpeed = 7f;
         const float substepThreshold = 12f;
-        const int substepBelow = 8, substepAbove = 8;
+        const int substepBelow = 6, substepAbove = 6;
 
-        bool gasPressed;
+        // The vars. These change. Sometimes a lot.
+        float normalizedSpeed = 0f;
+        public bool gasPressed;
+        float actualSpeed = 0;
         bool brakePressed;
         float horizontal;
-        float forwardSpeed = 0;
-        float reverseTime = 0;
 
-        //Vector3 actionVectorPosition;
-        //Vector3 computerVector;
+        // Below is the stuff that makes engine go vroom. I considered having it in a seperate script, but I don't know if I'll ever need to make things go vroom in sync with their speed outside this context.
+        public AudioSource engineNoiseSource;
+        float maxVolume = .45f;
+        float minVolume = .2f;
+        float minPitch = .4f;
 
         void OnEnable()
         {
@@ -62,23 +70,36 @@ namespace EasyInputVR.Misc
 
         void Update()
         {
-            //The first half second that the gas is pressed, the car moves at half speed in reverse. Otherwise, it's really easy to get stuck in corners or against walls.
-            if (gasPressed && reverseTime > 0)
+            // So. All of this ensures that when the user hits the trigger, the car briefly goes in reverse before slowly accelerating to its max speed forward.
+            if (gasPressed && normalizedSpeed >= (maxSpeed - lowestSpeed))
             {
-                forwardSpeed = -maxSpeed/2;
-                reverseTime -= Time.deltaTime;
+                normalizedSpeed = maxSpeed - lowestSpeed;
             }
-            else if (gasPressed && reverseTime <= 0)
+            else if (gasPressed && normalizedSpeed < (maxSpeed - lowestSpeed))
             {
-                forwardSpeed = maxSpeed;
+                normalizedSpeed += ((maxSpeed - lowestSpeed)/timeUntilMaxSpeed) * Time.deltaTime;
+            }
+            else if (normalizedSpeed + lowestSpeed > 0)
+            {
+                normalizedSpeed -= ((maxSpeed - lowestSpeed) / timeUntilMaxSpeed) * Time.deltaTime * 2;
             }
             else
             {
-                forwardSpeed = 0;
-                reverseTime = .5f;
+                normalizedSpeed = 0;
             }
 
-            //steering
+            // actualSpeed is different from normalizedSpeed because I need to be able to tell the difference between the car being at rest with 0 speed and the car merely passing through 0 coming from reverse to maxspeed.
+            // And I need to be able to go from reverse to maxspeed because, as far as I know, the only input I can use to control the car is the trigger and the rotation of the controller.
+            if (gasPressed)
+            {
+                actualSpeed = normalizedSpeed + lowestSpeed;
+            }
+            else
+            {
+                actualSpeed = 0;
+            }
+
+            //Steering
             steerBall(myOrientation);
             
             //This makes the wheel meshes rotate and move in sync with the wheel colliders.
@@ -88,14 +109,28 @@ namespace EasyInputVR.Misc
                 wheelMeshes[i].position = wheelPosition;
                 wheelMeshes[i].rotation = wheelAngle;
             }
+
+            //Here's where we go vroom.
+            if (!engineNoiseSource.isPlaying && gasPressed)
+            {
+                engineNoiseSource.Play();
+            }
+            else if (engineNoiseSource.isPlaying && !gasPressed && normalizedSpeed == 0)
+            {
+                engineNoiseSource.Stop();
+            }
+
+            // This makes the vroom change in pitch and volume along a specified range as the car speeds up.
+            engineNoiseSource.pitch = (Mathf.Abs(actualSpeed) / maxSpeed) * (1 - minPitch) + minPitch;
+            engineNoiseSource.volume = (Mathf.Abs(actualSpeed) / maxSpeed) * (maxVolume - minVolume) + minVolume;
         }
 
-        private void FixedUpdate()
+        void FixedUpdate()
         {
-            wheelColliders[0].motorTorque = forwardSpeed;
-            wheelColliders[1].motorTorque = forwardSpeed;
-            wheelColliders[2].motorTorque = forwardSpeed;
-            wheelColliders[3].motorTorque = forwardSpeed;
+            for (int i = 0; i < 4; i++)
+            {
+                wheelColliders[i].motorTorque = actualSpeed;
+            }
         }
 
         public void steerBall(Vector3 myOrientation)
@@ -104,16 +139,11 @@ namespace EasyInputVR.Misc
             if (myOrientation != Vector3.zero)
             {
                 horizontal = myOrientation.z;
-                //vertical = myOrientation.x;
-
-                //get into a -180 to 180 range
                 horizontal = (horizontal > 180f) ? (horizontal - 360f) : horizontal;
-                //vertical = (vertical > 180f) ? (vertical - 360f) : vertical;
             }
             else
             {
                 horizontal = 0f;
-                //vertical = 0f;
             }
 
             // Rotates the steering wheel.
