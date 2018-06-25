@@ -25,7 +25,7 @@ public class AmbientSound : MonoBehaviour {
     }
 
     void Update () {
-        if (Time.time > delayCount ) {
+        if (Time.time > delayCount && clips != null) {
             AudioSource.PlayClipAtPoint(clips[Random.Range(0, clips.Length)], new Vector3(Random.Range(startPos.x, endPos.x), Random.Range(startPos.y, endPos.y), Random.Range(startPos.z, endPos.z)), volume);
             delayCount = Time.time + delayTime + Random.Range(0, delayRand);
         }
