@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
-using EasyInputVR.Core;
+﻿using EasyInputVR.Core;
+using UnityEngine;
 
 namespace EasyInputVR.Misc
 {

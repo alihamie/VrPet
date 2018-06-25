@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AmbientSound : MonoBehaviour {
     AudioClip[] clips;
@@ -20,9 +18,14 @@ public class AmbientSound : MonoBehaviour {
         startPos = startPoint.transform.position;
         endPos = endPoint.transform.position;
     }
-	
-	void Update () {
-        if (Time.time > delayCount) {
+
+    void OnDestroy()
+    {
+        Resources.UnloadUnusedAssets();
+    }
+
+    void Update () {
+        if (Time.time > delayCount ) {
             AudioSource.PlayClipAtPoint(clips[Random.Range(0, clips.Length)], new Vector3(Random.Range(startPos.x, endPos.x), Random.Range(startPos.y, endPos.y), Random.Range(startPos.z, endPos.z)), volume);
             delayCount = Time.time + delayTime + Random.Range(0, delayRand);
         }
