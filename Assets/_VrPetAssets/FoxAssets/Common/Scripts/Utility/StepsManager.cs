@@ -14,9 +14,7 @@ namespace MalbersAnimations
         public AudioClip[] clips;
         [Tooltip("Distance to Instantiate the tracks on a terrain")]
         public float trackOffset = 0.0085f;
-
-        private Quaternion manualOffset = new Quaternion(1f, 3f, 0, 0);
-
+        
         protected bool active = true;
         //Is Called by any of the "StepTrigger" Script on a feet when they collide with the ground.
         public void EnterStep(StepTrigger foot)
@@ -25,7 +23,7 @@ namespace MalbersAnimations
 
             RaycastHit footRay;
 
-            if (foot.StepAudio && clips.Length > 0) //If the track has an AudioSource Component and whe have some audio to play
+            if (foot.StepAudio && clips.Length > 0) //If the track has an AudioSource Component and we have some audio to play
             {
                 foot.StepAudio.clip = clips[Random.Range(0, clips.Length)];  //Set the any of the Audio Clips from the list to the Feet's AudioSource Component
                 foot.StepAudio.Play();  //Play the Audio
@@ -39,7 +37,7 @@ namespace MalbersAnimations
                     if (Tracks)
                     {
                         ParticleSystem.EmitParams ptrack = new ParticleSystem.EmitParams();
-                        ptrack.rotation3D = (Quaternion.FromToRotation(-foot.transform.forward, footRay.normal) * foot.transform.rotation * manualOffset).eulerAngles; //Get The Rotation
+                        ptrack.rotation3D = (Quaternion.FromToRotation(-foot.transform.forward, footRay.normal) * foot.transform.rotation).eulerAngles; //Get The Rotation
                         ptrack.position = new Vector3(foot.transform.position.x, footRay.point.y + trackOffset, foot.transform.position.z); //Get The Position
                         Tracks.Emit(ptrack, 1);
                     }
