@@ -405,7 +405,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1039,17 +1039,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 1629698721}
@@ -1240,17 +1240,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 94806539}
@@ -1538,17 +1538,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
@@ -1566,10 +1566,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.57, y: 0.61, z: 0.74}
   m_Center: {x: -0.03, y: 0, z: -0.07}
---- !u!4 &253393766 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-  m_PrefabInternal: {fileID: 902980320}
 --- !u!1 &257469839
 GameObject:
   m_ObjectHideFlags: 0
@@ -3188,17 +3184,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
@@ -3303,7 +3299,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4895928282522458, guid: 36cf94c12d160314094ee96c16358819, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 36cf94c12d160314094ee96c16358819, type: 2}
@@ -3560,7 +3556,7 @@ Transform:
   m_LocalScale: {x: 3.2515962, y: 3.2515855, z: 3.2515855}
   m_Children: []
   m_Father: {fileID: 817069021}
-  m_RootOrder: 57
+  m_RootOrder: 53
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &665131459
 Prefab:
@@ -3675,7 +3671,7 @@ Transform:
   - {fileID: 1595951253}
   - {fileID: 216778558}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &681759397
 MonoBehaviour:
@@ -3920,17 +3916,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
@@ -4381,7 +4377,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4249753368647120, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
@@ -4630,11 +4626,10 @@ Transform:
   - {fileID: 1976191272}
   - {fileID: 923504750}
   - {fileID: 1403528226}
-  - {fileID: 253393766}
+  - {fileID: 652888986}
   - {fileID: 598653409}
   - {fileID: 970583458}
   - {fileID: 990060552}
-  - {fileID: 652888986}
   - {fileID: 844963298}
   - {fileID: 1576786374}
   - {fileID: 1328868174}
@@ -4645,7 +4640,7 @@ Transform:
   - {fileID: 1072854590}
   - {fileID: 902131831}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &819416412
 GameObject:
@@ -4898,7 +4893,7 @@ Transform:
   m_LocalScale: {x: 0.756932, y: 0.75693274, z: 0.75693274}
   m_Children: []
   m_Father: {fileID: 817069021}
-  m_RootOrder: 58
+  m_RootOrder: 57
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &844963299
 MeshCollider:
@@ -5211,7 +5206,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4452345613461674, guid: 4708a4ee8b5454844917e8116004f753, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4452345613461674, guid: 4708a4ee8b5454844917e8116004f753, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -5479,64 +5474,6 @@ Prefab:
     - {fileID: 114959193870814402, guid: 4708a4ee8b5454844917e8116004f753, type: 2}
     - {fileID: 114143493465593120, guid: 4708a4ee8b5454844917e8116004f753, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4708a4ee8b5454844917e8116004f753, type: 2}
-  m_IsPrefabParent: 0
---- !u!1001 &902980320
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 817069021}
-    m_Modifications:
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.6267875
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.51696396
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 2.892495
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_RootOrder
-      value: 53
-      objectReference: {fileID: 0}
-    - target: {fileID: 143602, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.74954534
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.7495452
-      objectReference: {fileID: 0}
-    - target: {fileID: 463348, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.7495452
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 04d63afcff91b445cb64ce94fc722f6d, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &922877528
 GameObject:
@@ -5916,7 +5853,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1063316762
 GameObject:
@@ -10398,17 +10335,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
@@ -11135,7 +11072,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4824589932808818, guid: 2cb0832ba1fa8da4aa5a32efbff095c1, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114728868871461662, guid: 2cb0832ba1fa8da4aa5a32efbff095c1,
         type: 2}
@@ -11208,7 +11145,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1443851836 stripped
 GameObject:
@@ -15403,6 +15340,48 @@ Transform:
   m_Father: {fileID: 1393609558}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -0.879843, y: -1.1272035, z: -10.900845}
+--- !u!1001 &1656177465
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.845
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.688
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 3.798
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858502077133208, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f1e724d33a8ef7c4fa982527e01ab514, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1672022460
 GameObject:
   m_ObjectHideFlags: 0
@@ -15646,7 +15625,7 @@ Transform:
   - {fileID: 1063316763}
   - {fileID: 805086991}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 2.7310002, z: 0}
 --- !u!114 &1683939461
 MonoBehaviour:
@@ -15873,7 +15852,7 @@ MonoBehaviour:
   OnGetDamaged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.Events.FloatEvent, Assembly-CSharp, Version=0.0.0.0,
+    m_TypeName: MalbersAnimations.Events.FloatEvent, Assembly-CSharp, Version=1.2.0.0,
       Culture=neutral, PublicKeyToken=null
   OnDeathE:
     m_PersistentCalls:
@@ -16607,7 +16586,7 @@ Transform:
   - {fileID: 23933528}
   - {fileID: 962786917}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1770887502
 Prefab:
@@ -16768,7 +16747,7 @@ Transform:
   m_Children:
   - {fileID: 1235255135}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1808396090 stripped
 Transform:
@@ -17054,7 +17033,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871973535
 GameObject:
@@ -17454,7 +17433,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1947352041 stripped
 GameObject:
@@ -17908,17 +17887,17 @@ MonoBehaviour:
   OnEnter:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnExit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   OnAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
       PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 94806539}
