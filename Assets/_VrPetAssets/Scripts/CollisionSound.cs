@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CollisionSound : MonoBehaviour {
     AudioSource hitSoundSource;
-    public AudioClip hitSound;
+    public AudioClip hitSoundSoft, hitSoundHard;
     public float velocityThreshold = 1f;
     public float volume = .4f;
 
@@ -17,7 +15,14 @@ public class CollisionSound : MonoBehaviour {
     {
         if (hit.relativeVelocity.magnitude > velocityThreshold)
         {
-            hitSoundSource.PlayOneShot(hitSound, volume);
+            if (hit.gameObject.tag == "Soft" && hitSoundSoft != null)
+            {
+                hitSoundSource.PlayOneShot(hitSoundSoft, volume);
+            }
+            else
+            {
+                hitSoundSource.PlayOneShot(hitSoundHard, volume);
+            }
         }
     }
 }

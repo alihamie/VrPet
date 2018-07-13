@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4363997151926090}
   - component: {fileID: 114783092339676568}
   m_Layer: 0
-  m_Name: AmbianceGenerator(Leaves)
+  m_Name: AmbianceGenerator(Dog)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,6 +73,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1368374681274686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4123119735269182}
+  - component: {fileID: 114564729178328760}
+  m_Layer: 0
+  m_Name: AmbianceGenerator(Car)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1410319779598516
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,8 +98,24 @@ GameObject:
   m_Component:
   - component: {fileID: 4299280609410256}
   - component: {fileID: 82956092073180812}
+  - component: {fileID: 114827867714449010}
   m_Layer: 0
   m_Name: BackgroundMusic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1466539235558422
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4524546938539502}
+  m_Layer: 0
+  m_Name: Ambiance Generator End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,6 +152,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1505900132006110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4582903310519592}
+  - component: {fileID: 114118516019047892}
+  m_Layer: 0
+  m_Name: AmbianceGenerator(Ambulance)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1590835225189264
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,6 +179,36 @@ GameObject:
   - component: {fileID: 114932443610568538}
   m_Layer: 0
   m_Name: AmbianceGenerator(Wind)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1613627860767888
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4386006226457802}
+  m_Layer: 0
+  m_Name: Ambiance Generator End
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1631082170869828
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4238444778307674}
+  m_Layer: 0
+  m_Name: Ambiance Generator End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,6 +260,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1938494171263486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4692801040942884}
+  - component: {fileID: 114134290220310224}
+  m_Layer: 0
+  m_Name: AmbianceGenerator(Bike)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1975638067494060
 GameObject:
   m_ObjectHideFlags: 1
@@ -211,6 +305,20 @@ Transform:
   m_Father: {fileID: 4772102684195956}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4123119735269182
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1368374681274686}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.44, y: 0, z: 13.81}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4141851518117202}
+  m_Father: {fileID: 4249753368647120}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4141851518117202
 Transform:
   m_ObjectHideFlags: 1
@@ -218,10 +326,23 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1883747302435120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.15, y: 2.26, z: 1.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4123119735269182}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4238444778307674
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1631082170869828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.858, y: 4.257, z: 1.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4363997151926090}
+  m_Father: {fileID: 4938891853531390}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4249753368647120
@@ -237,6 +358,9 @@ Transform:
   - {fileID: 4938891853531390}
   - {fileID: 4732013112518630}
   - {fileID: 4363997151926090}
+  - {fileID: 4123119735269182}
+  - {fileID: 4692801040942884}
+  - {fileID: 4582903310519592}
   - {fileID: 4772102684195956}
   - {fileID: 4299280609410256}
   m_Father: {fileID: 0}
@@ -253,7 +377,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4249753368647120}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4363997151926090
 Transform:
@@ -265,7 +389,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4141851518117202}
+  - {fileID: 4524546938539502}
   m_Father: {fileID: 4249753368647120}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -281,6 +405,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4732013112518630}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4386006226457802
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1613627860767888}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.858, y: 4.257, z: 1.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4692801040942884}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4524546938539502
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1466539235558422}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.89, y: 4.257, z: 1.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4363997151926090}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4582903310519592
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1505900132006110}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4970731462590950}
+  m_Father: {fileID: 4249753368647120}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4692801040942884
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1938494171263486}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4386006226457802}
+  m_Father: {fileID: 4249753368647120}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4732013112518630
 Transform:
@@ -310,7 +488,7 @@ Transform:
   - {fileID: 4779368887437648}
   - {fileID: 4838717434992806}
   m_Father: {fileID: 4249753368647120}
-  m_RootOrder: 3
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4779368887437648
 Transform:
@@ -348,7 +526,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4970731462590950}
+  - {fileID: 4238444778307674}
   m_Father: {fileID: 4249753368647120}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -362,7 +540,7 @@ Transform:
   m_LocalPosition: {x: 3.858, y: 4.257, z: 1.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4938891853531390}
+  m_Father: {fileID: 4582903310519592}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &82956092073180812
@@ -445,6 +623,42 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114118516019047892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1505900132006110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e9f8f18a1074c4290c261d417ac413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 1505900132006110}
+  endPoint: {fileID: 1483169460828424}
+  delayTime: 180
+  delayRand: 180
+  delayCount: 145
+  volume: 0.2
+  clipFolderPath: Sounds/EnviroSFX/Ambulance
+--- !u!114 &114134290220310224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1938494171263486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e9f8f18a1074c4290c261d417ac413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 1938494171263486}
+  endPoint: {fileID: 1613627860767888}
+  delayTime: 50
+  delayRand: 40
+  delayCount: 40
+  volume: 0.02
+  clipFolderPath: Sounds/EnviroSFX/Bike
 --- !u!114 &114475411077843376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -475,9 +689,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoxSound:
-  - {fileID: 8300000, guid: b6434d730f0d34c4a8edfa912cf09ccb, type: 3}
-  - {fileID: 8300000, guid: 09c7a1f8d23ab4c46b11020caff3a4b1, type: 3}
-  - {fileID: 8300000, guid: 39704c456e3cff146aab0a100bc3b41f, type: 3}
+  - {fileID: 8300000, guid: 95d45f6af7a09fc4491f5d1444880085, type: 3}
+  - {fileID: 8300000, guid: f6e196e9fd0557c4ab4f9e970da69cc6, type: 3}
+  - {fileID: 8300000, guid: 855f9f05c0c32d04ca981481755845d7, type: 3}
+  - {fileID: 8300000, guid: 56b1dcc70987e1140bcccb5d54730986, type: 3}
+--- !u!114 &114564729178328760
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1368374681274686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e9f8f18a1074c4290c261d417ac413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 1368374681274686}
+  endPoint: {fileID: 1883747302435120}
+  delayTime: 9
+  delayRand: 5
+  delayCount: 5
+  volume: 0.04
+  clipFolderPath: Sounds/EnviroSFX/Car
 --- !u!114 &114647402048207720
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -490,7 +723,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoxSound:
-  - {fileID: 8300000, guid: c572db3af9b052f479c318a3d1d0f890, type: 3}
+  - {fileID: 8300000, guid: 30dda96d7a4b3ef4dae6ed2162bd2989, type: 3}
+  - {fileID: 8300000, guid: a6642d0e969013e44867adffc94d6409, type: 3}
 --- !u!114 &114761383687872236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -503,7 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FoxSound:
-  - {fileID: 8300000, guid: f6b86b16b5e0dc249834ca3df47e7d77, type: 3}
+  - {fileID: 8300000, guid: 0ea5a508ba06805439893c83a7bcffe0, type: 3}
 --- !u!114 &114783092339676568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -516,12 +750,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPoint: {fileID: 1069737636131052}
-  endPoint: {fileID: 1883747302435120}
-  delayTime: 8
-  delayRand: 0.5
-  delayCount: 2
+  endPoint: {fileID: 1466539235558422}
+  delayTime: 12
+  delayRand: 16
+  delayCount: 150
   volume: 0.2
-  clipFolderPath: Sounds/EnviroSFX/Leaves
+  clipFolderPath: Sounds/EnviroSFX/Doge
+--- !u!114 &114827867714449010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1410319779598516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ddd8efe0750fa4db0d7341eef3f910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114932443610568538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -534,9 +779,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPoint: {fileID: 1590835225189264}
-  endPoint: {fileID: 1483169460828424}
+  endPoint: {fileID: 1631082170869828}
   delayTime: 8
-  delayRand: 0.5
+  delayRand: 4
   delayCount: 2
   volume: 0.2
   clipFolderPath: Sounds/EnviroSFX/Wind
