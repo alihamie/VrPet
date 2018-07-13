@@ -6,7 +6,7 @@ namespace EasyInputVR.Misc
 {
     public class TVRemoteInterface : MonoBehaviour
     {
-        
+
         public TVUIStateManager stateManager;
         public Transform mainMenuButtonsParent;
         public ChannelButtonManager buttonManager;
@@ -55,6 +55,7 @@ namespace EasyInputVR.Misc
                 previousGrabMode = remote.grabMode;
                 laser.stopLaser();
                 controllerModel.SetActive(false);
+                PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.REMOTE;
             }
             else if (!remote.grabMode && previousGrabMode)
             {
@@ -63,6 +64,7 @@ namespace EasyInputVR.Misc
                 controllerModel.SetActive(true);
                 padClick = false;
                 stateManager.ChangeState(-1);
+                PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.START;
             }
 
             if (remote.grabMode)
