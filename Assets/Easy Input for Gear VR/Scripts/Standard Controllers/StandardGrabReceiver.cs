@@ -40,7 +40,8 @@ namespace EasyInputVR.StandardControllers
         bool clicking;
         bool padClick;
         bool hovering;
-        bool grabMode;
+        [HideInInspector]
+        public bool grabMode;
         float currentDistance;
         bool previousClicking;
         Vector3 initialPosition;
@@ -62,7 +63,6 @@ namespace EasyInputVR.StandardControllers
         {
             this.isGrabbedByFox = isGrabbed;
         }
-
 
         void OnEnable()
         {

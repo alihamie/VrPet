@@ -1,0 +1,179 @@
+fileFormatVersion: 2
+guid: e8f750c287d74f14189b4c83b900f0a8
+timeCreated: 1530776495
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Camera
+    100002: //RootNode
+    100004: Home
+    100006: Lamp
+    100008: Lamp.001
+    100010: Lamp.002
+    100012: Lamp.003
+    100014: Lamp.004
+    100016: PowerON
+    100018: RemoteBody
+    100020: Scroll
+    100022: VolumeDown
+    100024: VolumeUp
+    400000: Camera
+    400002: //RootNode
+    400004: Home
+    400006: Lamp
+    400008: Lamp.001
+    400010: Lamp.002
+    400012: Lamp.003
+    400014: Lamp.004
+    400016: PowerON
+    400018: RemoteBody
+    400020: Scroll
+    400022: VolumeDown
+    400024: VolumeUp
+    2000000: Camera
+    2100000: Remote Home
+    2100002: Remote Power
+    2100004: Remote Volume
+    2100006: Remote Dial
+    2100008: Remote Antenna
+    2100010: Remote Dummy
+    2100012: Remote Body
+    2300000: Home
+    2300002: PowerON
+    2300004: RemoteBody
+    2300006: Scroll
+    2300008: VolumeDown
+    2300010: VolumeUp
+    3300000: Home
+    3300002: PowerON
+    3300004: RemoteBody
+    3300006: Scroll
+    3300008: VolumeDown
+    3300010: VolumeUp
+    4300000: Home
+    4300002: PowerON
+    4300004: VolumeDown
+    4300006: VolumeUp
+    4300008: Scroll
+    4300010: RemoteBody
+    10800000: Lamp
+    10800002: Lamp.001
+    10800004: Lamp.002
+    10800006: Lamp.003
+    10800008: Lamp.004
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Antenna
+    second: {fileID: 2100000, guid: fc877992cc7777342b6dc243e2a4ebbf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Body
+    second: {fileID: 2100000, guid: a5f7307457e2c364682fd3ec0144b0f6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Dial
+    second: {fileID: 2100000, guid: 648996cd7b376b549923a625382c8ed6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Dummy
+    second: {fileID: 2100000, guid: 43cf49e628981244cb8d882eff78a2f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Home
+    second: {fileID: 2100000, guid: f3756a20ce46f1146aee71a29bc57163, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Power
+    second: {fileID: 2100000, guid: c8e5d0ad56ee7c34fa5b08952c4bea6c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Remote Volume
+    second: {fileID: 2100000, guid: 0c09851e0fb8804478dc77f4ed4a66f9, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
