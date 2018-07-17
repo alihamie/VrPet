@@ -221,7 +221,7 @@ public class MediaPlayerCtrl : MonoBehaviour
 
 
 	}
-	// Use this for initialization
+
 	void Start()
 	{
 

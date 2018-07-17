@@ -12,12 +12,12 @@ public class DemoTime : MonoBehaviour {
     public Transform sleepEvent;
     public AnimalAIControl aiControl;
     bool once = true;
-	// Use this for initialization
+
 	void Start () {
         totalTime = totalTime + Time.time;
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
 
         if (!isHalfTime && Time.time >= totalTime / 2)

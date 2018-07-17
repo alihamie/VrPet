@@ -4,7 +4,7 @@ using System.Collections;
 public class MedaiPlayerSampleSphereGUI : MonoBehaviour {
 	
 	public MediaPlayerCtrl scrMedia;
-	// Use this for initialization
+
 	void Start () {
 	
 	}

@@ -9,7 +9,6 @@ public class BaseToyClickButton : MonoBehaviour, IPointerDownHandler {
     protected TabletScreenManager screenManager;
     protected TabletVisibility visibility;
     protected TabletFunctionality tabletFunctionality;
-   
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {

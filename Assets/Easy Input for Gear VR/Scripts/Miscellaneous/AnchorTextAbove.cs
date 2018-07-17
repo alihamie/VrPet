@@ -20,7 +20,7 @@ namespace EasyInputVR.Misc
             textTM.text = Text;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
             textTM.transform.forward = mainCamera.transform.forward;

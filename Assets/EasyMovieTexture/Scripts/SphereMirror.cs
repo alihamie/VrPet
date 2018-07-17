@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SphereMirror : MonoBehaviour {
 
-	// Use this for initialization
 	void Start () {
 		Vector2 [] vec2UVs= transform.GetComponent<MeshFilter>().mesh.uv;
 		
@@ -13,10 +12,5 @@ public class SphereMirror : MonoBehaviour {
 		}
 		
 		transform.GetComponent<MeshFilter>().mesh.uv = vec2UVs;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

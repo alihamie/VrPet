@@ -46,7 +46,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_RightTrigger -= localRightTrigger;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

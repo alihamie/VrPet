@@ -58,7 +58,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_QuickClickEnd -= localButtonQuickClickEnd;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

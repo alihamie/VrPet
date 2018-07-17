@@ -7,7 +7,7 @@ public class TransitionHandler : MonoBehaviour, IAnimatorListener {
     private Animator animator;
     public delegate void FadeOutExit();
     public FadeOutExit fadeOutExit;
-	// Use this for initialization
+
 	void Start () {
         animator = this.GetComponent<Animator>();
 	}

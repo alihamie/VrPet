@@ -53,7 +53,7 @@ namespace EasyInputVR.CustomControllers
             }
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

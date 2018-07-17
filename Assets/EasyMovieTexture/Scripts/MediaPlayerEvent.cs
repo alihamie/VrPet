@@ -6,7 +6,7 @@ public class MediaPlayerEvent : MonoBehaviour {
 
 	public MediaPlayerCtrl m_srcVideo;
 
-	// Use this for initialization
+
 	void Start () {
 		m_srcVideo.OnReady += OnReady;
 		m_srcVideo.OnVideoFirstFrameReady += OnFirstFrameReady;

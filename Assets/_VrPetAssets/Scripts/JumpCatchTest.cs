@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class JumpCatchTest : MonoBehaviour {
 
-	// Use this for initialization
+
 	void Start () {
 		
 	}

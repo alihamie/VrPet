@@ -3,7 +3,7 @@ using System.Collections;
 
 public class StandardGearVRControllerFollowWithRay : MonoBehaviour {
 
-	// Use this for initialization
+
 	void Start () {
 	
 	}

@@ -15,7 +15,7 @@ namespace cakeslice
 
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
             Color c = GetComponent<OutlineEffect>().lineColor0;

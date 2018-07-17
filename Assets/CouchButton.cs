@@ -32,7 +32,7 @@ public class CouchButton : BaseToyClickButton
         fadeRight.FadeOut();
     }
 
-    // Use this for initialization
+
     void Start()
     {
         initialCameraPosition = cameraRig.position;
