@@ -38,7 +38,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_TouchEnd -= localAxisEnd;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

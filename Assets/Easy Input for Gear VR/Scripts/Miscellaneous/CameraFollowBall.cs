@@ -19,7 +19,7 @@ namespace EasyInputVR.Misc
             objectTransform = objectToFollow.transform;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
             newPosition = objectTransform.position;

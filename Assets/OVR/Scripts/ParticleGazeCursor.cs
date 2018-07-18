@@ -76,7 +76,7 @@ public class ParticleGazeCursor : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         var delta = GetComponent<OVRGazePointer>().positionDelta;

@@ -15,12 +15,23 @@ public class RcDriverButtonClick : BaseToyClickButton
     private Quaternion initialCameraRotation;
     private bool padClick;
     private bool prevPadClick;
+    private bool imFading;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        //  base.OnPointerDown(eventData);
         faderLeft.FadeOut();
         fadeRight.FadeOut();
+        imFading = true;
+    }
+
+    private void Start()
+    {
+        screenManager = this.gameObject.GetComponentInParent<TabletScreenManager>();
+        visibility = this.transform.root.GetComponent<TabletVisibility>();
+        tabletFunctionality = this.transform.GetComponentInParent<TabletFunctionality>();
+        initialCameraPosition = mainCamera.position;
+        initialCameraScale = mainCamera.localScale;
+        initialCameraRotation = mainCamera.rotation;
     }
 
     void OnEnable()
@@ -28,9 +39,6 @@ public class RcDriverButtonClick : BaseToyClickButton
         EasyInputHelper.On_ClickStart += ClickStart;
         EasyInputHelper.On_ClickEnd += ClickEnd;
         faderLeft.FadeOutExit += FadeOutExit;
-        initialCameraPosition = mainCamera.position;
-        initialCameraScale = mainCamera.localScale;
-        initialCameraRotation = mainCamera.rotation;
     }
 
     void OnDisable()
@@ -63,7 +71,7 @@ public class RcDriverButtonClick : BaseToyClickButton
         this.tabletFunctionality.ToggleCarbutton();
         this.tabletFunctionality.targetManager.WanderAgain();
     }
-    
+
     private void Update()
     {
         //TODO make a global delegate to figure out quick pad Click instad of doing this everytime
@@ -71,6 +79,7 @@ public class RcDriverButtonClick : BaseToyClickButton
         {
             faderLeft.FadeOut();
             fadeRight.FadeOut();
+            imFading = true;
         }
 
         prevPadClick = padClick;
@@ -102,17 +111,21 @@ public class RcDriverButtonClick : BaseToyClickButton
 
     public void FadeOutExit()
     {
-        if (PlayerState.CURRENTSTATE == PlayerState.PLAYERSTATE.DRIVING)
+        if (imFading)
         {
-            SwitchToStartCamera();
-        }
-        else
-        {
-            SwitchToDriverCamera();
-        }
-        
-        faderLeft.FadeIn();
-        fadeRight.FadeIn();
-    }
+            if (PlayerState.CURRENTSTATE == PlayerState.PLAYERSTATE.DRIVING)
+            {
+                SwitchToStartCamera();
+            }
+            else
+            {
+                SwitchToDriverCamera();
+            }
 
+            faderLeft.FadeIn();
+            fadeRight.FadeIn();
+
+            imFading = false;
+        }
+    }
 }

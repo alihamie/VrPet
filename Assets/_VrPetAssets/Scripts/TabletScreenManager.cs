@@ -13,7 +13,7 @@ public class TabletScreenManager : MonoBehaviour {
 
     private Transform lastClickedScreen;
 
-	// Use this for initialization
+
 	void Awake ()
     {
         currentScreen = initialScreen;

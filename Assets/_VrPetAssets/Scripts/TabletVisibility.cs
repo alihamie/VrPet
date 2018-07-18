@@ -26,10 +26,10 @@ public class TabletVisibility : MonoBehaviour
     {
         UiTablet.gameObject.SetActive(!UiTablet.gameObject.activeSelf);
     }
-    // Update is called once per frame
+   
     void Update()
     {
-        if (padClick == true && prevPadClick == false && PlayerState.CURRENTSTATE != PlayerState.PLAYERSTATE.DRIVING)
+        if (padClick == true && prevPadClick == false && (PlayerState.CURRENTSTATE != PlayerState.PLAYERSTATE.DRIVING || PlayerState.CURRENTSTATE != PlayerState.PLAYERSTATE.REMOTE))
         {
             ToggleTablet();
         }

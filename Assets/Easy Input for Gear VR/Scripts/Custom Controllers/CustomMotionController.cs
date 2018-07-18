@@ -34,7 +34,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_Gyro -= localGyro;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

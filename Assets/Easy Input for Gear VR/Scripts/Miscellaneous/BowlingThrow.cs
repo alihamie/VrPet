@@ -50,7 +50,7 @@ namespace EasyInputVR.StandardControllers
             myPhysics = transform.GetComponent<SphereCollider>().material;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
             if (throwInProcess)

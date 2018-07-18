@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovingActionZone : MonoBehaviour {
 
-	// Use this for initialization
+
 	void Start () {
 		
 	}

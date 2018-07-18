@@ -10,7 +10,7 @@ namespace MalbersAnimations
         public bool NoInputs = false;
         MFreeLookCamera m;
 
-        // Update is called once per frame
+       
 
         void Start()
         {

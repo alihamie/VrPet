@@ -36,7 +36,7 @@ namespace EasyInputVR.StandardControllers
 #endif
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

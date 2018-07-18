@@ -251,7 +251,7 @@ namespace EasyInputVR.Core
 
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
             populateMyTouch();

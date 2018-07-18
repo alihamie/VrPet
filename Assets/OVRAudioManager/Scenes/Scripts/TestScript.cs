@@ -6,7 +6,7 @@ public class TestScript : MonoBehaviour {
 
     public Animal animal;
 
-	// Use this for initialization
+
 	void Start () {
         animal.SetReadyToPlay();
 	}

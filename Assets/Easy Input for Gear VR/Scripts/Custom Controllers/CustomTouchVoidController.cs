@@ -60,7 +60,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_SwipeDetected -= localSwipe;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         }

@@ -70,7 +70,7 @@ public class OVRDebugHeadController : MonoBehaviour
 			CameraRig = CameraRigs[0];
 	}
 	
-	// Use this for initialization
+
 	void Start () 
 	{
 		
