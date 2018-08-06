@@ -60,7 +60,9 @@ public class Twitch_EMT : MonoBehaviour
     {
         WWW request = new WWW(serverURI + "" + videoID + "" + formatURI);
         yield return request;
+        Debug.Log(request.text);
         var requestData = JSON.Parse(request.text);
+        //Debug.Log(requestData.ToString());
         liveResult = requestData["videos"][0]["url"];
         StartCoroutine(LivePlay());
     }

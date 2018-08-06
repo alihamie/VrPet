@@ -467,7 +467,7 @@ namespace MalbersAnimations
         /// <summary>
         /// Gets the movement from the Input Script or AI
         /// </summary>
-        /// <param name="move">Direction VEctor</param>
+        /// <param name="move">Direction Vector</param>
         /// <param name="active">Active = true means that is taking the direction Move</param>
         public virtual void Move(Vector3 move, bool active = true)
         {

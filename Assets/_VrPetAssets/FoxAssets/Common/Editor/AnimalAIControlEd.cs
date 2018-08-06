@@ -50,6 +50,9 @@ namespace MalbersAnimations
             }
             EditorGUILayout.EndVertical();
 
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("animalHead"), new GUIContent("Animal's Head"));
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("debug"), new GUIContent("Debug"));

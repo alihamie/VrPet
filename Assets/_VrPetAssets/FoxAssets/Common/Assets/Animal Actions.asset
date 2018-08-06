@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Name: Animal Actions
   m_EditorClassIdentifier: 
   actions:
+  - name: Idle
+    ID: 1
   - name: Eat
     ID: 2
   - name: Drink
@@ -26,15 +28,21 @@ MonoBehaviour:
     ID: 10
   - name: Lie
     ID: 11
-  - name: ReadyToPlay
-    ID: 22
+  - name: DropBall
+    ID: 18
   - name: GrabBall
     ID: 19
   - name: JumpCatch
     ID: 21
-  - name: DropBall
-    ID: 18
+  - name: ReadyToPlay
+    ID: 22
   - name: PlayfullGrab
     ID: 25
   - name: WindowEvent
     ID: 28
+  - name: Hide
+    ID: 30
+  - name: JumpBack
+    ID: 35
+  - name: Attack
+    ID: -1

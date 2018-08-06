@@ -268,6 +268,9 @@ namespace EasyInputVR.StandardControllers
                 initialRotation = this.transform.localRotation;
                 if (laserTransform != null)
                     initialTwist = laserTransform.localRotation.eulerAngles.z;
+
+                MalbersAnimations.ActionZone actionZone = GetComponent<MalbersAnimations.ActionZone>();
+                if (actionZone) actionZone.onGrab.Invoke();
             }
 
             if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTouchClick)

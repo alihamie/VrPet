@@ -113,9 +113,12 @@ namespace MalbersAnimations
 
                 if (M.EditorShowEvents)
                 {
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onGrab"), new GUIContent("On Grab"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnable"), new GUIContent("On Actionzone Enable"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("OnEnter"), new GUIContent("On Animal Enter"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnExit"), new GUIContent("On Animal Exit"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("OnAction"), new GUIContent("On Animal Action"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnSight"), new GUIContent("On Sight"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnExit"), new GUIContent("On Animal Exit"));
                 }
                 EditorGUILayout.EndVertical();
 

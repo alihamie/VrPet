@@ -15,7 +15,7 @@ namespace MalbersAnimations
         //Call Back from an Activation Zone
 
         /// <summary>
-        /// Set a specifi
+        /// Set a specific
         /// </summary>
         /// <param name="ID"></param>
         public virtual void ActionEmotion(int ID)

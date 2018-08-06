@@ -2,9 +2,7 @@
 using System.Collections;
 using MalbersAnimations.Events;
 using MalbersAnimations.Utilities;
-#if UNITY_5_5_OR_NEWER
 using UnityEngine.AI;
-#endif
 
 namespace MalbersAnimations
 {
@@ -13,21 +11,24 @@ namespace MalbersAnimations
         #region Components References
         private NavMeshAgent agent;                 //The NavMeshAgent
         protected Animal animal;                    //The Animal Script
+        private Animator animalAnimator;
         #endregion
 
         #region Target Verifications
         protected Animal Target_is_Animal;          //To check if the target is an animal
         protected ActionZone Target_is_ActionZone;  //To check if the Target is an Action Zone
         protected MWayPoint Target_is_Waypoint;     //To check if the Target is a Way Point
-        protected bool Target_is_DropArea;
         #endregion
 
         public Transform target;                    //The Target
         Transform deltaTarget;                      //Used to check if the Target has changed
+        private Transform nextTarget;
         private Transform closestGrabableItem;
-        public bool AutoSpeed = true;               
+        public GameObject animalHead;                //To give other scripts that use it a universal reference to the head transform.
+        public bool AutoSpeed = true;
         public float ToTrot = 6f;
         public float ToRun = 8f;
+        private float interruptTimer;
 
         public bool debug = true;                //Debuging 
         public bool isWandering = false;
@@ -35,22 +36,32 @@ namespace MalbersAnimations
         bool isInActionState;                     //Check if is making any Animation Action
         bool StartingAction;                      //Check if Start the animation  
 
+        bool sawTarget, targetOverride;
+
+        protected int sawTargetLayerMask = (1 << 8) | (1 << 0);// This makes a layermask using the number 8 because that is the layer that I've put all the props on.
+        enum MovementStates
+        {
+            NormalMovement = 0,
+            AlwaysWalk = 1,
+            AlwaysRun = 2,
+            SlowWalk = 3,
+            FastRun = 4
+        }
+        MovementStates currentMovementState = MovementStates.NormalMovement;
+
         protected float DefaultStoppingDistance;
-        Transform NextTarget;
-       
+
 
         /// <summary>
         /// Important for changing Waypoints
         /// </summary>
         private bool isMoving = false;
 
-        protected float RemainingDistance;
-
         private float wanderTimer;
         private float timer;
 
         /// <summary>
-        /// the navmeshAgent asociate to this GameObject
+        /// the navmeshAgent associated to this GameObject
         /// </summary>
         public NavMeshAgent Agent
         {
@@ -65,7 +76,11 @@ namespace MalbersAnimations
         }
 
 
-        void Start(){ StartAgent();  }
+        void Start()
+        {
+            StartAgent();
+            UpdateTarget();
+        }
 
         /// <summary>
         /// Initialize the Ai Animal Control Values
@@ -75,28 +90,31 @@ namespace MalbersAnimations
             wanderTimer = 3;
             timer = wanderTimer;
             animal = GetComponent<Animal>();
+            animalAnimator = GetComponent<Animator>();
             Agent.updateRotation = false;
             Agent.updatePosition = false;
             isWandering = true;
-            DefaultStoppingDistance = Agent.stoppingDistance; //Save the Stoping Distance
+            DefaultStoppingDistance = Agent.stoppingDistance; //Save the Stopping Distance
         }
 
         void Update()
         {
-            DisableAgent();                                             
+            DisableAgent();
             TryActionZone();
             timer += Time.deltaTime;
             Agent.nextPosition = agent.transform.position;                      //Update the Agent Position to the Transform position
 
+            if (!Agent.isOnNavMesh || !Agent.enabled || target == null || interruptTimer > timer)
+            {
+                return;
+            }
 
-            if (!Agent.isOnNavMesh || !Agent.enabled) return;
-            if (target == null) return;
-
-            UpdateAgent();
             UpdateTarget();
+            UpdateAgent();
+            if (!sawTarget && !isWandering) CheckSightlineToTarget(); //This is something that can be just fine with a margin of error of .3 seconds to first seeing something. So if performance is lagging, feel free to cut corners here.
         }
 
-        //If the target changes do something
+        // Ideally, there shouldn't ever be a time where it's necessary to call this on every frame. I may change my tune, but until that time I'll restructure this with that in mind.
         void UpdateTarget()
         {
             if (deltaTarget != target)
@@ -108,31 +126,36 @@ namespace MalbersAnimations
                     {
                         Prev_Target_ActionZon.enabled = false;
                     }
-
                 }
+
                 deltaTarget = target;
-                //if (debug) Debug.Log("Target Updated: "+ target.name);
 
-                Target_is_Animal = deltaTarget ? deltaTarget.GetComponent<Animal>() : null;
-                Target_is_ActionZone = deltaTarget ? deltaTarget.GetComponent<ActionZone>() : null;
-                Target_is_Waypoint = deltaTarget ? deltaTarget.GetComponent<MWayPoint>() : null;
-                Target_is_DropArea = deltaTarget ? deltaTarget.tag == "DropArea" : false;
-                Agent.stoppingDistance = DefaultStoppingDistance;
+                if (deltaTarget)
+                {
+                    Target_is_Animal = deltaTarget.GetComponent<Animal>();
+                    Target_is_ActionZone = deltaTarget.GetComponent<ActionZone>();
+                    Target_is_Waypoint = deltaTarget.GetComponent<MWayPoint>();
 
-                if (Target_is_ActionZone)
-                {
-                    Target_is_ActionZone.enabled = true;
-                    Agent.stoppingDistance = Target_is_ActionZone.stoppingDistance;
+                    if (Target_is_ActionZone)
+                    {
+                        Target_is_ActionZone.enabled = true;
+                        Agent.stoppingDistance = Target_is_ActionZone.stoppingDistance;
+                    }
+                    else if (Target_is_Waypoint)
+                    {
+                        Agent.stoppingDistance = Target_is_Waypoint.StoppingDistance;
+                    }
                 }
-                else if (Target_is_Waypoint)
+                else
                 {
-                    Agent.stoppingDistance = Target_is_Waypoint.StoppingDistance;
+                    Target_is_ActionZone = null;
+                    Target_is_Animal = null;
+                    Target_is_Waypoint = null;
+
+                    Agent.stoppingDistance = DefaultStoppingDistance;
                 }
 
-                if (Target_is_DropArea)
-                {
-                    Agent.stoppingDistance = 0.1f;
-                }
+                sawTarget = false;
             }
         }
 
@@ -141,49 +164,50 @@ namespace MalbersAnimations
         /// </summary>
         void DisableAgent()
         {
-            if ((animal.CurrentAnimState.IsTag("Locomotion") 
-                || animal.CurrentAnimState.IsTag("Idle")))          //Activate the Agent when the animal is moving
+            if ((animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Idle")))          //Activate the Agent when the animal is moving
             {
                 if (!Agent.enabled)
                 {
                     Agent.enabled = true;
-                   if(debug) Debug.Log("Enable Agent. Animal " + name + " is Moving");
                     isMoving = false;                               //Important
                 }
             }
             else
             {
-                if (Agent.enabled)                      //Disable the Agent whe is not on Locomotion or Idling
-                {
-                    Agent.enabled = false;
-                    if (debug) Debug.Log("Disable Agent. Animal "+ name +" is doing an action, jumping or falling");
-                }
+                Agent.enabled = false;
             }
 
-            if (animal.IsInAir) //Don't rotate if is in the middle of a jump
+            if (animal.IsInAir) //Don't rotate if it's in the middle of a jump
             {
                 animal.Move(Vector3.zero);
             }
         }
 
         /// <summary>
-        /// Manage Everytime the animal enters in an Action Zone
+        /// Manage every time the animal enters an Action Zone
         /// </summary>
         void TryActionZone()
         {
-            if (isInActionState != animal.CurrentAnimState.IsTag("Action"))  //If the animal is Executing an action Save it
+            if (isInActionState != animal.CurrentAnimState.IsTag("Action"))  //If the animal is Executing an action, save it
             {
-                isInActionState = animal.CurrentAnimState.IsTag("Action");   //Store is there was any change on the action 
+                isInActionState = animal.CurrentAnimState.IsTag("Action");   //Store it if there was any change on the action 
 
                 if (isInActionState)
                 {
-                  if (Target_is_ActionZone && Target_is_ActionZone.NextTarget)
-                        SetTarget(Target_is_ActionZone.NextTarget);
+                    //if (Target_is_ActionZone && Target_is_ActionZone.NextTarget)
+                    //{
+                    //    SetTarget(Target_is_ActionZone.NextTarget);
+                    //}
+
+                    //nextTarget = Target_is_ActionZone.NextTarget;
                 }
                 else
                 {
                     StartingAction = false;
-                    animal.ActionID = -1;                       //Reset the Action
+                    //animal.ActionID = -1;                       //Reset the Action
+                    //SetTarget(nextTarget);
+
+                    //Target_is_ActionZone.OnExit.Invoke(animal);
                 }
             }
         }
@@ -196,25 +220,23 @@ namespace MalbersAnimations
         {
             Vector3 Direction = Vector3.zero;                             //Set the Direction to Zero         
 
-            if(isWandering)
+            if (isWandering)
             {
                 if (timer >= wanderTimer)
                 {
                     pos = RandomNavSphere(transform.position, 300, -1);
-                    timer = 0;
+                    timer = interruptTimer = 0;
                 }
+
                 if (pos != Vector3.zero)
                 {
                     Agent.SetDestination(pos);
                 }
-
             }
             else if (target != null)
             {
                 Agent.SetDestination(target.position);
             }
-
-            RemainingDistance = Agent.remainingDistance;
 
             if (Agent.remainingDistance > Agent.stoppingDistance)
             {
@@ -227,11 +249,12 @@ namespace MalbersAnimations
                 if (Target_is_ActionZone && !StartingAction)        //If the Target is an Action Zone Start the Action
                 {
                     StartingAction = true;
-                    animal.Action = true;                           //Activate the Action on the Animal
+                    //animal.Action = true;                           //Activate the Action on the Animal
                 }
+
                 if (Target_is_Waypoint && isMoving)
                 {
-                    SetTarget(Target_is_Waypoint ? Target_is_Waypoint.NextWaypoint.transform : null);
+                    SetTarget(Target_is_Waypoint.NextWaypoint.transform);
                 }
             }
 
@@ -279,7 +302,7 @@ namespace MalbersAnimations
                     if (!StartingAction)        //If the Target is an Action Zone Start the Action
                     {
                         StartingAction = true;
-                        animal.Action = true;                           //Activate the Action on the Animal
+                        //animal.Action = true;                           //Activate the Action on the Animal
                         return;
                     }
                 }
@@ -289,9 +312,11 @@ namespace MalbersAnimations
                     Transform NearTransform = CurrentOffMeshLink.startTransform;
 
                     if (CurrentOffMeshLink.endTransform.position == CurrentOffmeshLink_Data.startPos) //Verify the start point of the OffMeshLink
-                    { NearTransform = CurrentOffMeshLink.endTransform; }
+                    {
+                        NearTransform = CurrentOffMeshLink.endTransform;
+                    }
 
-                    StartCoroutine(MalbersTools.AlignTransformsC(transform, NearTransform, 0.5f, false, true)); //Aling the Animal to the Link
+                    StartCoroutine(MalbersTools.AlignTransformsC(transform, NearTransform, 0.5f, false, true)); // Align the Animal to the Link
 
                     if (CurrentOffMeshLink.area == 2)                          //if the OffMesh Link is a Jump type
                     {
@@ -306,30 +331,65 @@ namespace MalbersAnimations
         /// </summary>
         protected virtual void AutomaticSpeed()
         {
-           
-            if (Agent.remainingDistance < ToTrot)         //Set to Walk
+            if (currentMovementState == MovementStates.NormalMovement)
+            {
+                if (Agent.remainingDistance < ToTrot)         //Set to Walk
+                {
+                    animal.Speed1 = true;
+                }
+                else if (Agent.remainingDistance < ToRun)     //Set to Trot
+                {
+                    animal.Speed2 = true;
+                }
+                else if (Agent.remainingDistance > ToRun)     //Set to Run
+                {
+                    animal.Speed3 = true;
+                }
+            }
+            else if (currentMovementState == MovementStates.AlwaysWalk || currentMovementState == MovementStates.SlowWalk)
             {
                 animal.Speed1 = true;
             }
-            else if (Agent.remainingDistance < ToRun)     //Set to Trot
-            {
-                animal.Speed2 = true;
-            }
-            else if (Agent.remainingDistance > ToRun)     //Set to Run
+            else if (currentMovementState == MovementStates.AlwaysRun || currentMovementState == MovementStates.FastRun)
             {
                 animal.Speed3 = true;
+            }
+
+            if (currentMovementState == MovementStates.FastRun)
+            {
+                animalAnimator.speed = 2f;
+            }
+            else if (currentMovementState == MovementStates.SlowWalk)
+            {
+                animalAnimator.speed = .3f;
+            }
+            else
+            {
+                animalAnimator.speed = 1f;
             }
         }
 
         /// <summary>
         /// Set to next Target
         /// </summary>
-        public void SetTarget(Transform target)
+        public void SetTarget(Transform target, bool ignoreOverride = false)
         {
-            isWandering = false;
-            this.target = target;
-            isMoving = false;
-            UpdateTarget();
+            if (!targetOverride || ignoreOverride)
+            {
+                isMoving = false;
+
+                if (target)
+                {
+                    isWandering = false;
+                    this.target = target;
+                }
+                else
+                {
+                    isWandering = true;
+                }
+
+                UpdateTarget();
+            }
         }
 
         public void SetClosestGrabbableItem(Transform item)
@@ -347,11 +407,7 @@ namespace MalbersAnimations
         /// </summary>
         protected virtual void Agent_Stop()
         {
-#if UNITY_5_6_OR_NEWER
-                Agent.isStopped = true;
-#else
-            Agent.Stop();
-#endif
+            Agent.isStopped = true;
         }
 
         /// <summary>
@@ -359,21 +415,50 @@ namespace MalbersAnimations
         /// </summary>
         protected void Agent_Resume()
         {
-#if UNITY_5_6_OR_NEWER
             Agent.isStopped = false;
-#else
-            Agent.Resume();
-#endif
         }
 
-        //Toogle Off and On the Agent
-        IEnumerator ToogleAgent()
+        //Toggle Off and On the Agent
+        IEnumerator ToggleAgent()
         {
             Agent.enabled = false;
             yield return null;
             Agent.enabled = true;
         }
 
+        public void CheckSightlineToTarget()
+        {
+            Vector3 directionToTarget = target.position - animalHead.transform.position;
+            RaycastHit hit;
+            Physics.Raycast(new Ray(animalHead.transform.position, directionToTarget), out hit, directionToTarget.magnitude, sawTargetLayerMask, QueryTriggerInteraction.Ignore);
+
+            float degreesToTarget = Mathf.Abs(FunctionalAssist.AngleOffAroundAxis(transform.forward, directionToTarget, Vector3.up));
+
+            //Debug.Log();
+
+            if (degreesToTarget < 90f && hit.transform == target)
+            {
+                if (Target_is_ActionZone) Target_is_ActionZone.OnSight.Invoke(animal);
+
+                sawTarget = true;
+            }
+        }
+
+        public void InterruptPathing(float delayTime)
+        {
+            interruptTimer = timer + delayTime;
+            animal.Move(Vector3.zero);
+        }
+
+        public void ChangeMovement(int newMovement)
+        {
+            currentMovementState = (MovementStates)newMovement;
+        }
+
+        public void ToggleTargetOverride()
+        {
+            targetOverride = !targetOverride;
+        }
 
 #if UNITY_EDITOR
         /// <summary>
@@ -394,7 +479,7 @@ namespace MalbersAnimations
 
                 UnityEditor.Handles.color = Color.yellow;
                 UnityEditor.Handles.DrawWireDisc(pos, Vector3.up, ToTrot);
-             
+
                 if (Agent)
                 {
                     UnityEditor.Handles.color = Color.red;
