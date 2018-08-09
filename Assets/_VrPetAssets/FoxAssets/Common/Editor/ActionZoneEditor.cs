@@ -58,15 +58,15 @@ namespace MalbersAnimations
                     M.HeadOnly = EditorGUILayout.Toggle(new GUIContent("Head Only", "Enable only when the 'Head' bone enter the trigger zone"), M.HeadOnly);
                 }
                 EditorGUILayout.EndVertical();
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                M.automatic = EditorGUILayout.Toggle(new GUIContent("Automatic", "As soon as the animal enters the zone play the action"), M.automatic);
+                //EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                //M.automatic = EditorGUILayout.Toggle(new GUIContent("Automatic", "As soon as the animal enters the zone play the action"), M.automatic);
 
-                    if (M.automatic)
-                    {
-                        M.AutomaticDisabled = EditorGUILayout.FloatField(new GUIContent("Disabled", "if true the Trigger will be disabled for this value in seconds"), M.AutomaticDisabled);
-                        if (M.AutomaticDisabled < 0) M.AutomaticDisabled = 0;
-                    }
-                EditorGUILayout.EndVertical();
+                //    //if (M.automatic)
+                //    //{
+                //    //    M.AutomaticDisabled = EditorGUILayout.FloatField(new GUIContent("Disabled", "if true the Trigger will be disabled for this value in seconds"), M.AutomaticDisabled);
+                //    //    if (M.AutomaticDisabled < 0) M.AutomaticDisabled = 0;
+                //    //}
+                //EditorGUILayout.EndVertical();
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 {
                     EditorGUILayout.BeginHorizontal();
@@ -97,7 +97,7 @@ namespace MalbersAnimations
                     EditorGUILayout.EndHorizontal();
                     if (M.Align)
                     {
-                        M.AlingPoint =(Transform) EditorGUILayout.ObjectField("Aling Point", M.AlingPoint, typeof(Transform), true);
+                        M.AlingPoint =(Transform) EditorGUILayout.ObjectField("Align Point", M.AlingPoint, typeof(Transform), true);
                         M.AlignTime = EditorGUILayout.FloatField(new GUIContent("Align Time", "time to aling"), M.AlignTime);
                         EditorGUILayout.PropertyField(serializedObject.FindProperty("AlignCurve"), new GUIContent("Align Curve"));
 
@@ -113,12 +113,11 @@ namespace MalbersAnimations
 
                 if (M.EditorShowEvents)
                 {
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onGrab"), new GUIContent("On Grab"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnable"), new GUIContent("On Actionzone Enable"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnEnter"), new GUIContent("On Animal Enter"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnAction"), new GUIContent("On Animal Action"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnSight"), new GUIContent("On Sight"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnExit"), new GUIContent("On Animal Exit"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onGrab"), new GUIContent("On The Player Grabbing This"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnable"), new GUIContent("On Actionzone Being Enabled"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onAction"), new GUIContent("On Animal Action"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onSight"), new GUIContent("On The Animal First Seeing This"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnd"), new GUIContent("On The Action Ending"));
                 }
                 EditorGUILayout.EndVertical();
 

@@ -842,8 +842,9 @@ MonoBehaviour:
   goJim: 0
   url: https://www.twitch.tv/
   soAndSo: {fileID: 1870723527}
-  forceTarget: {fileID: 1588822859}
+  forceTarget: {fileID: 1003913254}
   fox: {fileID: 1683939459}
+  rigidmanSpeed: {x: 0, y: 0, z: 0}
 --- !u!4 &178422896
 Transform:
   m_ObjectHideFlags: 0
@@ -1011,10 +1012,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 19
   index: 9
-  AutomaticDisabled: 0
   HeadOnly: 1
   Align: 1
   AlingPoint: {fileID: 193467537}
@@ -1048,28 +1047,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 1629698721}
   EditorShowEvents: 1
@@ -1227,10 +1221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 19
   index: 9
-  AutomaticDisabled: 0
   HeadOnly: 1
   Align: 0
   AlingPoint: {fileID: 1629698721}
@@ -1264,28 +1256,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 94806539}
   EditorShowEvents: 1
@@ -1541,10 +1528,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 0
   ID: 7
   index: 2
-  AutomaticDisabled: 1
   HeadOnly: 0
   Align: 1
   AlingPoint: {fileID: 224681362}
@@ -1578,28 +1563,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
@@ -3248,10 +3228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 22
   index: 11
-  AutomaticDisabled: 0
   HeadOnly: 0
   Align: 1
   AlingPoint: {fileID: 603413332}
@@ -3285,28 +3263,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
@@ -3947,10 +3920,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 18
   index: 8
-  AutomaticDisabled: 0
   HeadOnly: 0
   Align: 0
   AlingPoint: {fileID: 0}
@@ -3984,28 +3955,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.1
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
@@ -4052,10 +4018,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 35
   index: 15
-  AutomaticDisabled: 200
   HeadOnly: 0
   Align: 1
   AlingPoint: {fileID: 1588822859}
@@ -4083,179 +4047,29 @@ MonoBehaviour:
   AlignLookAt: 1
   onGrab:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822865}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Closed
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: Stop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onEnable:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822865}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: HandleTurning
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822860}
-        m_MethodName: CopyActionzone
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1615465674}
-          m_ObjectArgumentAssemblyTypeName: MalbersAnimations.ActionZone, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822865}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Opening
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: Stop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: f410934381b26a847853c80bbb7e452e,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: ChangeMovement
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 3af2e9e81c9b25746831fe1f910c1c2c,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: ToggleTargetOverride
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: InterruptPathing
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 4
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: ChangeMovement
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 1190944747}
   EditorShowEvents: 1
@@ -4558,6 +4372,30 @@ Prefab:
     - target: {fileID: 4249753368647120, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
       propertyPath: m_RootOrder
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590835225189264, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
+      propertyPath: m_Name
+      value: AmbienceGenerator(Wind)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1297440532720196, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
+      propertyPath: m_Name
+      value: AmbienceGenerator(Bird)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1069737636131052, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
+      propertyPath: m_Name
+      value: AmbienceGenerator(Dog)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368374681274686, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
+      propertyPath: m_Name
+      value: AmbienceGenerator(Car)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1938494171263486, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
+      propertyPath: m_Name
+      value: AmbienceGenerator(Bike)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1505900132006110, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
+      propertyPath: m_Name
+      value: AmbienceGenerator(Ambulance)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
@@ -6251,7 +6089,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1157241868
+  randomSeed: 1072395250
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -10248,10 +10086,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 30
   index: 14
-  AutomaticDisabled: 0
   HeadOnly: 1
   Align: 1
   AlingPoint: {fileID: 1190944747}
@@ -10285,35 +10121,19 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1954423803}
         m_MethodName: ToggleTargetOverride
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: ChangeMovement
-        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10333,13 +10153,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
+      - m_Target: {fileID: 1954423803}
+        m_MethodName: ChangeMovement
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.3
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
@@ -10658,10 +10489,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 25
   index: 12
-  AutomaticDisabled: 0
   HeadOnly: 1
   Align: 1
   AlingPoint: {fileID: 1129970658}
@@ -10695,28 +10524,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.3
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
@@ -11920,7 +11744,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -949567760
+  randomSeed: 917693748
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -15704,7 +15528,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4295150622597130, guid: 5ae86090d82ab554b9ae3428359ec274, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0.892
+      value: -2.365
       objectReference: {fileID: 0}
     - target: {fileID: 4295150622597130, guid: 5ae86090d82ab554b9ae3428359ec274, type: 2}
       propertyPath: m_LocalPosition.y
@@ -15712,7 +15536,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4295150622597130, guid: 5ae86090d82ab554b9ae3428359ec274, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0.365
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 4295150622597130, guid: 5ae86090d82ab554b9ae3428359ec274, type: 2}
       propertyPath: m_LocalRotation.x
@@ -15841,10 +15665,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 35
   index: 15
-  AutomaticDisabled: 0
   HeadOnly: 0
   Align: 1
   AlingPoint: {fileID: 1588822859}
@@ -15922,30 +15744,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822860}
-        m_MethodName: CopyActionzone
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 762081878}
-          m_ObjectArgumentAssemblyTypeName: MalbersAnimations.ActionZone, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1588822865}
@@ -15974,6 +15780,18 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 3af2e9e81c9b25746831fe1f910c1c2c,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1588822866}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
           m_ObjectArgument: {fileID: 8300000, guid: f410934381b26a847853c80bbb7e452e,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
@@ -15993,18 +15811,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 3af2e9e81c9b25746831fe1f910c1c2c,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1954423803}
         m_MethodName: ToggleTargetOverride
         m_Mode: 1
@@ -16016,9 +15822,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1954423803}
@@ -16032,8 +15838,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 1190944747}
   EditorShowEvents: 1
@@ -16398,10 +16204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: -1
   index: 16
-  AutomaticDisabled: 200
   HeadOnly: 0
   Align: 1
   AlingPoint: {fileID: 1588822859}
@@ -16429,133 +16233,29 @@ MonoBehaviour:
   AlignLookAt: 1
   onGrab:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822865}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Closed
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: Stop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   onEnable:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822865}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: HandleTurning
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1588822865}
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Closed
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1588822866}
-        m_MethodName: Stop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: ChangeMovement
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: InterruptPathing
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 4
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1954423803}
-        m_MethodName: ChangeMovement
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
@@ -17457,7 +17157,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  ShowEventsEditor: 1
+  ShowEventsEditor: 0
 --- !u!114 &1683939467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20627,10 +20327,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionsToUse: {fileID: 11400000, guid: da07aa68e45767f46a979ffa21e8ca41, type: 2}
-  automatic: 1
   ID: 19
   index: 9
-  AutomaticDisabled: 0
   HeadOnly: 1
   Align: 1
   AlingPoint: {fileID: 1629698721}
@@ -20664,28 +20362,23 @@ MonoBehaviour:
   onEnable:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnEnter:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnExit:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onAction:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnAction:
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSight:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
-  OnSight:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: MalbersAnimations.AnimalEvent, Assembly-CSharp, Version=1.2.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1

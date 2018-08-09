@@ -9,32 +9,32 @@ namespace MalbersAnimations
     public class AnimalAIControl : MonoBehaviour
     {
         #region Components References
-        private NavMeshAgent agent;                 //The NavMeshAgent
-        protected Animal animal;                    //The Animal Script
+        private NavMeshAgent agent; // The NavMeshAgent
+        protected Animal animal; // The Animal Script
         private Animator animalAnimator;
         #endregion
 
         #region Target Verifications
-        protected Animal Target_is_Animal;          //To check if the target is an animal
-        protected ActionZone Target_is_ActionZone;  //To check if the Target is an Action Zone
-        protected MWayPoint Target_is_Waypoint;     //To check if the Target is a Way Point
+        protected Animal Target_is_Animal; // To check if the target is an animal
+        protected ActionZone Target_is_ActionZone; // To check if the Target is an Action Zone
+        protected MWayPoint Target_is_Waypoint; // To check if the Target is a Way Point
         #endregion
 
-        public Transform target;                    //The Target
-        Transform deltaTarget;                      //Used to check if the Target has changed
+        public Transform target; // The target to path to.
+        Transform deltaTarget; // Used to check if the Target has changed
         private Transform nextTarget;
         private Transform closestGrabableItem;
-        public GameObject animalHead;                //To give other scripts that use it a universal reference to the head transform.
+        public GameObject animalHead; // To give other scripts that use it a universal reference to the head transform.
         public bool AutoSpeed = true;
         public float ToTrot = 6f;
         public float ToRun = 8f;
         private float interruptTimer;
 
-        public bool debug = true;                //Debuging 
+        public bool debug = true;                   // Debugging 
         public bool isWandering = false;
 
-        bool isInActionState;                     //Check if is making any Animation Action
-        bool StartingAction;                      //Check if Start the animation  
+        bool isInActionState;                       //Check if is making any Animation Action
+        bool StartingAction;                        //Check if Start the animation  
 
         bool sawTarget, targetOverride;
 
@@ -111,7 +111,11 @@ namespace MalbersAnimations
 
             UpdateTarget();
             UpdateAgent();
-            if (!sawTarget && !isWandering) CheckSightlineToTarget(); //This is something that can be just fine with a margin of error of .3 seconds to first seeing something. So if performance is lagging, feel free to cut corners here.
+
+            if (!sawTarget && !isWandering)
+            {
+                CheckSightlineToTarget(); // This is something that can be just fine with a margin of error of .3 seconds to first seeing something. So if performance is lagging, feel free to cut corners here.
+            }
         }
 
         // Ideally, there shouldn't ever be a time where it's necessary to call this on every frame. I may change my tune, but until that time I'll restructure this with that in mind.
@@ -169,8 +173,10 @@ namespace MalbersAnimations
                 if (!Agent.enabled)
                 {
                     Agent.enabled = true;
-                    isMoving = false;                               //Important
+                    isMoving = false; // Important... somehow. Not quite sure. The previous comment here just said "Important". Rude.
                 }
+
+            
             }
             else
             {
@@ -194,20 +200,11 @@ namespace MalbersAnimations
 
                 if (isInActionState)
                 {
-                    //if (Target_is_ActionZone && Target_is_ActionZone.NextTarget)
-                    //{
-                    //    SetTarget(Target_is_ActionZone.NextTarget);
-                    //}
-
-                    //nextTarget = Target_is_ActionZone.NextTarget;
+                    
                 }
                 else
                 {
                     StartingAction = false;
-                    //animal.ActionID = -1;                       //Reset the Action
-                    //SetTarget(nextTarget);
-
-                    //Target_is_ActionZone.OnExit.Invoke(animal);
                 }
             }
         }
@@ -264,7 +261,6 @@ namespace MalbersAnimations
 
             CheckOffMeshLinks();                                     //Jump/Fall behaviour 
         }
-
 
         public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
         {
@@ -394,7 +390,7 @@ namespace MalbersAnimations
 
         public void SetClosestGrabbableItem(Transform item)
         {
-            this.closestGrabableItem = item;
+            closestGrabableItem = item;
         }
 
         public Transform GetClosestGrabableItem()
@@ -434,11 +430,9 @@ namespace MalbersAnimations
 
             float degreesToTarget = Mathf.Abs(FunctionalAssist.AngleOffAroundAxis(transform.forward, directionToTarget, Vector3.up));
 
-            //Debug.Log();
-
             if (degreesToTarget < 90f && hit.transform == target)
             {
-                if (Target_is_ActionZone) Target_is_ActionZone.OnSight.Invoke(animal);
+                if (Target_is_ActionZone) Target_is_ActionZone.onSight.Invoke();
 
                 sawTarget = true;
             }

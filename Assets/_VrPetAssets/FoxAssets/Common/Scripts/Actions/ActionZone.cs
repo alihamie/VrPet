@@ -14,10 +14,8 @@ namespace MalbersAnimations
 
         public Actions actionsToUse;
 
-        public bool automatic;                          //Set the Action Zone to Automatic
         public int ID;                                  //ID of the Action Zone (Value)
         public int index;                               //Index of the Action Zone (List index)
-        public float AutomaticDisabled = 1f;            //is Automatic is set to true this will be the time to disable temporarly the Trigger
         public bool HeadOnly;                           //Use the Trigger for heads only
 
         public bool Align;                              //Align the Animal entering to the Aling Point
@@ -26,217 +24,126 @@ namespace MalbersAnimations
         public AnimationCurve AlignCurve = new AnimationCurve(K);
 
         public bool AlignPos = true, AlignRot = true, AlignLookAt = false;
-        bool firstTimeGrab = true, firstTimeTrigger;
-        protected List<Collider> _colliders;
-        protected Animal animal;
-        private AnimalAIControl animalAIControl;
+        bool firstTimeTrigger;
 
         public UnityEvent onGrab = new UnityEvent();
-        public AnimalEvent onEnable = new AnimalEvent();
-        public AnimalEvent OnEnter = new AnimalEvent();
-        public AnimalEvent OnExit = new AnimalEvent();
-        public AnimalEvent OnAction = new AnimalEvent();
-        public AnimalEvent OnSight = new AnimalEvent();
-
-        //public static List<ActionZone> ActionZones;
+        public UnityEvent onEnable = new UnityEvent();
+        public UnityEvent onEnd = new UnityEvent();
+        public UnityEvent onAction = new UnityEvent();
+        public UnityEvent onSight = new UnityEvent();
 
         //───────AI───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         public float stoppingDistance = 0.5f;
         public Transform NextTarget;
 
-        private Collider previousCollider;
-
         void OnEnable()
         {
-            //if (ActionZones == null) ActionZones = new List<ActionZone>();
-
-            //ActionZones.Add(this);          //Save the the Action Zones
-
-            onEnable.Invoke(animal);
+            onEnable.Invoke();
         }
-
-        //void OnDisable()
-        //{
-        //    ActionZones.Remove(this);
-        //}
 
         void OnTriggerEnter(Collider other)
         {
-            if (this.enabled == false)
+            if (enabled == false)
+            {
                 return;
+            }
 
             Animal animal = other.GetComponentInParent<Animal>();
-            AnimalAIControl newAIControl = other.GetComponentInParent<AnimalAIControl>();
+            AnimalAIControl animalAIControl = other.GetComponentInParent<AnimalAIControl>();
 
-            if (newAIControl) animalAIControl = newAIControl;
-
-            if (animalAIControl != null && animalAIControl.isWandering == true)
+            if (animalAIControl && animal && other.gameObject.layer == 20) // In short, the entering object needs to have the Animal and AnimalAIControl scripts attached and be on the Animal Layer for us to do anything.
             {
-                return;
+                if (animalAIControl.isWandering == true)
+                {
+                    return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
+                }
+                if (HeadOnly && !other.name.ToLower().Contains("head"))
+                {
+                    return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
+                }
             }
-
-            if (other.gameObject.layer != 20)
-            {
-                return;                           //Just use the Colliders with the Animal Layer on it
-            }
-
-            if (!animal)
-            {
-                return;
-            }//If there's no animal script found skip all
-
-            if (_colliders == null)
-            {
-                _colliders = new List<Collider>();                              //Check all the colliders that enters the Action Zone Trigger
-            }
-
-            if (HeadOnly && !other.name.ToLower().Contains("head"))
-            {
-                return;     //If is Head Only and no head was found Skip
-            }
-
-            if (_colliders.Find(item => item == other) == null)                 //if the entering collider is not already on the list add it
-            {
-                _colliders.Add(other);
-            }
-
-            if (animal == this.animal) return;                      //if the animal is the same do nothing
             else
             {
-                this.animal = animal;
+                return;
             }
-            //StartCoroutine(startAnimation(animal, id, animalAIControl));
-        }
 
-        void OnTriggerStay(Collider other)
-        {
-            if (enabled == false || !animal) return;
-
-            if ((animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Idle")) && !firstTimeTrigger && _colliders.Count > 0)
+            if (!firstTimeTrigger) // Trying to make sure that this only triggers once as the fox is entering, rather than once per collider attached to the fox.
             {
-                firstTimeTrigger = true;
-
-                if (tag == "GrabableItem") animalAIControl.SetClosestGrabbableItem(transform);
-
                 StartCoroutine(startAnimation(animal, ID, animalAIControl));
             }
-            else if ((animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Idle")) && firstTimeTrigger && animalAIControl.target)
-            {
-                if (animalAIControl.target == transform) animalAIControl.isWandering = true;
-            }
         }
 
-        IEnumerator startAnimation(Animal animal, int id, AnimalAIControl ai)
+        IEnumerator startAnimation(Animal animal, int id, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
         {
-            Rigidbody rigidbody = this.GetComponent<Rigidbody>();
+            firstTimeTrigger = true;
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
 
-            while (rigidbody != null && rigidbody.velocity.magnitude > 0.2f && ai.Agent.remainingDistance < 0.5f)
+            if (tag == "GrabableItem")
             {
-                yield return new WaitForEndOfFrame();
-            }
+                ai.SetClosestGrabbableItem(transform);
 
-            //animal.OnAction.AddListener(OnActionListener);          //Listen when the animal activate the Action Input
-
-            OnEnter.Invoke(animal);
-
-            if (id != -1) animal.ActionEmotion(id);
-
-            if (automatic)       //Just activate when is on the Locomotion State if this is automatic
-            {
-                if (id != -1)
+                if (rigidbody) // If it's a grabable item, it'll probably have a rigidbody... but there's no way to say that'll always be the case.
                 {
-                    animal.EnableAction(true);
-                }
-                else
-                {
-                    animal.SetAttack();
+                    float rigidbodyAverageVelocity = 1f;
+                    float threshold = stoppingDistance * .04f;
 
-                    GetComponent<Rigidbody>().velocity = (transform.position - animal.transform.position + new Vector3(0, 1.2f, 0)).normalized * 5f;
+                    while (rigidbodyAverageVelocity > threshold) // I want to make sure that the grabbed object will move less than the entirety of the stopping distance away within the next two seconds.
+                    {
+                        rigidbodyAverageVelocity =+ rigidbody.velocity.magnitude;
+                        rigidbodyAverageVelocity = rigidbodyAverageVelocity * .8f; // This is a silly setup, but it'll find me a rough average of the object's velocity. Which is all I need.
+                        yield return new WaitForSeconds(.1f); // Had some problems with WaitForEndOfFrame() in the editor. Might be an editor-specific thing, but this works just fine for me too.
+                    }
                 }
-
-                //StartCoroutine(ReEnable(animal));
-                //animal.ActionEmotion(-1);                           //Reset the Action ID
-                //this.animal = null;
-                OnActionListener();
             }
+
+            while (!animal.CurrentAnimState.IsTag("Idle"))
+            { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
+                yield return new WaitForSeconds(.1f);
+            }
+
+            if (id != -1) // -1 is the id of the attack animation. Which isn't set up as an action, so I think it'll cause some problems if I try to treat it like one.
+            {
+                animal.ActionEmotion(id);
+                animal.EnableAction(true);
+            }
+            else
+            {
+                animal.SetAttack();
+                if (rigidbody)
+                { // This here's to make the object the triggered actionzone is attached to get push away when the fox attacks it.
+                    rigidbody.velocity = (transform.position - animal.transform.position + new Vector3(0, 1.2f, 0)).normalized * 5f;
+                }
+            }
+
+            ActionAlign(animal);
+
+            StartCoroutine(SetNextTarget(ai, animal));
         }
 
-        void OnTriggerExit(Collider other)
+        IEnumerator SetNextTarget(AnimalAIControl ai, Animal animal)
         {
-            Animal animal = other.GetComponentInParent<Animal>();
+            yield return new WaitForSeconds(.1f);
 
-            if (!animal) return; //If there's no animal script found skip all
-
-            if (animal != this.animal) return;
-
-            if (HeadOnly && !other.name.Contains("Head")) return;
-
-            RemoveCollider(other);
-
-            if (_colliders.Count == 0)
+            while (animal.CurrentAnimState.IsTag("Action"))
             {
-                //Debug.Log(name + " is setting a target.");
-                animalAIControl.SetTarget(NextTarget, true);
-                OnExit.Invoke(animal);                              //Invoke On Exit when all colliders of the animal has exited the Trigger Zone
-                //animal.OnAction.RemoveListener(OnActionListener);   //Remove the Method fron the Action Listener
-                animal.ActionEmotion(-1);                           //Reset the Action ID
-                this.animal = null;
-
-                firstTimeTrigger = false;
-
-                enabled = false;
+                yield return new WaitForSeconds(.1f);
             }
-        }
 
-        public void RemoveCollider(Collider other)
-        {
-            if (_colliders.Find(item => item == other))     //Remove the collider that entered off the list.
-            {
-                _colliders.Remove(other);
-            }
+            ai.SetTarget(NextTarget, true);
+            onEnd.Invoke();
+
+            animal.ActionEmotion(-1); //Reset the Action ID
+            animal = null;
+            enabled = false;
+            firstTimeTrigger = false;
         }
 
         /// <summary>
-        /// This will disable the Collider on the action zone
+        /// Used to align the animal
         /// </summary>
-        /// <param name="animal"></param>
-        /// <returns></returns>
-        //IEnumerator ReEnable(Animal animal) //For Automatic only 
-        //{
-        //    if (AutomaticDisabled > 0)
-        //    {
-        //        GetComponent<Collider>().enabled = false;
-
-        //        yield return null;
-        //        yield return null;
-        //        //animal.ActionEmotion(-1);
-        //        yield return new WaitForSeconds(AutomaticDisabled);
-        //        GetComponent<Collider>().enabled = true;
-        //    }
-        //    this.animal = null;     //Reset animal
-        //    _colliders = null;      //Reset Colliders
-
-        //    enabled = false;
-        //    OnExit.Invoke(animal);
-        //    animal.ActionEmotion(-1);                           //Reset the Action ID
-        //    firstTimeTrigger = false;
-
-        //    yield return null;
-        //}
-
-        public virtual void _DestroyActionZone(float time)
+        private void ActionAlign(Animal animal)
         {
-            Destroy(gameObject, time);
-        }
-
-        /// <summary>
-        /// Used for checking if the animal press the action button
-        /// </summary>
-        private void OnActionListener()
-        {
-            if (!animal) return;
-
-            OnAction.Invoke(animal);
+            onAction.Invoke();
             if (Align && AlingPoint)
             {
                 IEnumerator ICo = null;
@@ -252,36 +159,15 @@ namespace MalbersAnimations
 
                 StartCoroutine(ICo);
             }
-
-            StartCoroutine(CheckForCollidersOff());
-
-            //animal.OnAction.RemoveListener(OnActionListener);
-
-            //animal.ActionID = -1;
-            //animal = null;
-        }
-
-        IEnumerator CheckForCollidersOff()
-        {
-            yield return null;
-            yield return null;
-            if (_colliders != null && _colliders[0] && _colliders[0].enabled == false)
-            {
-                animal.OnAction.RemoveListener(OnActionListener);
-                animal.ActionID = -1;
-                animal = null;
-                _colliders = null;
-            }
         }
 
         public void CopyActionzone(ActionZone targetToCopy)
         {
             ID = targetToCopy.ID;
             NextTarget = targetToCopy.NextTarget;
-            OnEnter = targetToCopy.OnEnter;
-            OnSight = targetToCopy.OnSight;
-            OnAction = targetToCopy.OnAction;
-            OnExit = targetToCopy.OnExit;
+            onSight = targetToCopy.onSight;
+            onAction = targetToCopy.onAction;
+            onEnd = targetToCopy.onEnd;
             onGrab = targetToCopy.onGrab;
             onEnable = targetToCopy.onEnable;
 
@@ -297,9 +183,8 @@ namespace MalbersAnimations
         {
             if (EditorAI)
             {
-                //Debug.DrawLine(transform.position, NextTarget.transform.position, Color.green);
                 UnityEditor.Handles.color = Color.red;
-                UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, stoppingDistance);
+                UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, stoppingDistance);
             }
 
         }
