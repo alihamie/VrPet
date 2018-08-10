@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FoxItemInteraction : MonoBehaviour
 {
-
     public Transform jaw;
     public AnimalAIControl aiControl;
     private Transform grabbedItem;
@@ -21,65 +20,49 @@ public class FoxItemInteraction : MonoBehaviour
             return;
         }
 
-        if (this.grabbedItem != null && item.GetInstanceID() == grabbedItem.GetInstanceID())
+        if (grabbedItem != null && item == grabbedItem)
         {
             return;
         }
 
-        if (this.grabbedItem != null)
+        if (grabbedItem != null)
         {
             DropItem();
         }
 
-        item.parent = this.jaw;
-
-        item.position = this.jaw.position;
-
-        //if (item.name == "Frisbee")
-        //{
-        //    Debug.Log("Oh boy, a frisbee, my favorite toy!");
-        //    item.rotation = FunctionalAssist.RelativeRotation(-Vector3.up, jaw.InverseTransformDirection(item.up), Vector3.forward, Vector3.right, item.rotation);
-        //}
-
+        item.parent = jaw;
+        item.localPosition = Vector3.zero;
         grabbedItem = item;
-
         item.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
-        foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>()) col.enabled = false;
+        foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
+        {
+            col.enabled = false;
+        }
 
         ActionZone actionZone = item.GetComponent<ActionZone>();
-
-        //if (actionZone != null)
-        //{
-        //    actionZone.CancelInvoke();
-        //    actionZone.StopAllCoroutines();
-        //    actionZone.enabled = false;
-        //}
-
-        aiControl.isWandering = false;
-        //aiControl.target = player;
-
         StandardGrabReceiver grabReceiver = grabbedItem.GetComponent<StandardGrabReceiver>();
-
         if (grabReceiver)
         {
             grabReceiver.SetIsGrabbed(true);
-        }
-    }
+		}
+		grabReceiver.enabled = false;
+	}
 
     public void DropItem()
     {
-
         if (grabbedItem == null)
         {
             return;
         }
 
         grabbedItem.parent = null;
-
         grabbedItem.GetComponent<Rigidbody>().isKinematic = false;
 
-        foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>()) col.enabled = true;
+        foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
+        {
+            col.enabled = true;
+        }
 
         if (aiControl != null)
         {
@@ -88,12 +71,12 @@ public class FoxItemInteraction : MonoBehaviour
         }
 
         StandardGrabReceiver grabReceiver = grabbedItem.GetComponent<StandardGrabReceiver>();
-
+		grabReceiver.enabled = true;
         if (grabReceiver)
         {
             grabReceiver.SetIsGrabbed(false);
         }
-
+		
         grabbedItem = null;
     }
 

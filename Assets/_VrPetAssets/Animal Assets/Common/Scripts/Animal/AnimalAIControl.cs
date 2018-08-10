@@ -36,7 +36,7 @@ namespace MalbersAnimations
         bool isInActionState;                       //Check if is making any Animation Action
         bool StartingAction;                        //Check if Start the animation  
 
-        bool sawTarget, targetOverride;
+        bool sawTarget, targetOverride, iAmFixingTheAgentDisplacement;
 
         protected int sawTargetLayerMask = (1 << 8) | (1 << 0);// This makes a layermask using the number 8 because that is the layer that I've put all the props on.
         enum MovementStates
@@ -50,7 +50,6 @@ namespace MalbersAnimations
         MovementStates currentMovementState = MovementStates.NormalMovement;
 
         protected float DefaultStoppingDistance;
-
 
         /// <summary>
         /// Important for changing Waypoints
@@ -94,7 +93,7 @@ namespace MalbersAnimations
             Agent.updateRotation = false;
             Agent.updatePosition = false;
             isWandering = true;
-            DefaultStoppingDistance = Agent.stoppingDistance; //Save the Stopping Distance
+            DefaultStoppingDistance = Agent.stoppingDistance; // Save the Stopping Distance.
         }
 
         void Update()
@@ -102,11 +101,17 @@ namespace MalbersAnimations
             DisableAgent();
             TryActionZone();
             timer += Time.deltaTime;
-            Agent.nextPosition = agent.transform.position;                      //Update the Agent Position to the Transform position
+            Agent.nextPosition = agent.transform.position; // Update the Agent Position to the Transform position
 
             if (!Agent.isOnNavMesh || !Agent.enabled || target == null || interruptTimer > timer)
             {
                 return;
+            }
+
+            if ((Agent.nextPosition - transform.position).magnitude > 1f && !iAmFixingTheAgentDisplacement)
+            {
+                iAmFixingTheAgentDisplacement = true;
+                StartCoroutine(FixAgentDisplacement());
             }
 
             UpdateTarget();
@@ -118,7 +123,16 @@ namespace MalbersAnimations
             }
         }
 
-        // Ideally, there shouldn't ever be a time where it's necessary to call this on every frame. I may change my tune, but until that time I'll restructure this with that in mind.
+        IEnumerator FixAgentDisplacement()
+        {
+            yield return new WaitForSeconds(.5f);
+            if ((Agent.nextPosition - transform.position).magnitude > 1f)
+            {
+                Agent.Warp(Agent.transform.position);
+            }
+            iAmFixingTheAgentDisplacement = false;
+        }
+
         void UpdateTarget()
         {
             if (deltaTarget != target)
@@ -173,10 +187,8 @@ namespace MalbersAnimations
                 if (!Agent.enabled)
                 {
                     Agent.enabled = true;
-                    isMoving = false; // Important... somehow. Not quite sure. The previous comment here just said "Important". Rude.
+                    isMoving = false; // Important.
                 }
-
-            
             }
             else
             {
