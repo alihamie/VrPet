@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class RcDriverButtonClick : BaseToyClickButton
 {
+	//for ben ===remove later===
+	public bool triggerCar = false;
+
     public Transform mainCamera;
     public Transform driverCamera;
     public OVRScreenFade faderLeft;
@@ -74,6 +77,12 @@ public class RcDriverButtonClick : BaseToyClickButton
 
     private void Update()
     {
+		if(triggerCar)
+		{
+			triggerCar = false;
+			SwitchToDriverCamera();
+		}
+
         //TODO make a global delegate to figure out quick pad Click instad of doing this everytime
         if (padClick == true && prevPadClick == false && PlayerState.CURRENTSTATE == PlayerState.PLAYERSTATE.DRIVING)
         {

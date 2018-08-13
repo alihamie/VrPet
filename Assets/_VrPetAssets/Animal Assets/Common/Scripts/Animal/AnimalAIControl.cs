@@ -12,31 +12,34 @@ namespace MalbersAnimations
         private NavMeshAgent agent; // The NavMeshAgent
         protected Animal animal; // The Animal Script
         private Animator animalAnimator;
+        private RelativeHeadRotate headRotation;
         #endregion
 
         #region Target Verifications
-        protected Animal Target_is_Animal; // To check if the target is an animal
         protected ActionZone Target_is_ActionZone; // To check if the Target is an Action Zone
         protected MWayPoint Target_is_Waypoint; // To check if the Target is a Way Point
         #endregion
 
+        [HideInInspector]
         public Transform target; // The target to path to.
-        Transform deltaTarget; // Used to check if the Target has changed
-        private Transform nextTarget;
+        public Transform deltaTarget; // Used to check if the Target has changed
         private Transform closestGrabableItem;
         public GameObject animalHead; // To give other scripts that use it a universal reference to the head transform.
         public bool AutoSpeed = true;
         public float ToTrot = 6f;
         public float ToRun = 8f;
         private float interruptTimer;
+        private NavMeshPath path;
+        private Vector3 pathEndDestination;
 
         public bool debug = true;                   // Debugging 
         public bool isWandering = false;
-
-        bool isInActionState;                       //Check if is making any Animation Action
-        bool StartingAction;                        //Check if Start the animation  
-
-        bool sawTarget, targetOverride, iAmFixingTheAgentDisplacement;
+        bool isInActionState; // Check if is making any Animation Action
+        bool StartingAction; // Check if Start the animation  
+        bool sawTarget; // After changing targets, have we ever had line of sight between the fox and the target?
+        bool targetOverride;
+        bool isFixingTheAgentDisplacement;
+        bool cannotPathToTarget;
 
         protected int sawTargetLayerMask = (1 << 8) | (1 << 0);// This makes a layermask using the number 8 because that is the layer that I've put all the props on.
         enum MovementStates
@@ -78,7 +81,9 @@ namespace MalbersAnimations
         void Start()
         {
             StartAgent();
+#if UNITY_EDITOR
             UpdateTarget();
+#endif
         }
 
         /// <summary>
@@ -86,10 +91,12 @@ namespace MalbersAnimations
         /// </summary>
         protected virtual void StartAgent()
         {
+            path = new NavMeshPath();
             wanderTimer = 3;
             timer = wanderTimer;
             animal = GetComponent<Animal>();
             animalAnimator = GetComponent<Animator>();
+            headRotation = GetComponent<RelativeHeadRotate>();
             Agent.updateRotation = false;
             Agent.updatePosition = false;
             isWandering = true;
@@ -103,78 +110,47 @@ namespace MalbersAnimations
             timer += Time.deltaTime;
             Agent.nextPosition = agent.transform.position; // Update the Agent Position to the Transform position
 
-            if (!Agent.isOnNavMesh || !Agent.enabled || target == null || interruptTimer > timer)
+            if (!Agent.isOnNavMesh || !Agent.enabled || interruptTimer > timer)
             {
                 return;
             }
 
-            if ((Agent.nextPosition - transform.position).magnitude > 1f && !iAmFixingTheAgentDisplacement)
+            if ((Agent.nextPosition - transform.position).sqrMagnitude > 1f && !isFixingTheAgentDisplacement)
             {
-                iAmFixingTheAgentDisplacement = true;
+                isFixingTheAgentDisplacement = true;
                 StartCoroutine(FixAgentDisplacement());
             }
 
-            UpdateTarget();
             UpdateAgent();
 
-            if (!sawTarget && !isWandering)
+            if (!(isWandering || cannotPathToTarget || sawTarget))
             {
                 CheckSightlineToTarget(); // This is something that can be just fine with a margin of error of .3 seconds to first seeing something. So if performance is lagging, feel free to cut corners here.
             }
+
+#if UNITY_EDITOR
+            UpdateTarget();
+#endif
         }
 
         IEnumerator FixAgentDisplacement()
         {
             yield return new WaitForSeconds(.5f);
-            if ((Agent.nextPosition - transform.position).magnitude > 1f)
+            if ((Agent.nextPosition - transform.position).sqrMagnitude > 1f)
             {
                 Agent.Warp(Agent.transform.position);
             }
-            iAmFixingTheAgentDisplacement = false;
+            isFixingTheAgentDisplacement = false;
         }
 
         void UpdateTarget()
         {
-            if (deltaTarget != target)
+#if UNITY_EDITOR
+            if (target != deltaTarget)
             {
-                if (deltaTarget != null)
-                {
-                    ActionZone Prev_Target_ActionZon = deltaTarget ? deltaTarget.GetComponent<ActionZone>() : null;
-                    if (Prev_Target_ActionZon)
-                    {
-                        Prev_Target_ActionZon.enabled = false;
-                    }
-                }
-
-                deltaTarget = target;
-
-                if (deltaTarget)
-                {
-                    Target_is_Animal = deltaTarget.GetComponent<Animal>();
-                    Target_is_ActionZone = deltaTarget.GetComponent<ActionZone>();
-                    Target_is_Waypoint = deltaTarget.GetComponent<MWayPoint>();
-
-                    if (Target_is_ActionZone)
-                    {
-                        Target_is_ActionZone.enabled = true;
-                        Agent.stoppingDistance = Target_is_ActionZone.stoppingDistance;
-                    }
-                    else if (Target_is_Waypoint)
-                    {
-                        Agent.stoppingDistance = Target_is_Waypoint.StoppingDistance;
-                    }
-                }
-                else
-                {
-                    Target_is_ActionZone = null;
-                    Target_is_Animal = null;
-                    Target_is_Waypoint = null;
-
-                    Agent.stoppingDistance = DefaultStoppingDistance;
-                }
-
-                sawTarget = false;
+                SetTarget(deltaTarget);
             }
+#endif
         }
 
         /// <summary>
@@ -244,7 +220,36 @@ namespace MalbersAnimations
             }
             else if (target != null)
             {
-                Agent.SetDestination(target.position);
+                //Agent.SetDestination(target.position);
+                Agent.CalculatePath(target.position, path);
+                Debug.Log(path.status);
+
+                if (path.status != NavMeshPathStatus.PathInvalid)
+                {
+                    pathEndDestination = path.corners[path.corners.Length - 1];
+
+                    if ((pathEndDestination - target.position).sqrMagnitude > .04f)
+                    {
+                        if (!cannotPathToTarget)
+                        {
+                            cannotPathToTarget = true;
+                            Agent.SetDestination(pathEndDestination);
+                            SetStoppingDistance();
+                            StartCoroutine(PathingTimeOut());
+                        }
+                    }
+                    else
+                    {
+                        Agent.path = path;
+
+                        if (cannotPathToTarget)
+                        {
+                            cannotPathToTarget = false;
+                            SetStoppingDistance();
+                            StopCoroutine(PathingTimeOut());
+                        }
+                    }
+                }
             }
 
             if (Agent.remainingDistance > Agent.stoppingDistance)
@@ -255,15 +260,17 @@ namespace MalbersAnimations
             }
             else
             {
-                if (Target_is_ActionZone && !StartingAction)        //If the Target is an Action Zone Start the Action
+                if (Target_is_ActionZone && !StartingAction) // If the Target is an Action Zone Start the Action
                 {
                     StartingAction = true;
-                    //animal.Action = true;                           //Activate the Action on the Animal
                 }
-
-                if (Target_is_Waypoint && isMoving)
+                else if (Target_is_Waypoint && isMoving)
                 {
                     SetTarget(Target_is_Waypoint.NextWaypoint.transform);
+                }
+                else if (cannotPathToTarget)
+                {
+                    // Insert appropriate action to do here. Probably the call to the sound and the head shake. 
                 }
             }
 
@@ -272,6 +279,14 @@ namespace MalbersAnimations
             if (AutoSpeed) AutomaticSpeed();                         //Set Automatic Speeds
 
             CheckOffMeshLinks();                                     //Jump/Fall behaviour 
+        }
+
+        IEnumerator PathingTimeOut()
+        {
+            Debug.Log("A");
+            yield return new WaitForSeconds(8f);
+            Debug.Log("B");
+            isWandering = true;
         }
 
         public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
@@ -334,6 +349,27 @@ namespace MalbersAnimations
             }
         }
 
+        void SetStoppingDistance()
+        {
+            if (cannotPathToTarget)
+            {
+                Agent.stoppingDistance = Mathf.Abs(pathEndDestination.y - target.position.y) + 1f;
+            }
+            else if (Target_is_ActionZone)
+            {
+                Target_is_ActionZone.enabled = true;
+                Agent.stoppingDistance = Target_is_ActionZone.stoppingDistance;
+            }
+            else if (Target_is_Waypoint)
+            {
+                Agent.stoppingDistance = Target_is_Waypoint.StoppingDistance;
+            }
+            else
+            {
+                Agent.stoppingDistance = DefaultStoppingDistance;
+            }
+        }
+
         /// <summary>
         /// Change velocities
         /// </summary>
@@ -390,13 +426,23 @@ namespace MalbersAnimations
                 {
                     isWandering = false;
                     this.target = target;
+                    Target_is_ActionZone = target.GetComponent<ActionZone>();
+                    Target_is_Waypoint = target.GetComponent<MWayPoint>();
+                    SetStoppingDistance();
                 }
                 else
                 {
                     isWandering = true;
+                    Target_is_ActionZone = null;
+                    Target_is_Waypoint = null;
+                    Agent.stoppingDistance = DefaultStoppingDistance;
                 }
 
-                UpdateTarget();
+                sawTarget = false;
+
+#if UNITY_EDITOR
+                deltaTarget = target;
+#endif
             }
         }
 
@@ -438,7 +484,7 @@ namespace MalbersAnimations
         {
             Vector3 directionToTarget = target.position - animalHead.transform.position;
             RaycastHit hit;
-            Physics.Raycast(new Ray(animalHead.transform.position, directionToTarget), out hit, directionToTarget.magnitude, sawTargetLayerMask, QueryTriggerInteraction.Ignore);
+            Physics.Raycast(new Ray(animalHead.transform.position, directionToTarget), out hit, 10f, sawTargetLayerMask, QueryTriggerInteraction.Ignore);
 
             float degreesToTarget = Mathf.Abs(FunctionalAssist.AngleOffAroundAxis(transform.forward, directionToTarget, Vector3.up));
 
@@ -464,6 +510,11 @@ namespace MalbersAnimations
         public void ToggleTargetOverride()
         {
             targetOverride = !targetOverride;
+        }
+
+        public void SetJawOffset(float newOffset)
+        {
+            headRotation.jawOffset = newOffset;
         }
 
 #if UNITY_EDITOR

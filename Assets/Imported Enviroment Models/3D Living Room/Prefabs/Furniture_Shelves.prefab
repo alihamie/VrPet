@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 416134}
   - component: {fileID: 3390884}
   - component: {fileID: 2322278}
-  - component: {fileID: 64262530764090962}
+  - component: {fileID: 65142135001732272}
   m_Layer: 0
   m_Name: Furniture_Shelves
   m_TagString: Untagged
@@ -52,9 +52,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 122060}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.264, y: 0, z: 3.399}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.0204976, y: 0, z: 4.5347495}
+  m_LocalScale: {x: 1.3341421, y: 1.3341423, z: 1.3341423}
   m_Children:
   - {fileID: 416134}
   m_Father: {fileID: 0}
@@ -112,8 +112,8 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 122060}
   m_IsPrefabParent: 1
---- !u!64 &64262530764090962
-MeshCollider:
+--- !u!65 &65142135001732272
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -121,8 +121,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 34092e00efa6748609b2d75d99d1592f, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.2586942, y: 0.84783864, z: 2.713081}
+  m_Center: {x: -0.00005966425, y: -0.00000020861629, z: 1.35654}

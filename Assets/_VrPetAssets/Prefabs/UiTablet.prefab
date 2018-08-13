@@ -2831,6 +2831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c8bf3fcab041d419ba5f484ddfefff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerCar: 0
   mainCamera: {fileID: 0}
   driverCamera: {fileID: 0}
   faderLeft: {fileID: 0}

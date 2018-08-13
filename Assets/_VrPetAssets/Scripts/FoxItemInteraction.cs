@@ -56,7 +56,7 @@ public class FoxItemInteraction : MonoBehaviour
             return;
         }
 
-        grabbedItem.parent = null;
+        grabbedItem.parent = this.transform;
         grabbedItem.GetComponent<Rigidbody>().isKinematic = false;
 
         foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())

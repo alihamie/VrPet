@@ -37,7 +37,7 @@ namespace MalbersAnimations
 
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("target"), new GUIContent("Target","Target to follow"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("deltaTarget"), new GUIContent("Target","Target to follow"));
             EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
