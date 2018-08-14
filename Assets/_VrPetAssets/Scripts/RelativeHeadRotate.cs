@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class RelativeHeadRotate : MonoBehaviour
 {
-    public Transform lookTarget, player;
+    public Transform player;
     private float maxTilt = 80f, minTilt = -20f;
     private float maxPan = 60f, minPan = -60f;
     public float jawOffset = 0f;
 
     private Quaternion defaultJawRotation;
-    private Transform head, jaw;
+    private Transform lookTarget, head, jaw;
     private float firstAngle, secondAngle;
-    private Quaternion lastRotation;
-    private Vector3 lookDirection;
+    private Quaternion lastRotation, normalRotation, newRotation;
 
     private MalbersAnimations.AnimalAIControl animalAI;
 
@@ -49,17 +48,14 @@ public class RelativeHeadRotate : MonoBehaviour
         }
     }
 
-    // I'm little bit torn up about this because it's a hacky way to do something that should be possible to just do in some variation of LateUpdate and it might contribute disproportionately to the general render time since it needs to happen after LateUpdate. Maybe it'll be okay if this is the only thing that does that, though...
-    void LateFixedUpdate()
+    private void Update()
     {
-        Quaternion normalRotation = head.localRotation;
-
-        //lookTarget = new Vector3(0, 1f, 0);
-        //lookTarget = animalAI.target;
+        newRotation = normalRotation;
+        lookTarget = animalAI.target;
 
         if (lookTarget != null && !animalAI.isWandering)
         {
-            lookDirection = head.InverseTransformPoint(lookTarget.position);
+            Vector3 lookDirection = head.InverseTransformPoint(lookTarget.position);
 
             if (lookDirection.sqrMagnitude > .25f)
             {
@@ -71,20 +67,23 @@ public class RelativeHeadRotate : MonoBehaviour
 
                 Vector2 boundedLook = FunctionalAssist.IrregularOvalBounds(new Vector2(firstAngle, secondAngle), maxTilt, minTilt, maxPan, minPan);
 
-                normalRotation *= Quaternion.AngleAxis(boundedLook.x, Vector3.right);
-                normalRotation *= Quaternion.AngleAxis(boundedLook.y, Vector3.forward);
+                newRotation *= Quaternion.AngleAxis(boundedLook.x, Vector3.right);
+                newRotation *= Quaternion.AngleAxis(boundedLook.y, Vector3.forward);
             }
         }
+    }
 
-        normalRotation = Quaternion.Lerp(normalRotation, lastRotation, .9f);
+    // I'm little bit torn up about this because it's a hacky way to do something that should be possible to just do in some variation of LateUpdate and it might contribute disproportionately to the general render time since it needs to happen after LateUpdate. Maybe it'll be okay if this is the only thing that does that, though...
+    void LateFixedUpdate()
+    {
+        normalRotation = head.localRotation;
 
         if (jawOffset != 0)
         {
-            jaw.rotation = defaultJawRotation;
             jaw.Rotate(new Vector3(0, 0, jawOffset), Space.Self);
         }
 
-        lastRotation = head.localRotation = normalRotation;
+        lastRotation = head.localRotation = Quaternion.Lerp(newRotation, lastRotation, .9f);
     }
 
     public void ChangeTarget(TARGETS newTarget)
