@@ -80,16 +80,11 @@ namespace MalbersAnimations
             {
                 ai.SetClosestGrabbableItem(transform);
 
-                if (rigidbody) // If it's a grabable item, it'll probably have a rigidbody... but there's no way to say that'll always be the case.
+                if (id == 25) // If we're trying to grab the object, we need to be faster if the object is going faster.
                 {
-                    float rigidbodyAverageVelocity = 1f;
-                    float threshold = stoppingDistance * .04f;
-
-                    while (rigidbodyAverageVelocity > threshold) // I want to make sure that the grabbed object will move less than the entirety of the stopping distance away within the next two seconds.
+                    if (rigidbody.velocity.sqrMagnitude > .25f || rigidbody.angularVelocity.sqrMagnitude > .09)
                     {
-                        rigidbodyAverageVelocity =+ rigidbody.velocity.magnitude;
-                        rigidbodyAverageVelocity = rigidbodyAverageVelocity * .8f; // This is a silly setup, but it'll find me a rough average of the object's velocity. Which is all I need.
-                        yield return new WaitForSeconds(.1f); // Had some problems with WaitForEndOfFrame() in the editor. Might be an editor-specific thing, but this works just fine for me too.
+                        id = 19;
                     }
                 }
             }
@@ -158,6 +153,13 @@ namespace MalbersAnimations
                 StartCoroutine(ICo);
             }
         }
+
+        //public void PushMePullYou()
+        //{
+        //    float random = UnityEngine.Random.Range(-180f, 180f);
+        //    Rigidbody rigidbody = GetComponent<Rigidbody>();
+        //    rigidbody.AddForce(Quaternion.AngleAxis(random, Vector3.up) * Vector3.forward * 10f, ForceMode.VelocityChange);
+        //}
 
         public void CopyActionzone(ActionZone targetToCopy)
         {

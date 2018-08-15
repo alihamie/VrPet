@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class RelativeHeadRotate : MonoBehaviour
 {
-    public Transform player;
+    public Transform lookTarget, player;
     private float maxTilt = 80f, minTilt = -20f;
     private float maxPan = 60f, minPan = -60f;
     public float jawOffset = 0f;
 
     private Quaternion defaultJawRotation;
-    private Transform lookTarget, head, jaw;
+    private Transform head, jaw;
     private float firstAngle, secondAngle;
     private Quaternion lastRotation, normalRotation, newRotation;
 
@@ -101,4 +101,5 @@ public class RelativeHeadRotate : MonoBehaviour
             lookTarget = animalAI.target;
         }
     }
+
 }

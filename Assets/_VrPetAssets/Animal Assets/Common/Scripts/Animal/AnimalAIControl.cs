@@ -40,6 +40,7 @@ namespace MalbersAnimations
         bool targetOverride;
         bool isFixingTheAgentDisplacement;
         bool cannotPathToTarget;
+        bool performingHeadOverride;
 
         protected int sawTargetLayerMask = (1 << 8) | (1 << 0);// This makes a layermask using the number 8 because that is the layer that I've put all the props on.
         enum MovementStates
@@ -180,19 +181,16 @@ namespace MalbersAnimations
         /// <summary>
         /// Manage every time the animal enters an Action Zone
         /// </summary>
+
         void TryActionZone()
         {
             if (isInActionState != animal.CurrentAnimState.IsTag("Action"))  //If the animal is Executing an action, save it
             {
                 isInActionState = animal.CurrentAnimState.IsTag("Action");   //Store it if there was any change on the action 
 
-                if (isInActionState)
+                if (!isInActionState)
                 {
-                    
-                }
-                else
-                {
-                    StartingAction = false;
+                    StartingAction = false; // This whole function is largely vestigial. It still has one function that might be necessary, so it stays for now. For now
                 }
             }
         }
@@ -220,34 +218,35 @@ namespace MalbersAnimations
             }
             else if (target != null)
             {
-                //Agent.SetDestination(target.position);
                 Agent.CalculatePath(target.position, path);
-                Debug.Log(path.status);
 
-                if (path.status != NavMeshPathStatus.PathInvalid)
+                if (path.corners.Length > 0)
                 {
                     pathEndDestination = path.corners[path.corners.Length - 1];
+                }
+                else
+                {
+                    pathEndDestination = transform.position;
+                }
 
-                    if ((pathEndDestination - target.position).sqrMagnitude > .04f)
+                if ((pathEndDestination - target.position).sqrMagnitude > .04f)
+                {
+                    if (!cannotPathToTarget)
                     {
-                        if (!cannotPathToTarget)
-                        {
-                            cannotPathToTarget = true;
-                            Agent.SetDestination(pathEndDestination);
-                            SetStoppingDistance();
-                            StartCoroutine(PathingTimeOut());
-                        }
+                        cannotPathToTarget = true;
+                        Agent.SetDestination(pathEndDestination);
+                        SetStoppingDistance();
+                        StartCoroutine(PathingTimeOut());
                     }
-                    else
-                    {
-                        Agent.path = path;
+                }
+                else
+                {
+                    Agent.path = path;
 
-                        if (cannotPathToTarget)
-                        {
-                            cannotPathToTarget = false;
-                            SetStoppingDistance();
-                            StopCoroutine(PathingTimeOut());
-                        }
+                    if (cannotPathToTarget)
+                    {
+                        cannotPathToTarget = false;
+                        SetStoppingDistance();
                     }
                 }
             }
@@ -268,10 +267,6 @@ namespace MalbersAnimations
                 {
                     SetTarget(Target_is_Waypoint.NextWaypoint.transform);
                 }
-                else if (cannotPathToTarget)
-                {
-                    // Insert appropriate action to do here. Probably the call to the sound and the head shake. 
-                }
             }
 
             animal.Move(Direction);                                 //Set the Movement to the Animal
@@ -283,10 +278,16 @@ namespace MalbersAnimations
 
         IEnumerator PathingTimeOut()
         {
-            Debug.Log("A");
-            yield return new WaitForSeconds(8f);
-            Debug.Log("B");
-            isWandering = true;
+            yield return new WaitForSeconds(14f); // If the fox can't figure out where it's going in 14 seconds, then it ain't happening.
+            if (cannotPathToTarget)
+            {
+                TriggerHeadOverride(1f, 3.5f, 1f);
+                InterruptPathing(6f);
+                isWandering = true;
+                yield return new WaitForSeconds(2f);
+                GetComponent<FoxSounds>().VoiceFox(5);
+                yield return new WaitForSeconds(2.5f);
+            }
         }
 
         public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
@@ -325,7 +326,6 @@ namespace MalbersAnimations
                     if (!StartingAction)        //If the Target is an Action Zone Start the Action
                     {
                         StartingAction = true;
-                        //animal.Action = true;                           //Activate the Action on the Animal
                         return;
                     }
                 }
@@ -453,7 +453,7 @@ namespace MalbersAnimations
 
         public Transform GetClosestGrabableItem()
         {
-            return this.closestGrabableItem;
+            return closestGrabableItem;
         }
 
         /// <summary>
@@ -512,9 +512,82 @@ namespace MalbersAnimations
             targetOverride = !targetOverride;
         }
 
-        public void SetJawOffset(float newOffset)
+        public void TriggerJawOverride(float newJawWeight, float newJawOffset = 0)
         {
-            headRotation.jawOffset = newOffset;
+            StartCoroutine(JawOverride(newJawWeight, newJawOffset));
+        }
+
+        IEnumerator JawOverride (float newJawWeight, float newJawOffset, string animName = "JawOpen")
+        {
+            float jawTimer = 0;
+            float transitionTime = .5f;
+
+            newJawWeight = Mathf.Clamp(newJawWeight, 0, 1f);
+            float oldJawWeight = animalAnimator.GetLayerWeight(3);
+            float weightDifference = newJawWeight - oldJawWeight;
+
+            if (newJawWeight == 0)
+            {
+                newJawOffset = 0;
+            }
+            float oldJawOffset = headRotation.jawOffset;
+            float offsetDifference = newJawOffset - oldJawOffset;
+
+            if (oldJawWeight == 0)
+            {
+                animalAnimator.SetBool(animName, true);
+            }
+
+            while (jawTimer > transitionTime)
+            {
+                jawTimer = jawTimer + Time.deltaTime;
+                animalAnimator.SetLayerWeight(3, oldJawWeight + ((weightDifference * jawTimer) / transitionTime));
+                headRotation.jawOffset = oldJawOffset + (offsetDifference * jawTimer) / transitionTime;
+                yield return new WaitForEndOfFrame();
+            }
+            animalAnimator.SetLayerWeight(3, newJawWeight);
+            headRotation.jawOffset = newJawOffset;
+
+            if (newJawWeight == 0)
+            {
+                animalAnimator.SetBool(animName, false);
+            }
+        }
+
+        public void TriggerHeadOverride(float inTime, float stayTime, float outTime, string animName = "HeadShake")
+        {
+            StartCoroutine(HeadOverride(inTime, stayTime, outTime, animName));
+        }
+
+        IEnumerator HeadOverride(float inTime, float stayTime, float outTime, string animName)
+        {
+            if (!performingHeadOverride)
+            {
+                performingHeadOverride = true; // I want to make damn well certain this isn't going to trigger multiple times in a row.
+                float headTimer = 0;
+                animalAnimator.SetBool(animName, true);
+                while (headTimer < inTime)
+                {
+                    Debug.Log("This is only going to trigger once, probably");
+                    headTimer = headTimer + Time.deltaTime;
+                    animalAnimator.SetLayerWeight(2, headTimer / inTime);
+                    yield return new WaitForEndOfFrame();
+                }
+                headTimer = 0;
+                animalAnimator.SetLayerWeight(2, 1f);
+
+                yield return new WaitForSeconds(stayTime);
+
+                while (headTimer < outTime)
+                {
+                    headTimer = headTimer + Time.deltaTime;
+                    animalAnimator.SetLayerWeight(2, 1f - (headTimer / outTime));
+                    yield return new WaitForEndOfFrame();
+                }
+                animalAnimator.SetLayerWeight(2, 0f);
+                animalAnimator.SetBool(animName, false);
+                performingHeadOverride = false;
+            }
         }
 
 #if UNITY_EDITOR
