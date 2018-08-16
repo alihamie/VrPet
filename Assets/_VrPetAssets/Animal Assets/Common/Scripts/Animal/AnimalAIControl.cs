@@ -26,14 +26,17 @@ namespace MalbersAnimations
         private Transform closestGrabableItem;
         public GameObject animalHead; // To give other scripts that use it a universal reference to the head transform.
         public bool AutoSpeed = true;
-        public float ToTrot = 6f;
-        public float ToRun = 8f;
+        public float ToTrot = 6f, ToRun = 8f;
         private float interruptTimer;
         private NavMeshPath path;
         private Vector3 pathEndDestination;
 
         public bool debug = true;                   // Debugging 
         public bool isWandering = false;
+
+        private float targetJawWeight = 0, targetJawOffset = 0;
+
+        #region State Bools
         bool isInActionState; // Check if is making any Animation Action
         bool StartingAction; // Check if Start the animation  
         bool sawTarget; // After changing targets, have we ever had line of sight between the fox and the target?
@@ -41,8 +44,10 @@ namespace MalbersAnimations
         bool isFixingTheAgentDisplacement;
         bool cannotPathToTarget;
         bool performingHeadOverride;
+        #endregion
 
         protected int sawTargetLayerMask = (1 << 8) | (1 << 0);// This makes a layermask using the number 8 because that is the layer that I've put all the props on.
+
         enum MovementStates
         {
             NormalMovement = 0,
@@ -51,6 +56,7 @@ namespace MalbersAnimations
             SlowWalk = 3,
             FastRun = 4
         }
+
         MovementStates currentMovementState = MovementStates.NormalMovement;
 
         protected float DefaultStoppingDistance;
@@ -77,7 +83,6 @@ namespace MalbersAnimations
                 return agent;
             }
         }
-
 
         void Start()
         {
@@ -517,20 +522,20 @@ namespace MalbersAnimations
             StartCoroutine(JawOverride(newJawWeight, newJawOffset));
         }
 
-        IEnumerator JawOverride (float newJawWeight, float newJawOffset, string animName = "JawOpen")
+        IEnumerator JawOverride (float newJawWeight, float newJawOffset, float transitionTime = .5f, string animName = "JawOpen")
         {
             float jawTimer = 0;
-            float transitionTime = .5f;
-
-            newJawWeight = Mathf.Clamp(newJawWeight, 0, 1f);
-            float oldJawWeight = animalAnimator.GetLayerWeight(3);
+            
+            float oldJawWeight = targetJawWeight;
+            targetJawWeight = newJawWeight = Mathf.Clamp(newJawWeight, 0, 1f);
             float weightDifference = newJawWeight - oldJawWeight;
 
             if (newJawWeight == 0)
             {
                 newJawOffset = 0;
             }
-            float oldJawOffset = headRotation.jawOffset;
+            float oldJawOffset = targetJawOffset;
+            targetJawOffset = newJawOffset;
             float offsetDifference = newJawOffset - oldJawOffset;
 
             if (oldJawWeight == 0)
@@ -568,7 +573,6 @@ namespace MalbersAnimations
                 animalAnimator.SetBool(animName, true);
                 while (headTimer < inTime)
                 {
-                    Debug.Log("This is only going to trigger once, probably");
                     headTimer = headTimer + Time.deltaTime;
                     animalAnimator.SetLayerWeight(2, headTimer / inTime);
                     yield return new WaitForEndOfFrame();
