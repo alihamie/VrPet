@@ -112,8 +112,8 @@ namespace MalbersAnimations
         void Update()
         {
             DisableAgent();
-            TryActionZone();
-            timer += Time.deltaTime;
+        TryActionZone();
+        timer += Time.deltaTime;
             Agent.nextPosition = agent.transform.position; // Update the Agent Position to the Transform position
 
             if (!Agent.isOnNavMesh || !Agent.enabled || interruptTimer > timer)
@@ -125,17 +125,17 @@ namespace MalbersAnimations
             {
                 isFixingTheAgentDisplacement = true;
                 StartCoroutine(FixAgentDisplacement());
-            }
+    }
 
-            UpdateAgent();
+    UpdateAgent();
 
             if (!(isWandering || cannotPathToTarget || sawTarget))
             {
                 CheckSightlineToTarget(); // This is something that can be just fine with a margin of error of .3 seconds to first seeing something. So if performance is lagging, feel free to cut corners here.
-            }
+}
 
 #if UNITY_EDITOR
-            UpdateTarget();
+UpdateTarget();
 #endif
         }
 
@@ -525,7 +525,7 @@ namespace MalbersAnimations
         IEnumerator JawOverride (float newJawWeight, float newJawOffset, float transitionTime = .5f, string animName = "JawOpen")
         {
             float jawTimer = 0;
-            
+
             float oldJawWeight = targetJawWeight;
             targetJawWeight = newJawWeight = Mathf.Clamp(newJawWeight, 0, 1f);
             float weightDifference = newJawWeight - oldJawWeight;
@@ -543,11 +543,11 @@ namespace MalbersAnimations
                 animalAnimator.SetBool(animName, true);
             }
 
-            while (jawTimer > transitionTime)
+            while (jawTimer < transitionTime)
             {
-                jawTimer = jawTimer + Time.deltaTime;
+                jawTimer += Time.deltaTime;
                 animalAnimator.SetLayerWeight(3, oldJawWeight + ((weightDifference * jawTimer) / transitionTime));
-                headRotation.jawOffset = oldJawOffset + (offsetDifference * jawTimer) / transitionTime;
+                headRotation.jawOffset = oldJawOffset + ((offsetDifference * jawTimer) / transitionTime);
                 yield return new WaitForEndOfFrame();
             }
             animalAnimator.SetLayerWeight(3, newJawWeight);

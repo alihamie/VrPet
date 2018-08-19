@@ -5,12 +5,11 @@ using UnityEngine;
 public class ClockHours : MonoBehaviour {
     Transform[] hours;
     private float distanceAdjust = 6.44f;
-    Transform bigHand, smallHand;
+    [SerializeField]
+    private Transform bigHand, smallHand;
 
 	void Start () 
 	{
-        bigHand = transform.GetChild(1);
-        smallHand = transform.GetChild(3);
         hours = new Transform[transform.GetChild(0).childCount];
         for (int i = 0; i < transform.GetChild(0).childCount; i++)
         {
