@@ -41,7 +41,15 @@ namespace MalbersAnimations
             onEnable.Invoke();
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (firstTimeTrigger && collision.gameObject.layer == 20)
+            {
+                Physics.IgnoreLayerCollision(8, 20);
+            }
+        }
+
+        void OnTriggerStay(Collider other)
         {
             if (!enabled || firstTimeTrigger)
             {
@@ -73,6 +81,7 @@ namespace MalbersAnimations
 
         IEnumerator startAnimation(Animal animal, int id, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
         {
+            Physics.IgnoreLayerCollision(20, 8);
             firstTimeTrigger = true;
             Rigidbody rigidbody = GetComponent<Rigidbody>();
 
@@ -122,6 +131,7 @@ namespace MalbersAnimations
                 yield return new WaitForSeconds(.1f);
             }
 
+            Physics.IgnoreLayerCollision(8, 20, false);
             ai.SetTarget(NextTarget, true);
             onEnd.Invoke();
 

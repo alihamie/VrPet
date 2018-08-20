@@ -20,8 +20,6 @@ public class ClockHours : MonoBehaviour {
             float theta = (2 * Mathf.PI / hours.Length) * i;
             hours[i].localPosition = new Vector3(Mathf.Sin(theta), Mathf.Cos(theta), 0f) * distanceAdjust;
         }
-        Debug.Log(System.DateTime.Now);
-        Debug.Log(System.DateTime.Now.Hour);
     }
 
     void Update()

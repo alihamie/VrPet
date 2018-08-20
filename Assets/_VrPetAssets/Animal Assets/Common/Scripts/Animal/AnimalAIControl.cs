@@ -20,7 +20,6 @@ namespace MalbersAnimations
         protected MWayPoint Target_is_Waypoint; // To check if the Target is a Way Point
         #endregion
 
-        [HideInInspector]
         public Transform target; // The target to path to.
         public Transform deltaTarget; // Used to check if the Target has changed
         private Transform closestGrabableItem;
@@ -87,9 +86,6 @@ namespace MalbersAnimations
         void Start()
         {
             StartAgent();
-#if UNITY_EDITOR
-            UpdateTarget();
-#endif
         }
 
         /// <summary>
@@ -105,15 +101,18 @@ namespace MalbersAnimations
             headRotation = GetComponent<RelativeHeadRotate>();
             Agent.updateRotation = false;
             Agent.updatePosition = false;
-            isWandering = true;
             DefaultStoppingDistance = Agent.stoppingDistance; // Save the Stopping Distance.
         }
 
         void Update()
         {
+#if UNITY_EDITOR
+            UpdateTarget();
+            Debug.Log(cannotPathToTarget);
+#endif
             DisableAgent();
-        TryActionZone();
-        timer += Time.deltaTime;
+            TryActionZone();
+            timer += Time.deltaTime;
             Agent.nextPosition = agent.transform.position; // Update the Agent Position to the Transform position
 
             if (!Agent.isOnNavMesh || !Agent.enabled || interruptTimer > timer)
@@ -125,18 +124,14 @@ namespace MalbersAnimations
             {
                 isFixingTheAgentDisplacement = true;
                 StartCoroutine(FixAgentDisplacement());
-    }
+            }
 
-    UpdateAgent();
+            UpdateAgent();
 
             if (!(isWandering || cannotPathToTarget || sawTarget))
             {
                 CheckSightlineToTarget(); // This is something that can be just fine with a margin of error of .3 seconds to first seeing something. So if performance is lagging, feel free to cut corners here.
-}
-
-#if UNITY_EDITOR
-UpdateTarget();
-#endif
+            }
         }
 
         IEnumerator FixAgentDisplacement()
@@ -151,12 +146,10 @@ UpdateTarget();
 
         void UpdateTarget()
         {
-#if UNITY_EDITOR
             if (target != deltaTarget)
             {
                 SetTarget(deltaTarget);
             }
-#endif
         }
 
         /// <summary>
@@ -223,35 +216,32 @@ UpdateTarget();
             }
             else if (target != null)
             {
-                Agent.CalculatePath(target.position, path);
-
-                if (path.corners.Length > 0)
+                if (Agent.destination != target.position && !cannotPathToTarget)
                 {
-                    pathEndDestination = path.corners[path.corners.Length - 1];
+                    Agent.SetDestination(target.position); // First we must always give the Agent a chance to path, since the call is asynchronous (better performance that way, I say). Roughly about a second and a half should be sufficient for our purposes.
+                    SetStoppingDistance();
+                    StartCoroutine(PathingTimeOut()); // A simple delayed check to see if we're actually pathing to the target, or just twiddling our thumbs.
                 }
-                else
+                else if (Agent.destination == target.position && cannotPathToTarget)
                 {
-                    pathEndDestination = transform.position;
-                }
-
-                if ((pathEndDestination - target.position).sqrMagnitude > .04f)
-                {
-                    if (!cannotPathToTarget)
+                    if (path.corners.Length > 0)
                     {
-                        cannotPathToTarget = true;
-                        Agent.SetDestination(pathEndDestination);
-                        SetStoppingDistance();
-                        StartCoroutine(PathingTimeOut());
+                        pathEndDestination = path.corners[path.corners.Length - 1];
                     }
-                }
-                else
-                {
-                    Agent.path = path;
-
-                    if (cannotPathToTarget)
+                    else
                     {
-                        cannotPathToTarget = false;
-                        SetStoppingDistance();
+                        pathEndDestination = transform.position;
+                    }
+
+                    Agent.SetDestination(pathEndDestination);
+                    SetStoppingDistance();
+                } // So, the limitations of this code are thusly: If a player throws a grabbable object in a location that cannot be pathed to and then hits that object with another object so that it's pushed back to a pathable location, we can't detect that. It's possible to fix this by using a second AIPathingAgent to check this (better than using calculate path, since that produces unreliable results, and it always fully computes the path in that frame... performance issues.) If we only wake up the second agent when there are pathing issues, it won't be a problem. I think.
+
+                if (debug && Agent.path.corners.Length > 1)
+                {
+                    for (int i = 0; i < Agent.path.corners.Length - 1; i++)
+                    {
+                        Debug.DrawLine(Agent.path.corners[i], Agent.path.corners[i + 1], Color.red);
                     }
                 }
             }
@@ -283,15 +273,82 @@ UpdateTarget();
 
         IEnumerator PathingTimeOut()
         {
-            yield return new WaitForSeconds(14f); // If the fox can't figure out where it's going in 14 seconds, then it ain't happening.
-            if (cannotPathToTarget)
+            bool arrivedAtPseudoTarget = false;
+            bool weHaveAPath = false;
+            float checkingTimeLimit = 2.5f;
+            float checkingTime = 0;
+            float timeOutLimit = 12f;
+            float timeOut = 0;
+            
+            // So if we fail to get a path in 4 seconds, we're done. But if we do, and that path remains valid for another fours seconds, we're home clear. But if we get a valid path, lose it, and then regain it we should register that properly, with a cutoff of something like 12-18 seconds in case we've managed to create a perfect loop.
+            // Of course, if the fox is animating, then we're already there and we don't have to bother with checking any of this.
+            while (!(weHaveAPath || animal.CurrentAnimState.IsTag("Action")))
             {
-                TriggerHeadOverride(1f, 3.5f, 1f);
-                InterruptPathing(6f);
-                isWandering = true;
-                yield return new WaitForSeconds(2f);
-                GetComponent<FoxSounds>().VoiceFox(5);
-                yield return new WaitForSeconds(2.5f);
+                while (!(checkingTime > checkingTimeLimit || weHaveAPath || animal.CurrentAnimState.IsTag("Action") || timeOut > timeOutLimit))
+                {
+                    checkingTime += Time.fixedDeltaTime;
+                    if (Agent.path.corners.Length > 1)
+                    {
+                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .11f)
+                        {
+                            weHaveAPath = true;
+                        }
+                    }
+                    yield return new WaitForFixedUpdate();
+                }
+
+                if (!weHaveAPath)
+                { // Basically, if we've failed to acquire a path in four seconds there's no point to go on, so we go to this particular dead-end cul de sac.
+                    cannotPathToTarget = true;
+                    checkingTime = 0;
+                    checkingTimeLimit = 8f;
+
+                    while (!(checkingTime > checkingTimeLimit || arrivedAtPseudoTarget))
+                    {
+                        if (!cannotPathToTarget)
+                        { // The only way this is going to be true is if we set a target after it was registered as unpathable to. In which case, we need to clear older versions of this coroutine away to make way for a new coroutine. This'll work as long as the increments of this while loop are less than the checking time.
+                            yield break;
+                        }
+                        checkingTime += .5f;
+                        if (Agent.isOnNavMesh)
+                        {
+                            if (Agent.remainingDistance < Agent.stoppingDistance) // Just a quick check to see if we've arrived.
+                            {
+                                arrivedAtPseudoTarget = true;
+                            }
+                        }
+                        yield return new WaitForSeconds(.5f);
+                    }
+
+                    if (cannotPathToTarget)
+                    {
+                        TriggerHeadOverride(1f, 2.5f, 1f);
+                        InterruptPathing(6f);
+                        SetTarget(null);
+                        yield return new WaitForSeconds(Random.Range(1.5f, 2.5f));
+                        GetComponent<FoxSounds>().VoiceFox(5);
+                    }
+                    yield break;
+                }
+
+                timeOut += checkingTime;
+                checkingTime = 0;
+
+                while (!(checkingTime > checkingTimeLimit || !weHaveAPath || animal.CurrentAnimState.IsTag("Action")))
+                {
+                    checkingTime += Time.fixedDeltaTime;
+                    if (Agent.path.corners.Length > 1)
+                    {
+                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .11f)
+                        {
+                            weHaveAPath = false;
+                        }
+                    }
+                    yield return new WaitForFixedUpdate();
+                }
+                timeOut += checkingTime;
+                checkingTime = 0;
+                yield return new WaitForFixedUpdate();
             }
         }
 
@@ -421,11 +478,19 @@ UpdateTarget();
         /// <summary>
         /// Set to next Target
         /// </summary>
-        public void SetTarget(Transform target, bool ignoreOverride = false)
+        public void SetTarget(Transform target, bool ignoreOverride = false, bool resetOverride = false)
         {
             if (!targetOverride || ignoreOverride)
             {
-                isMoving = false;
+                if (resetOverride)
+                {
+                    targetOverride = false;
+                    if (currentMovementState != MovementStates.NormalMovement)
+                    {
+                        ChangeMovement(0); // This is a failsafe. I'm specifically thinking of the JackInTheBox here, because if the fox sees the JackInTheBox but it's in an unpathable location then the fox might just move everywhere slowly. Thassa no good.
+                    }
+                }
+                isMoving = cannotPathToTarget = false;
 
                 if (target)
                 {
@@ -443,10 +508,8 @@ UpdateTarget();
                     Agent.stoppingDistance = DefaultStoppingDistance;
                 }
 
-                sawTarget = false;
-
 #if UNITY_EDITOR
-                deltaTarget = target;
+                deltaTarget = this.target;
 #endif
             }
         }
@@ -522,7 +585,7 @@ UpdateTarget();
             StartCoroutine(JawOverride(newJawWeight, newJawOffset));
         }
 
-        IEnumerator JawOverride (float newJawWeight, float newJawOffset, float transitionTime = .5f, string animName = "JawOpen")
+        IEnumerator JawOverride(float newJawWeight, float newJawOffset, float transitionTime = .5f, string animName = "JawOpen")
         {
             float jawTimer = 0;
 

@@ -77,8 +77,6 @@ namespace MalbersAnimations.Utilities
 
                 direction = Vector3.Lerp(direction, dir, Time.deltaTime * Smoothness);
 
-
-
                 angle = Vector3.Angle(transform.forward, direction); //Set the angle for the current bone
 
                 if ((angle < LimitAngle && active && hastarget))

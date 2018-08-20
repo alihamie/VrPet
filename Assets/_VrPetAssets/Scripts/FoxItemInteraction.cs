@@ -8,7 +8,7 @@ public class FoxItemInteraction : MonoBehaviour
     public AnimalAIControl aiControl;
     private Transform grabbedItem;
     public Transform player;
-    public GameObject fox;
+    public AnimalAIControl fox;
     private FixedJoint joint;
 
     public void GrabItem()
@@ -35,7 +35,34 @@ public class FoxItemInteraction : MonoBehaviour
         grabbedItem = item;
         item.gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
-        foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
+		if(item.name == "ShinyRedBall")
+		{
+			item.localPosition = new Vector3(0.06f, 0.05f, 0f);
+			fox.TriggerJawOverride(1, 0);
+		}
+
+		if (item.name == "Frisbee")
+		{
+			item.localRotation = Quaternion.Euler(new Vector3(0, 180, -76));
+			item.localPosition = new Vector3(0.05f, 0.07f, 0f);
+			fox.TriggerJawOverride(1, 30);
+		}
+
+		if (item.name == "RemoteControl")
+		{
+			item.localRotation = Quaternion.Euler(new Vector3(0, 0, 72));
+			item.localPosition = new Vector3(0.03f, 0.045f, 0f);
+			fox.TriggerJawOverride(1, 10);
+		}
+
+		if (item.name == "PaperAirplane")
+		{
+			item.localRotation = Quaternion.Euler(new Vector3(180, 95, -185));
+			item.localPosition = new Vector3(0f, 0.085f, 0.01f);
+			fox.TriggerJawOverride(1, 30);
+		}
+
+		foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
         {
             col.enabled = false;
         }
