@@ -43,6 +43,7 @@ namespace MalbersAnimations
         bool isFixingTheAgentDisplacement;
         bool cannotPathToTarget;
         bool performingHeadOverride;
+        bool destinationSet;
         #endregion
 
         protected int sawTargetLayerMask = (1 << 8) | (1 << 0);// This makes a layermask using the number 8 because that is the layer that I've put all the props on.
@@ -215,14 +216,18 @@ namespace MalbersAnimations
             }
             else if (target != null)
             {
-                if ((Agent.destination - target.position).sqrMagnitude > .121 && !cannotPathToTarget)
-                {
+                if ((Agent.destination - target.position).sqrMagnitude > .121 && !cannotPathToTarget && !destinationSet)
+                { // What we want here is to trigger once each time respectively...
+                    destinationSet = true;
+                    Debug.Log("A");
                     Agent.SetDestination(target.position); // First we must always give the Agent a chance to path, since the call is asynchronous (better performance that way, I say). Roughly about a second and a half should be sufficient for our purposes.
                     SetStoppingDistance();
                     StartCoroutine(PathingTimeOut()); // A simple delayed check to see if we're actually pathing to the target, or just twiddling our thumbs.
                 }
-                else if ((Agent.destination - target.position).sqrMagnitude <= .121 && cannotPathToTarget)
+                else if ((Agent.destination - target.position).sqrMagnitude <= .121 && cannotPathToTarget && destinationSet)
                 {
+                    Debug.Log("B");
+                    destinationSet = false;
                     if (path.corners.Length > 0)
                     {
                         pathEndDestination = path.corners[path.corners.Length - 1];
@@ -298,6 +303,7 @@ namespace MalbersAnimations
 
                 if (!weHaveAPath)
                 { // Basically, if we've failed to acquire a path in four seconds there's no point to go on, so we go to this particular dead-end cul de sac.
+                    Debug.Log("C");
                     cannotPathToTarget = true;
                     checkingTime = 0;
                     checkingTimeLimit = 8f;
@@ -321,7 +327,7 @@ namespace MalbersAnimations
                     if (cannotPathToTarget)
                     {
                         TriggerHeadOverride(1f, 2.5f, 1f);
-                        InterruptPathing(6f);
+                        InterruptPathing(4.3f);
                         SetTarget(null);
                         yield return new WaitForSeconds(Random.Range(1.5f, 2.5f));
                         GetComponent<FoxSounds>().VoiceFox(5);
@@ -495,12 +501,13 @@ namespace MalbersAnimations
                         ChangeMovement(0); // This is a failsafe. I'm specifically thinking of the JackInTheBox here, because if the fox sees the JackInTheBox but it's in an unpathable location then the fox might just move everywhere slowly. Thassa no good.
                     }
                 }
-                isMoving = sawTarget = cannotPathToTarget = false;
+                isMoving = destinationSet = sawTarget = cannotPathToTarget = false;
+
+                this.target = target;
 
                 if (target)
                 {
                     isWandering = false;
-                    this.target = target;
                     Target_is_ActionZone = target.GetComponent<ActionZone>();
                     Target_is_Waypoint = target.GetComponent<MWayPoint>();
                     SetStoppingDistance();

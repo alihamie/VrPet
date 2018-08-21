@@ -23,6 +23,7 @@ public class RelativeHeadRotate : MonoBehaviour
         PLAYER = 1,
         ITEM = 2,
     }
+    private TARGETS currentTarget = TARGETS.ITEM;
 
     void OnEnable()
     {
@@ -52,9 +53,20 @@ public class RelativeHeadRotate : MonoBehaviour
     private void Update()
     {
         newRotation = normalRotation;
-        lookTarget = animalAI.target;
+        if (currentTarget == TARGETS.ITEM)
+        {
+            lookTarget = animalAI.target;
+        }
+        else if (currentTarget == TARGETS.PLAYER)
+        {
+            lookTarget = player;
+        }
+        else if (currentTarget == TARGETS.NONE)
+        {
+            lookTarget = null;
+        }
 
-        if (lookTarget != null && !animalAI.isWandering)
+        if (lookTarget && !animalAI.isWandering)
         {
             Vector3 lookDirection = head.InverseTransformPoint(lookTarget.position);
 
@@ -89,18 +101,6 @@ public class RelativeHeadRotate : MonoBehaviour
 
     public void ChangeTarget(TARGETS newTarget)
     {
-        if (newTarget == TARGETS.NONE)
-        {
-            lookTarget = null;
-        }
-        else if (newTarget == TARGETS.PLAYER)
-        {
-            lookTarget = player;
-        }
-        else if (newTarget == TARGETS.ITEM)
-        {
-            lookTarget = animalAI.target;
-        }
+        currentTarget = newTarget;
     }
-
 }
