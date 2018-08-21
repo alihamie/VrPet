@@ -456,7 +456,14 @@ namespace MalbersAnimations
             }
             else if (currentMovementState == MovementStates.AlwaysRun || currentMovementState == MovementStates.FastRun)
             {
-                animal.Speed3 = true;
+                if (Agent.remainingDistance < ToTrot / 2f)
+                { // Turns out, if the animal is always running, the fox can end up orbiting anything with a stopping distance of .63 or lower. It's difficult to trigger, but it can happen.
+                    animal.Speed1 = true;
+                }
+                else
+                {
+                    animal.Speed3 = true;
+                }
             }
 
             if (currentMovementState == MovementStates.FastRun)
@@ -488,7 +495,7 @@ namespace MalbersAnimations
                         ChangeMovement(0); // This is a failsafe. I'm specifically thinking of the JackInTheBox here, because if the fox sees the JackInTheBox but it's in an unpathable location then the fox might just move everywhere slowly. Thassa no good.
                     }
                 }
-                isMoving = cannotPathToTarget = false;
+                isMoving = sawTarget = cannotPathToTarget = false;
 
                 if (target)
                 {
@@ -501,6 +508,7 @@ namespace MalbersAnimations
                 else
                 {
                     isWandering = true;
+                    targetOverride = false; // This should mean that whenever the fox is wandering, it'll have targetOverride shut off. Just in case.
                     Target_is_ActionZone = null;
                     Target_is_Waypoint = null;
                     Agent.stoppingDistance = DefaultStoppingDistance;
@@ -573,9 +581,9 @@ namespace MalbersAnimations
             currentMovementState = (MovementStates)newMovement;
         }
 
-        public void ToggleTargetOverride()
+        public void SetTargetOverride(bool newOverrideState)
         {
-            targetOverride = !targetOverride;
+            targetOverride = newOverrideState;
         }
 
         public void TriggerJawOverride(float newJawWeight, float newJawOffset = 0)
