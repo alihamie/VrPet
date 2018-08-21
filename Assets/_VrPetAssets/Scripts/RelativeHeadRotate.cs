@@ -7,7 +7,7 @@ public class RelativeHeadRotate : MonoBehaviour
     public Transform lookTarget, player;
     private float maxTilt = 80f, minTilt = -20f;
     private float maxPan = 60f, minPan = -60f;
-	[HideInInspector]
+    [HideInInspector]
     public float jawOffset = -40f;
 
     private Quaternion defaultJawRotation;

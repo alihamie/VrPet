@@ -83,8 +83,9 @@ public class FoxItemInteraction : MonoBehaviour
             return;
         }
 
-        grabbedItem.parent = this.transform;
+        grabbedItem.parent = transform;
         grabbedItem.GetComponent<Rigidbody>().isKinematic = false;
+        fox.TriggerJawOverride(0);
 
         foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
         {
