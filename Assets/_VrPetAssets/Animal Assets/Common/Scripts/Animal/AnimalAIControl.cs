@@ -108,7 +108,6 @@ namespace MalbersAnimations
         {
 #if UNITY_EDITOR
             UpdateTarget();
-            Debug.Log(cannotPathToTarget);
 #endif
             DisableAgent();
             TryActionZone();
@@ -216,13 +215,13 @@ namespace MalbersAnimations
             }
             else if (target != null)
             {
-                if (Agent.destination != target.position && !cannotPathToTarget)
+                if ((Agent.destination - target.position).sqrMagnitude > .121 && !cannotPathToTarget)
                 {
                     Agent.SetDestination(target.position); // First we must always give the Agent a chance to path, since the call is asynchronous (better performance that way, I say). Roughly about a second and a half should be sufficient for our purposes.
                     SetStoppingDistance();
                     StartCoroutine(PathingTimeOut()); // A simple delayed check to see if we're actually pathing to the target, or just twiddling our thumbs.
                 }
-                else if (Agent.destination == target.position && cannotPathToTarget)
+                else if ((Agent.destination - target.position).sqrMagnitude <= .121 && cannotPathToTarget)
                 {
                     if (path.corners.Length > 0)
                     {
@@ -289,7 +288,7 @@ namespace MalbersAnimations
                     checkingTime += Time.fixedDeltaTime;
                     if (Agent.path.corners.Length > 1)
                     {
-                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .11f)
+                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .121f)
                         {
                             weHaveAPath = true;
                         }
@@ -302,7 +301,6 @@ namespace MalbersAnimations
                     cannotPathToTarget = true;
                     checkingTime = 0;
                     checkingTimeLimit = 8f;
-
                     while (!(checkingTime > checkingTimeLimit || arrivedAtPseudoTarget))
                     {
                         if (!cannotPathToTarget)
@@ -339,7 +337,7 @@ namespace MalbersAnimations
                     checkingTime += Time.fixedDeltaTime;
                     if (Agent.path.corners.Length > 1)
                     {
-                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .11f)
+                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .121f)
                         {
                             weHaveAPath = false;
                         }
