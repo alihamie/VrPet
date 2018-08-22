@@ -32,9 +32,16 @@ namespace MalbersAnimations
         public UnityEvent onAction = new UnityEvent();
         public UnityEvent onSight = new UnityEvent();
 
+        private EasyInputVR.StandardControllers.StandardGrabReceiver grabReceiver;
+
         //───────AI───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         public float stoppingDistance = 0.5f;
         public Transform NextTarget;
+
+        private void Start()
+        {
+            grabReceiver = GetComponent<EasyInputVR.StandardControllers.StandardGrabReceiver>();
+        }
 
         void OnEnable()
         {
@@ -45,7 +52,7 @@ namespace MalbersAnimations
         {
             if (firstTimeTrigger && collision.gameObject.layer == 20)
             {
-                Physics.IgnoreLayerCollision(8, 20);
+                Physics.IgnoreLayerCollision(20, 8);
             }
         }
 
@@ -81,7 +88,6 @@ namespace MalbersAnimations
 
         IEnumerator startAnimation(Animal animal, int id, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
         {
-            Physics.IgnoreLayerCollision(20, 8);
             firstTimeTrigger = true;
             Rigidbody rigidbody = GetComponent<Rigidbody>();
 
@@ -100,7 +106,22 @@ namespace MalbersAnimations
 
             while (!animal.CurrentAnimState.IsTag("Idle") || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
-                yield return new WaitForSeconds(.1f);
+                if (ai.target != transform)
+                { // I'm kinda suprised I didn't think to put this check in earlier.
+                    enabled = false;
+                    Physics.IgnoreLayerCollision(20, 8, false);
+                    yield break;
+                }
+                else if (grabReceiver)
+                {
+                    if (grabReceiver.grabMode)
+                    {
+                        enabled = false;
+                        Physics.IgnoreLayerCollision(20, 8, false);
+                        yield break;
+                    }
+                }
+                yield return new WaitForEndOfFrame();
             }
 
             if (id != -1) // -1 is the id of the attack animation. Which isn't set up as an action, so I think it'll cause some problems if I try to treat it like one.
@@ -132,7 +153,10 @@ namespace MalbersAnimations
             }
 
             Physics.IgnoreLayerCollision(8, 20, false);
-            ai.SetTarget(NextTarget, true);
+            if (ai.target == transform)
+            {
+                ai.SetTarget(NextTarget, true);
+            }
             onEnd.Invoke();
 
             animal.ActionEmotion(-1); //Reset the Action ID
@@ -163,13 +187,6 @@ namespace MalbersAnimations
                 StartCoroutine(ICo);
             }
         }
-
-        //public void PushMePullYou()
-        //{
-        //    float random = UnityEngine.Random.Range(-180f, 180f);
-        //    Rigidbody rigidbody = GetComponent<Rigidbody>();
-        //    rigidbody.AddForce(Quaternion.AngleAxis(random, Vector3.up) * Vector3.forward * 10f, ForceMode.VelocityChange);
-        //}
 
         public void CopyActionzone(ActionZone targetToCopy)
         {

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using MalbersAnimations.Utilities;
 using System.Collections;
-using MalbersAnimations.Events;
-using MalbersAnimations.Utilities;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace MalbersAnimations
@@ -26,7 +25,7 @@ namespace MalbersAnimations
         public GameObject animalHead; // To give other scripts that use it a universal reference to the head transform.
         public bool AutoSpeed = true;
         public float ToTrot = 6f, ToRun = 8f;
-        private float interruptTimer;
+        private float interruptTimer, pathingTimer;
         private NavMeshPath path;
         private Vector3 pathEndDestination;
 
@@ -216,29 +215,41 @@ namespace MalbersAnimations
             }
             else if (target != null)
             {
-                if ((Agent.destination - target.position).sqrMagnitude > .121 && !cannotPathToTarget && !destinationSet)
+                if ((Agent.destination - target.position).sqrMagnitude > .121 && !cannotPathToTarget)
                 { // What we want here is to trigger once each time respectively...
-                    destinationSet = true;
-                    Debug.Log("A");
-                    Agent.SetDestination(target.position); // First we must always give the Agent a chance to path, since the call is asynchronous (better performance that way, I say). Roughly about a second and a half should be sufficient for our purposes.
-                    SetStoppingDistance();
-                    StartCoroutine(PathingTimeOut()); // A simple delayed check to see if we're actually pathing to the target, or just twiddling our thumbs.
-                }
-                else if ((Agent.destination - target.position).sqrMagnitude <= .121 && cannotPathToTarget && destinationSet)
-                {
-                    Debug.Log("B");
-                    destinationSet = false;
-                    if (path.corners.Length > 0)
-                    {
-                        pathEndDestination = path.corners[path.corners.Length - 1];
-                    }
-                    else
-                    {
-                        pathEndDestination = transform.position;
+                    if (destinationSet && pathingTimer < Time.time)
+                    { // I'm fine with being a little spammy, as long as we keep the spam down to a nice moderate minimum... Once every 3/4ths of a second or so probably fits the bill.
+                        Agent.SetDestination(target.position);
+                        pathingTimer = Time.time + .75f;
                     }
 
-                    Agent.SetDestination(pathEndDestination);
-                    SetStoppingDistance();
+                    if (!destinationSet)
+                    {
+                        Agent.SetDestination(target.position); // First we must always give the Agent a chance to path, since the call is asynchronous (better performance that way, I say). Roughly about a second and a half should be sufficient for our purposes.
+                        SetStoppingDistance();
+                        destinationSet = true;
+                        StartCoroutine(PathingTimeOut()); // A simple delayed check to see if we're actually pathing to the target, or just twiddling our thumbs.
+                    }
+                }
+                else if ((Agent.destination - target.position).sqrMagnitude <= .121 && cannotPathToTarget)
+                {
+
+                    if (destinationSet)
+                    {
+                        destinationSet = false;
+                        SetStoppingDistance();
+
+                        if (path.corners.Length > 0)
+                        {
+                            pathEndDestination = path.corners[path.corners.Length - 1];
+                        }
+                        else
+                        {
+                            pathEndDestination = transform.position;
+                        }
+                        Agent.SetDestination(pathEndDestination);
+                    }
+
                 } // So, the limitations of this code are thusly: If a player throws a grabbable object in a location that cannot be pathed to and then hits that object with another object so that it's pushed back to a pathable location, we can't detect that. It's possible to fix this by using a second AIPathingAgent to check this (better than using calculate path, since that produces unreliable results, and it always fully computes the path in that frame... performance issues.) If we only wake up the second agent when there are pathing issues, it won't be a problem. I think.
 
                 if (debug && Agent.path.corners.Length > 1)
@@ -277,20 +288,29 @@ namespace MalbersAnimations
 
         IEnumerator PathingTimeOut()
         {
+            Transform currentTarget = target;
             bool arrivedAtPseudoTarget = false;
             bool weHaveAPath = false;
             float checkingTimeLimit = 2.5f;
             float checkingTime = 0;
             float timeOutLimit = 12f;
             float timeOut = 0;
-            
+            Rigidbody targetRigidbody = target.GetComponent<Rigidbody>();
+
             // So if we fail to get a path in 4 seconds, we're done. But if we do, and that path remains valid for another fours seconds, we're home clear. But if we get a valid path, lose it, and then regain it we should register that properly, with a cutoff of something like 12-18 seconds in case we've managed to create a perfect loop.
             // Of course, if the fox is animating, then we're already there and we don't have to bother with checking any of this.
             while (!(weHaveAPath || animal.CurrentAnimState.IsTag("Action")))
             {
                 while (!(checkingTime > checkingTimeLimit || weHaveAPath || animal.CurrentAnimState.IsTag("Action") || timeOut > timeOutLimit))
                 {
-                    checkingTime += Time.fixedDeltaTime;
+                    if (targetRigidbody)
+                    {
+                        while (targetRigidbody.velocity.sqrMagnitude > .25f)
+                        { // As long as the target is moving .5 units per second, we aren't going to count the time spent against the checkingTimeLimit;
+                            yield return new WaitForEndOfFrame();
+                        }
+                    }
+                    checkingTime += Time.deltaTime;
                     if (Agent.path.corners.Length > 1)
                     {
                         if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .121f)
@@ -298,12 +318,12 @@ namespace MalbersAnimations
                             weHaveAPath = true;
                         }
                     }
-                    yield return new WaitForFixedUpdate();
+
+                    yield return new WaitForEndOfFrame();
                 }
 
                 if (!weHaveAPath)
                 { // Basically, if we've failed to acquire a path in four seconds there's no point to go on, so we go to this particular dead-end cul de sac.
-                    Debug.Log("C");
                     cannotPathToTarget = true;
                     checkingTime = 0;
                     checkingTimeLimit = 8f;
@@ -324,7 +344,7 @@ namespace MalbersAnimations
                         yield return new WaitForSeconds(.5f);
                     }
 
-                    if (cannotPathToTarget)
+                    if (cannotPathToTarget && currentTarget == target)
                     {
                         TriggerHeadOverride(1f, 2.5f, 1f);
                         InterruptPathing(4.3f);
@@ -340,7 +360,7 @@ namespace MalbersAnimations
 
                 while (!(checkingTime > checkingTimeLimit || !weHaveAPath || animal.CurrentAnimState.IsTag("Action")))
                 {
-                    checkingTime += Time.fixedDeltaTime;
+                    checkingTime += Time.deltaTime;
                     if (Agent.path.corners.Length > 1)
                     {
                         if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .121f)
@@ -348,11 +368,11 @@ namespace MalbersAnimations
                             weHaveAPath = false;
                         }
                     }
-                    yield return new WaitForFixedUpdate();
+                    yield return new WaitForEndOfFrame();
                 }
                 timeOut += checkingTime;
                 checkingTime = 0;
-                yield return new WaitForFixedUpdate();
+                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -423,7 +443,6 @@ namespace MalbersAnimations
             }
             else if (Target_is_ActionZone)
             {
-                Target_is_ActionZone.enabled = true;
                 Agent.stoppingDistance = Target_is_ActionZone.stoppingDistance;
             }
             else if (Target_is_Waypoint)
@@ -501,16 +520,25 @@ namespace MalbersAnimations
                         ChangeMovement(0); // This is a failsafe. I'm specifically thinking of the JackInTheBox here, because if the fox sees the JackInTheBox but it's in an unpathable location then the fox might just move everywhere slowly. Thassa no good.
                     }
                 }
-                isMoving = destinationSet = sawTarget = cannotPathToTarget = false;
 
+                isMoving = destinationSet = sawTarget = cannotPathToTarget = false;
                 this.target = target;
+
+                if (Target_is_ActionZone)
+                {
+                    Target_is_ActionZone.enabled = false;
+                }
 
                 if (target)
                 {
                     isWandering = false;
                     Target_is_ActionZone = target.GetComponent<ActionZone>();
                     Target_is_Waypoint = target.GetComponent<MWayPoint>();
-                    SetStoppingDistance();
+
+                    if (Target_is_ActionZone)
+                    {
+                        Target_is_ActionZone.enabled = true;
+                    }
                 }
                 else
                 {

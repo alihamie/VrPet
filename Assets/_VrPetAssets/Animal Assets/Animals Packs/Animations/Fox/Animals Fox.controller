@@ -286,7 +286,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bb0760d49a965145a91f4deebab02e0, type: 3}
   m_Name: 
@@ -7075,7 +7075,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseSendMessage: 0
   timeToWait: 0
-  onEnterMessage: []
+  onEnterMessage:
+  - message: ChangeLookTarget
+    typeM: 1
+    boolValue: 0
+    intValue: 0
+    floatValue: 0
+    stringValue: 
+    time: 0
+    sent: 0
+    Active: 1
   onExitMessage: []
   onTimeMessage: []
 --- !u!114 &114168290643837192
@@ -8025,7 +8034,16 @@ MonoBehaviour:
   UseSendMessage: 0
   timeToWait: 0
   onEnterMessage: []
-  onExitMessage: []
+  onExitMessage:
+  - message: ChangeLookTarget
+    typeM: 1
+    boolValue: 0
+    intValue: 2
+    floatValue: 0
+    stringValue: 
+    time: 0
+    sent: 0
+    Active: 1
   onTimeMessage: []
 --- !u!114 &114811582336650942
 MonoBehaviour:
@@ -10427,7 +10445,7 @@ AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: 
+  m_Name: Transition at 1 seconds
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: ThrewItem
@@ -10438,9 +10456,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.23082769
   m_TransitionOffset: 0
-  m_ExitTime: 0.94827586
+  m_ExitTime: 0.24458571
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -11271,6 +11289,30 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &1101698601378314238
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Transition at 2 seconds
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: ThrewItem
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 1102399261396397556}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.19696951
+  m_TransitionOffset: 0
+  m_ExitTime: 0.520376
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &1101703967465521124
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -11346,13 +11388,40 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1101 &1101712164674236664
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Transition at 3 seconds
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: ThrewItem
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: 1102399261396397556}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.29150367
+  m_TransitionOffset: 0
+  m_ExitTime: 0.73016965
+  m_HasExitTime: 1
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1101 &1101713381105273152
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: ThrewItem
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102399261396397556}
   m_Solo: 0
@@ -11362,7 +11431,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.80769235
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -13140,6 +13209,8 @@ AnimatorState:
   m_Transitions:
   - {fileID: 1101151460171060568}
   - {fileID: 1101421728375972026}
+  - {fileID: 1101698601378314238}
+  - {fileID: 1101712164674236664}
   m_StateMachineBehaviours:
   - {fileID: 114175305364813240}
   m_Position: {x: 50, y: 50, z: 0}

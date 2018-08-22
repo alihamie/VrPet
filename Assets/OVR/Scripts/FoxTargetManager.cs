@@ -11,6 +11,7 @@ public class FoxTargetManager : MonoBehaviour {
 
     public void GoToPlayArea()
     {
+        animalAi.GetComponentInParent<Animator>().SetBool("ThrewItem", false);
         animalAi.SetTarget(playArea.transform);
     }
 

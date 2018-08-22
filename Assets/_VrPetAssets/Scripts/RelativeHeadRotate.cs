@@ -1,17 +1,16 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RelativeHeadRotate : MonoBehaviour
 {
-    public Transform lookTarget, player;
+    public Transform player;
     private float maxTilt = 80f, minTilt = -20f;
     private float maxPan = 60f, minPan = -60f;
     [HideInInspector]
     public float jawOffset = -40f;
 
     private Quaternion defaultJawRotation;
-    private Transform head, jaw;
+    private Transform head, jaw, lookTarget;
     private float firstAngle, secondAngle;
     private Quaternion lastRotation, normalRotation, newRotation;
 

@@ -20,11 +20,10 @@ namespace EasyInputVR.Misc
 
         int touchedNumber = -1;
         int previousTouchedNumber = -1;
-        int previousRotationDirection = 0;
 
         Vector2 touchPosition;
         Vector2 previousTouchPosition;
-        float swipeRotation, channelButtonSwipeTimer = 0;
+        float swipeRotation, totalSwipe = 0;
         bool previousGrabMode, touching, padClick, previousPadClick;
 
         void Start()
@@ -33,13 +32,6 @@ namespace EasyInputVR.Misc
             controllerModel = rightHandAnchor.GetChild(0).GetChild(0).gameObject;
             laser = rightHandAnchor.GetChild(0).GetComponent<StandardControllers.StandardLaserPointer>();
         }
-
-        //void OnEnable()
-        //{
-        //    EasyInputHelper.On_Touch += localTouch;
-        //    EasyInputHelper.On_ClickStart += clickStart;
-        //    EasyInputHelper.On_ClickEnd += clickEnd;
-        //}
 
         void OnDisable() // This section of code is just to make sure we properly disassociate this script from those events.
         {
@@ -116,19 +108,19 @@ namespace EasyInputVR.Misc
 
             if (stateManager.activeChildNumber == 1)
             {
-                int currentSwipeDirection = (int)Mathf.Sign(swipeRotation);
-                if (currentSwipeDirection != previousRotationDirection)
+                totalSwipe += (touchPosition.x - previousTouchPosition.x);
+
+                if (totalSwipe > 1.2f || totalSwipe < -1.2f)
                 {
-                    channelButtonSwipeTimer = 0;
-                    previousRotationDirection = currentSwipeDirection;
+                    ChannelMenuNumberSwiper((int)Mathf.Sign(totalSwipe));
+                    totalSwipe = 0;
                 }
-                ChannelMenuNumberSwiper(currentSwipeDirection);
             }
         }
 
         void localTouchEnd(InputTouch touch)
         {
-            channelButtonSwipeTimer = 0;
+            totalSwipe = 0f;
         }
 
         void clickStart(ButtonClick button)
@@ -180,19 +172,8 @@ namespace EasyInputVR.Misc
 
         void ChannelMenuNumberSwiper(int currentSwipeDirection)
         {
-            // And here's where we use the rotation around the touchpad to swipe left or right. This method of input probably becomes inadviseable at around 20, though submenus can probably extend that.
-
-            if (Mathf.Abs(swipeRotation) > 35f && touchPosition.sqrMagnitude > .04f)
-            {
-                channelButtonSwipeTimer += Time.deltaTime;
-
-                if (channelButtonSwipeTimer > .85f && buttonManager.selectedInt == buttonManager.moveNum)
-                {
-                    buttonManager.selectedInt += currentSwipeDirection;
-                    tvSpeaker.PlayOneShot(selectNoise);
-                    channelButtonSwipeTimer -= .3f;
-                }
-            }
+            buttonManager.selectedInt -= currentSwipeDirection;
+            tvSpeaker.PlayOneShot(selectNoise);
         }
 
         void TouchClickEvaluator()
@@ -212,7 +193,6 @@ namespace EasyInputVR.Misc
                 stateManager.ChangeState(-1);
                 buttonManager.PlaySelected();
                 tvSpeaker.PlayOneShot(choiceNoise);
-                channelButtonSwipeTimer = 0;
             }
             else if (stateManager.activeChildNumber > 1)
             {

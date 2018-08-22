@@ -287,7 +287,7 @@ namespace EasyInputVR.StandardControllers
                 clicking = false;
                 previousClicking = false;
                 grabMode = false;
-                this.foxTargetManager.GoToFetchItem(this.transform);
+                foxTargetManager.GoToFetchItem(transform);
                 if (myRigidbody != null)
                 {
                     if (dropCondition == EasyInputConstants.DROP_MODE.Drop)

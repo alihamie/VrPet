@@ -1,4 +1,5 @@
 ﻿using EasyInputVR.StandardControllers;
+using System.Collections;
 using MalbersAnimations;
 using UnityEngine;
 
@@ -6,30 +7,31 @@ public class FoxItemInteraction : MonoBehaviour
 {
     public Transform jaw;
     public AnimalAIControl aiControl;
-    private Transform grabbedItem;
     public Transform player;
-    public AnimalAIControl fox;
-    private FixedJoint joint;
+
+    private Transform grabbedItem;
+    private Collider[] itemColliders;
 
     public void GrabItem()
     {
         Transform item = aiControl.GetClosestGrabableItem();
 
-        if (item == null)
+        if (!item)
         {
             return;
         }
 
-        if (grabbedItem != null && item == grabbedItem)
+        if (grabbedItem && item == grabbedItem)
         {
             return;
         }
 
-        if (grabbedItem != null)
+        if (grabbedItem)
         {
             DropItem();
         }
 
+        itemColliders = item.GetComponentsInChildren<Collider>();
         item.parent = jaw;
         item.localPosition = Vector3.zero;
         grabbedItem = item;
@@ -38,31 +40,31 @@ public class FoxItemInteraction : MonoBehaviour
 		if(item.name == "ShinyRedBall")
 		{
 			item.localPosition = new Vector3(0.06f, 0.05f, 0f);
-			fox.TriggerJawOverride(1, 0);
+			aiControl.TriggerJawOverride(1, 0);
 		}
 
 		if (item.name == "Frisbee")
 		{
 			item.localRotation = Quaternion.Euler(new Vector3(0, 180, -76));
 			item.localPosition = new Vector3(0.05f, 0.07f, 0f);
-			fox.TriggerJawOverride(1, 30);
+			aiControl.TriggerJawOverride(1, 30);
 		}
 
 		if (item.name == "RemoteControl")
 		{
 			item.localRotation = Quaternion.Euler(new Vector3(0, 0, 72));
 			item.localPosition = new Vector3(0.03f, 0.045f, 0f);
-			fox.TriggerJawOverride(1, 10);
+			aiControl.TriggerJawOverride(1, 10);
 		}
 
 		if (item.name == "PaperAirplane")
 		{
 			item.localRotation = Quaternion.Euler(new Vector3(180, 95, -185));
 			item.localPosition = new Vector3(0f, 0.085f, 0.01f);
-			fox.TriggerJawOverride(1, 30);
+			aiControl.TriggerJawOverride(1, 30);
 		}
 
-		foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
+		foreach (Collider col in itemColliders)
         {
             col.enabled = false;
         }
@@ -78,21 +80,22 @@ public class FoxItemInteraction : MonoBehaviour
 
     public void DropItem()
     {
-        if (grabbedItem == null)
+        if (!grabbedItem)
         {
             return;
         }
 
         grabbedItem.parent = transform;
         grabbedItem.GetComponent<Rigidbody>().isKinematic = false;
-        fox.TriggerJawOverride(0);
+        aiControl.TriggerJawOverride(0);
+        StartCoroutine(DelayedPhysics());
 
-        foreach (Collider col in grabbedItem.GetComponentsInChildren<Collider>())
+        foreach (Collider col in itemColliders)
         {
             col.enabled = true;
         }
 
-        if (aiControl != null)
+        if (aiControl)
         {
             aiControl.isWandering = true;
             aiControl.SetClosestGrabbableItem(null);
@@ -104,8 +107,15 @@ public class FoxItemInteraction : MonoBehaviour
         {
             grabReceiver.SetIsGrabbed(false);
         }
-		
+
+        itemColliders = null;
         grabbedItem = null;
     }
 
+    IEnumerator DelayedPhysics()
+    {
+        Physics.IgnoreLayerCollision(8, 20);
+        yield return new WaitForSeconds(1.5f);
+        Physics.IgnoreLayerCollision(8, 20, false);
+    }
 }

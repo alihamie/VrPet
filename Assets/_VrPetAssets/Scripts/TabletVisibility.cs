@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class TabletVisibility : MonoBehaviour
 {
-
-
     private Transform UiTablet;
     private bool padClick = false;
     private bool prevPadClick = false;
@@ -29,7 +27,7 @@ public class TabletVisibility : MonoBehaviour
    
     void Update()
     {
-        if (padClick == true && prevPadClick == false && (PlayerState.CURRENTSTATE != PlayerState.PLAYERSTATE.DRIVING || PlayerState.CURRENTSTATE != PlayerState.PLAYERSTATE.REMOTE))
+        if (padClick == true && prevPadClick == false && !(PlayerState.CURRENTSTATE == PlayerState.PLAYERSTATE.DRIVING || PlayerState.CURRENTSTATE == PlayerState.PLAYERSTATE.REMOTE))
         {
             ToggleTablet();
         }
