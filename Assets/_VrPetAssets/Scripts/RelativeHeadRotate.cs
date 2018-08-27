@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using MalbersAnimations;
 
 public class RelativeHeadRotate : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class RelativeHeadRotate : MonoBehaviour
     private float firstAngle, secondAngle;
     private Quaternion lastRotation, normalRotation, newRotation;
 
-    private MalbersAnimations.AnimalAIControl animalAI;
+    private AnimalAIControl animalAI;
 
     public enum TARGETS
     {
@@ -26,7 +27,7 @@ public class RelativeHeadRotate : MonoBehaviour
 
     void OnEnable()
     {
-        animalAI = GetComponent<MalbersAnimations.AnimalAIControl>();
+        animalAI = GetComponent<AnimalAIControl>();
         head = animalAI.animalHead.transform;
         jaw = head.GetChild(2);
         defaultJawRotation = jaw.rotation;

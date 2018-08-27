@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Explode : MonoBehaviour
 {
@@ -9,6 +7,7 @@ public class Explode : MonoBehaviour
 	public int force = 100;
 	public bool exploded = false;
 	float startTime;
+
 	void Start()
 	{
 		startTime = Time.time;

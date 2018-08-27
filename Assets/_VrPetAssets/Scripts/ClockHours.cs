@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 
 public class ClockHours : MonoBehaviour {
-    Transform[] hours;
-    private float distanceAdjust = 6.44f;
     [SerializeField]
     private Transform bigHand, smallHand;
     float second;
@@ -11,17 +9,6 @@ public class ClockHours : MonoBehaviour {
 
     void Start () 
 	{
-        hours = new Transform[transform.GetChild(0).childCount];
-        for (int i = 0; i < transform.GetChild(0).childCount; i++)
-        {
-            hours[i] = transform.GetChild(0).GetChild(i);
-        }
-        for (int i = 0; i < hours.Length; i++)
-        {
-            float theta = (2 * Mathf.PI / hours.Length) * i;
-            hours[i].localPosition = new Vector3(Mathf.Sin(theta), Mathf.Cos(theta), 0f) * distanceAdjust;
-        }
-
         System.DateTime currentTime = System.DateTime.Now;
         hour = currentTime.Hour;
         minute = currentTime.Minute;

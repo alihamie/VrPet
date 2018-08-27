@@ -16,12 +16,7 @@ public class FoxItemInteraction : MonoBehaviour
     {
         Transform item = aiControl.GetClosestGrabableItem();
 
-        if (!item)
-        {
-            return;
-        }
-
-        if (grabbedItem && item == grabbedItem)
+        if (!item || (grabbedItem && item == grabbedItem))
         {
             return;
         }
@@ -74,8 +69,8 @@ public class FoxItemInteraction : MonoBehaviour
         if (grabReceiver)
         {
             grabReceiver.SetIsGrabbed(true);
-		}
-		grabReceiver.enabled = false;
+            grabReceiver.enabled = false;
+        }
 	}
 
     public void DropItem()
@@ -102,9 +97,10 @@ public class FoxItemInteraction : MonoBehaviour
         }
 
         StandardGrabReceiver grabReceiver = grabbedItem.GetComponent<StandardGrabReceiver>();
-		grabReceiver.enabled = true;
+
         if (grabReceiver)
         {
+            grabReceiver.enabled = true;
             grabReceiver.SetIsGrabbed(false);
         }
 

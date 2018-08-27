@@ -156,13 +156,10 @@ namespace MalbersAnimations
         /// </summary>
         void DisableAgent()
         {
-            if ((animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Idle")))          //Activate the Agent when the animal is moving
+            if (!Agent.enabled && (animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Idle")))          //Activate the Agent when the animal is moving
             {
-                if (!Agent.enabled)
-                {
-                    Agent.enabled = true;
-                    isMoving = false; // Important.
-                }
+                Agent.enabled = true;
+                isMoving = false; // Important.
             }
             else
             {

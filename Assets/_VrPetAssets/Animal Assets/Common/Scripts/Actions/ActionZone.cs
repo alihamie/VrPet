@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using MalbersAnimations.Events;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Events;
-using System;
 
 namespace MalbersAnimations
 {
@@ -66,12 +63,16 @@ namespace MalbersAnimations
             Animal animal = other.GetComponentInParent<Animal>();
             AnimalAIControl animalAIControl = other.GetComponentInParent<AnimalAIControl>();
 
-            if (animalAIControl && animal && other.gameObject.layer == 20) // In short, the entering object needs to have the Animal and AnimalAIControl scripts attached and be on the Animal Layer for us to do anything.
+            if (animal && other.gameObject.layer == 20) // In short, the entering object needs to have the Animal and AnimalAIControl scripts attached and be on the Animal Layer for us to do anything.
             {
-                if (animalAIControl.isWandering == true)
+                if (animalAIControl)
                 {
-                    return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
+                    if (animalAIControl.isWandering == true)
+                    {
+                        return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
+                    }
                 }
+
                 if (HeadOnly && !other.name.ToLower().Contains("head"))
                 {
                     return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
@@ -82,16 +83,15 @@ namespace MalbersAnimations
                 return;
             }
 
-            firstTimeTrigger = true; // This only needs to trigger once. Can't just set enabled to false because that'd turn the coroutines off. Or so I think. Haven't tested it, only read it on the internet. But when has the internet ever lied to me?
-            StartCoroutine(startAnimation(animal, ID, animalAIControl));
+            StartCoroutine(startAnimation(ID, animal, animalAIControl));
         }
 
-        IEnumerator startAnimation(Animal animal, int id, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
+        IEnumerator startAnimation(int id, Animal animal, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
         {
-            firstTimeTrigger = true;
+            firstTimeTrigger = true; // This only needs to trigger once. Can't just set enabled to false because that'd turn the coroutines off. Or so I think. Haven't tested it, only read it on the internet. But when has the internet ever lied to me?
             Rigidbody rigidbody = GetComponent<Rigidbody>();
 
-            if (tag == "GrabableItem")
+            if (tag == "GrabableItem" && ai)
             {
                 ai.SetClosestGrabbableItem(transform);
 
@@ -106,22 +106,26 @@ namespace MalbersAnimations
 
             while (!animal.CurrentAnimState.IsTag("Idle") || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
-                if (ai.target != transform)
-                { // I'm kinda suprised I didn't think to put this check in earlier.
-                    enabled = false;
-                    Physics.IgnoreLayerCollision(20, 8, false);
-                    yield break;
-                }
-                else if (grabReceiver)
+                if (ai)
                 {
-                    if (grabReceiver.grabMode)
-                    {
+                    if (ai.target != transform)
+                    { // I'm kinda suprised I didn't think to put this check in earlier.
                         enabled = false;
                         Physics.IgnoreLayerCollision(20, 8, false);
                         yield break;
                     }
+                    else if (grabReceiver)
+                    {
+                        if (grabReceiver.grabMode)
+                        {
+                            enabled = false;
+                            Physics.IgnoreLayerCollision(20, 8, false);
+                            yield break;
+                        }
+                    }
+
+                    yield return new WaitForEndOfFrame();
                 }
-                yield return new WaitForEndOfFrame();
             }
 
             if (id != -1) // -1 is the id of the attack animation. Which isn't set up as an action, so I think it'll cause some problems if I try to treat it like one.
@@ -140,27 +144,32 @@ namespace MalbersAnimations
 
             ActionAlign(animal);
 
-            StartCoroutine(SetNextTarget(ai, animal));
+            StartCoroutine(SetNextTarget(animal, ai));
         }
 
-        IEnumerator SetNextTarget(AnimalAIControl ai, Animal animal)
+        IEnumerator SetNextTarget(Animal animal, AnimalAIControl ai)
         {
             yield return new WaitForSeconds(.4f);
 
-            while (animal.CurrentAnimState.IsTag("Action"))
+            while (animal.CurrentAnimState.IsTag("Action") || animal.CurrentAnimState.IsTag("Attack"))
             {
                 yield return new WaitForSeconds(.1f);
             }
 
-            Physics.IgnoreLayerCollision(8, 20, false);
-            if (ai.target == transform)
+            Physics.IgnoreLayerCollision(8, 20, false); // Yes, that's right. ALL COLLISION BETWEEN LAYERS 8 and 20. Because otherwise I'd have to record each collision and disable it on a case-by-case basis. Less elegant though. If the CPU cost for doing this on a case-by-case basis isn't too high, I could probably do the more elegant solution.
+
+            if (ai)
             {
-                ai.SetTarget(NextTarget, true);
+                if (ai.target == transform)
+                {
+                    ai.SetTarget(NextTarget, true);
+                }
             }
+
             onEnd.Invoke();
 
-            animal.ActionEmotion(-1); //Reset the Action ID
-            animal = null;
+            animal.ActionEmotion(-1); // Reset the ActionID int parameter for the Animator.
+            animal = null; // These three lines are just cleanup for next time, to make sure everything is properly triggered.
             firstTimeTrigger = false;
             enabled = false;
         }
@@ -173,18 +182,44 @@ namespace MalbersAnimations
             onAction.Invoke();
             if (Align && AlingPoint)
             {
-                IEnumerator ICo = null;
+                IEnumerator alignmentCoroutine = null; // I don't know why alignmentCoroutine needs to be set to null first when it always set to something. Probably important though.
 
                 if (AlignLookAt)
                 {
-                    ICo = Utilities.MalbersTools.AlignLookAtTransform(animal.transform, AlingPoint, AlignTime, AlignCurve);
+                    alignmentCoroutine = Utilities.MalbersTools.AlignLookAtTransform(animal.transform, AlingPoint, AlignTime, AlignCurve);
                 }
                 else
                 {
-                    ICo = Utilities.MalbersTools.AlignTransformsC(animal.transform, AlingPoint, AlignTime, AlignPos, AlignRot, AlignCurve);
+                    alignmentCoroutine = Utilities.MalbersTools.AlignTransformsC(animal.transform, AlingPoint, AlignTime, AlignPos, AlignRot, AlignCurve);
                 }
 
-                StartCoroutine(ICo);
+                StartCoroutine(alignmentCoroutine);
+            }
+        }
+
+        public override bool Equals(object target)
+        {
+            if (target is ActionZone)
+            {
+                ActionZone targetToCopy = (ActionZone)target;
+                ID = targetToCopy.ID;
+                NextTarget = targetToCopy.NextTarget;
+                onSight = targetToCopy.onSight;
+                onAction = targetToCopy.onAction;
+                onEnd = targetToCopy.onEnd;
+                onGrab = targetToCopy.onGrab;
+                onEnable = targetToCopy.onEnable;
+
+                BoxCollider myCollider = GetComponent<BoxCollider>();
+                BoxCollider copiedCollider = targetToCopy.gameObject.GetComponent<BoxCollider>();
+
+                myCollider.size = copiedCollider.size;
+                myCollider.center = copiedCollider.center;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
