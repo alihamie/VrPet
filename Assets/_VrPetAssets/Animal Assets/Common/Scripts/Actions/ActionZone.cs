@@ -31,6 +31,9 @@ namespace MalbersAnimations
 
         private EasyInputVR.StandardControllers.StandardGrabReceiver grabReceiver;
 
+#if UNITY_EDITOR
+        public bool invokeGrab, invokeEnable, invokeEnd, invokeAction, invokeSight;
+#endif
         //───────AI───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         public float stoppingDistance = 0.5f;
         public Transform NextTarget;
@@ -223,21 +226,14 @@ namespace MalbersAnimations
             }
         }
 
+        public override int GetHashCode()
+        {
+            return index.GetHashCode();
+        }
+
         public void CopyActionzone(ActionZone targetToCopy)
         {
-            ID = targetToCopy.ID;
-            NextTarget = targetToCopy.NextTarget;
-            onSight = targetToCopy.onSight;
-            onAction = targetToCopy.onAction;
-            onEnd = targetToCopy.onEnd;
-            onGrab = targetToCopy.onGrab;
-            onEnable = targetToCopy.onEnable;
-
-            BoxCollider myCollider = GetComponent<BoxCollider>();
-            BoxCollider copiedCollider = targetToCopy.gameObject.GetComponent<BoxCollider>();
-
-            myCollider.size = copiedCollider.size;
-            myCollider.center = copiedCollider.center;
+            Equals(targetToCopy);
         }
 
 #if UNITY_EDITOR
@@ -254,5 +250,7 @@ namespace MalbersAnimations
 
         [HideInInspector] public bool EditorShowEvents = true;
         [HideInInspector] public bool EditorAI = true;
+        [HideInInspector] public bool EditorShowForce = true, forceEnable = false, forceAction = false;
+        [HideInInspector] public bool forceEnd = false, forceSight = false, forceGrab = false;
     }
 }

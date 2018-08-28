@@ -8,8 +8,9 @@ namespace MalbersAnimations
     [CustomEditor(typeof(ActionZone))]
     public class ActionZoneEditor : Editor
     {
+        [HideInInspector] public bool EditorShowForce = true, forceEnable = false, forceAction = false;
+        [HideInInspector] public bool forceEnd = false, forceSight = false, forceGrab = false;
         private ActionZone M;
-      //  private bool swap;
 
         string[] actionNames;
         MonoScript script;
@@ -113,6 +114,14 @@ namespace MalbersAnimations
 
                 if (M.EditorShowEvents)
                 {
+                    EditorGUILayout.BeginHorizontal();
+                    forceEnd = GUILayout.Toggle(forceEnd, new GUIContent("X", "Fire Cannons"), EditorStyles.miniButton, GUILayout.MaxWidth(25));
+                    if (forceEnd)
+                    {
+                        M.onEnd.Invoke();
+                        forceEnd = false;
+                    }
+                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onGrab"), new GUIContent("On The Player Grabbing This"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnable"), new GUIContent("On Actionzone Being Enabled"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onAction"), new GUIContent("On Animal Action"));
