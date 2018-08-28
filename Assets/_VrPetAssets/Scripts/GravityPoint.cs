@@ -11,17 +11,16 @@ public class GravityPoint : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		
 		Collider[] hits = Physics.OverlapSphere(transform.position, radius); //target spotted
 
-		foreach(Collider c in hits)
+		foreach(Collider coll in hits)
 		{
-			Rigidbody r = c.GetComponentInParent<Rigidbody>();
-			if (r != null && !c.isTrigger)
+			Rigidbody rigid = coll.GetComponentInParent<Rigidbody>();
+			if (rigid != null && !coll.isTrigger)
 			{
-				Vector3 distance = c.transform.position - transform.position;
+				Vector3 distance = coll.transform.position - transform.position;
 				float force = Mathf.Clamp(Mathf.Pow(distance.sqrMagnitude, -1), 0, maxInverseDistance) * mass * r.mass;
-				r.AddForce(-distance.normalized * force, ForceMode.Acceleration); //let the bass cannon kick it!
+				rigid.AddForce(-distance.normalized * force, ForceMode.Acceleration); //let the bass cannon kick it!
 			}
 		}
 	}

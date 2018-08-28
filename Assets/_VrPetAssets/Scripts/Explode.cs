@@ -6,26 +6,34 @@ public class Explode : MonoBehaviour
 	public int radius = 10;
 	public int force = 100;
 	public bool exploded = false;
-	float startTime;
+
+    float startTime;
+    private ParticleSystem particles;
 
 	void Start()
 	{
-		startTime = Time.time;
+        particles = GetComponent<ParticleSystem>();
+        startTime = Time.time;
 	}
 
-	void FixedUpdate()
+	void Update()
 	{
 		if (Time.time - startTime > fuse && !exploded) //if the time has come and we haven't come yet...
 		{
 			exploded = true;
-			GetComponent<ParticleSystem>().Play(true);
+            if (particles)
+            {
+                particles.Play(true);
+            }
 			Collider[] hits = Physics.OverlapSphere(transform.position, radius); //target spotted
 
-			foreach(Collider c in hits)
+			foreach(Collider coll in hits)
 			{
-				Rigidbody r = c.GetComponent<Rigidbody>();
-				if (r != null)
-					r.AddExplosionForce(force, transform.position, radius); //let the bass cannon kick it!
+				Rigidbody rigid = coll.GetComponent<Rigidbody>();
+				if (rigid != null)
+                {
+                    rigid.AddExplosionForce(force, transform.position, radius); //let the bass cannon kick it!
+                }
 			}
 		}
 	}
