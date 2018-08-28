@@ -19,7 +19,7 @@ public class GravityPoint : MonoBehaviour
 			if (rigid != null && !coll.isTrigger)
 			{
 				Vector3 distance = coll.transform.position - transform.position;
-				float force = Mathf.Clamp(Mathf.Pow(distance.sqrMagnitude, -1), 0, maxInverseDistance) * mass * r.mass;
+				float force = Mathf.Clamp(Mathf.Pow(distance.sqrMagnitude, -1), 0, maxInverseDistance) * mass * rigid.mass;
 				rigid.AddForce(-distance.normalized * force, ForceMode.Acceleration); //let the bass cannon kick it!
 			}
 		}
