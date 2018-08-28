@@ -2,6 +2,8 @@
 using UnityEngine;
 using MalbersAnimations;
 
+
+
 public class RelativeHeadRotate : MonoBehaviour
 {
     public Transform player;
@@ -23,7 +25,8 @@ public class RelativeHeadRotate : MonoBehaviour
         PLAYER = 1,
         ITEM = 2,
     }
-    private TARGETS currentTarget = TARGETS.ITEM;
+
+    public TARGETS currentTarget = TARGETS.ITEM;
 
     void OnEnable()
     {
@@ -97,10 +100,5 @@ public class RelativeHeadRotate : MonoBehaviour
         }
 
         lastRotation = head.localRotation = Quaternion.Lerp(newRotation, lastRotation, .9f);
-    }
-
-    public void ChangeTarget(TARGETS newTarget)
-    {
-        currentTarget = newTarget;
     }
 }

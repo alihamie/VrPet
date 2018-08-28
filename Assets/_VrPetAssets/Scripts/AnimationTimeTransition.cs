@@ -40,7 +40,7 @@ public class AnimationTimeTransition : MonoBehaviour, IAnimatorListener
         }
         else if (message == "ChangeLookTarget")
         {
-            headRotate.ChangeTarget((RelativeHeadRotate.TARGETS)(int)value);
+            headRotate.currentTarget = ((RelativeHeadRotate.TARGETS)(int)value);
         }
         else if (message == "VoiceFox")
         {
