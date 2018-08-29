@@ -17,6 +17,7 @@ namespace MalbersAnimations
         #region Target Verifications
         protected ActionZone Target_is_ActionZone; // To check if the Target is an Action Zone
         protected MWayPoint Target_is_Waypoint; // To check if the Target is a Way Point
+        protected Rigidbody target_Has_Rigidibody;
         #endregion
 
         public Transform target; // The target to path to.
@@ -28,6 +29,10 @@ namespace MalbersAnimations
         private float interruptTimer, pathingTimer;
         private NavMeshPath path;
         private Vector3 pathEndDestination;
+
+        PathingCheckStates currentPathingState = PathingCheckStates.NotChecking;
+        float pathingCheckEndTime = 0;
+        float pathingCheckSubTime = 0;
 
         public bool debug = true;                   // Debugging 
         public bool isWandering = false;
@@ -54,6 +59,13 @@ namespace MalbersAnimations
             AlwaysRun = 2,
             SlowWalk = 3,
             FastRun = 4
+        }
+        enum PathingCheckStates
+        {
+            NotChecking,
+            ProvingPresence,
+            ProvingAbsence,
+            WaitingToCancel
         }
 
         MovementStates currentMovementState = MovementStates.NormalMovement;
@@ -161,7 +173,7 @@ namespace MalbersAnimations
                 Agent.enabled = true;
                 isMoving = false; // Important.
             }
-            else
+            else if (Agent.enabled && !(animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Idle")))
             {
                 Agent.enabled = false;
             }
@@ -225,7 +237,9 @@ namespace MalbersAnimations
                         Agent.SetDestination(target.position); // First we must always give the Agent a chance to path, since the call is asynchronous (better performance that way, I say). Roughly about a second and a half should be sufficient for our purposes.
                         SetStoppingDistance();
                         destinationSet = true;
-                        StartCoroutine(PathingTimeOut()); // A simple delayed check to see if we're actually pathing to the target, or just twiddling our thumbs.
+                        currentPathingState = PathingCheckStates.ProvingPresence;
+                        pathingCheckEndTime = Time.time + 12f; // This is a sort of cut-off to prevent EvaluatePathing from just looping indefinitely.
+                        pathingCheckSubTime = Time.time + 4f;
                     }
                 }
                 else if ((Agent.destination - target.position).sqrMagnitude <= .121 && cannotPathToTarget)
@@ -256,6 +270,11 @@ namespace MalbersAnimations
                         Debug.DrawLine(Agent.path.corners[i], Agent.path.corners[i + 1], Color.red);
                     }
                 }
+
+                if (currentPathingState != PathingCheckStates.NotChecking)
+                {
+                    EvaluatePathing();
+                }
             }
 
             if (Agent.remainingDistance > Agent.stoppingDistance)
@@ -278,99 +297,63 @@ namespace MalbersAnimations
 
             animal.Move(Direction);                                 //Set the Movement to the Animal
 
-            if (AutoSpeed) AutomaticSpeed();                         //Set Automatic Speeds
-
+            if (AutoSpeed)
+            {
+                AutomaticSpeed();                         //Set Automatic Speeds
+            }
+            
             CheckOffMeshLinks();                                     //Jump/Fall behaviour 
         }
 
-        IEnumerator PathingTimeOut()
+        private void EvaluatePathing()
         {
-            Transform currentTarget = target;
-            bool arrivedAtPseudoTarget = false;
-            bool weHaveAPath = false;
-            float checkingTimeLimit = 2.5f;
-            float checkingTime = 0;
-            float timeOutLimit = 12f;
-            float timeOut = 0;
-            Rigidbody targetRigidbody = target.GetComponent<Rigidbody>();
-
-            // So if we fail to get a path in 4 seconds, we're done. But if we do, and that path remains valid for another fours seconds, we're home clear. But if we get a valid path, lose it, and then regain it we should register that properly, with a cutoff of something like 12-18 seconds in case we've managed to create a perfect loop.
-            // Of course, if the fox is animating, then we're already there and we don't have to bother with checking any of this.
-            while (!(weHaveAPath || animal.CurrentAnimState.IsTag("Action")))
+            if (currentPathingState == PathingCheckStates.ProvingPresence)
             {
-                while (!(checkingTime > checkingTimeLimit || weHaveAPath || animal.CurrentAnimState.IsTag("Action") || timeOut > timeOutLimit))
+                if (target_Has_Rigidibody && target_Has_Rigidibody.velocity.sqrMagnitude > .25f)
                 {
-                    if (targetRigidbody)
-                    {
-                        while (targetRigidbody.velocity.sqrMagnitude > .25f)
-                        { // As long as the target is moving .5 units per second, we aren't going to count the time spent against the checkingTimeLimit;
-                            yield return new WaitForEndOfFrame();
-                        }
-                    }
-                    checkingTime += Time.deltaTime;
-                    if (Agent.path.corners.Length > 1)
-                    {
-                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .121f)
-                        {
-                            weHaveAPath = true;
-                        }
-                    }
-
-                    yield return new WaitForEndOfFrame();
+                    pathingCheckEndTime += Time.deltaTime;
+                    pathingCheckSubTime += Time.deltaTime;
                 }
-
-                if (!weHaveAPath)
-                { // Basically, if we've failed to acquire a path in four seconds there's no point to go on, so we go to this particular dead-end cul de sac.
+                else if (Agent.path.corners.Length > 1 && (Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .121f)
+                {
+                    currentPathingState = PathingCheckStates.ProvingAbsence;
+                    pathingCheckSubTime = Time.time + 4f;
+                }
+                else if (pathingCheckSubTime < Time.time || pathingCheckEndTime < Time.time)
+                {
                     cannotPathToTarget = true;
-                    checkingTime = 0;
-                    checkingTimeLimit = 8f;
-                    while (!(checkingTime > checkingTimeLimit || arrivedAtPseudoTarget))
-                    {
-                        if (!cannotPathToTarget)
-                        { // The only way this is going to be true is if we set a target after it was registered as unpathable to. In which case, we need to clear older versions of this coroutine away to make way for a new coroutine. This'll work as long as the increments of this while loop are less than the checking time.
-                            yield break;
-                        }
-                        checkingTime += .5f;
-                        if (Agent.isOnNavMesh)
-                        {
-                            if (Agent.remainingDistance < Agent.stoppingDistance) // Just a quick check to see if we've arrived.
-                            {
-                                arrivedAtPseudoTarget = true;
-                            }
-                        }
-                        yield return new WaitForSeconds(.5f);
-                    }
-
-                    if (cannotPathToTarget && currentTarget == target)
-                    {
-                        TriggerHeadOverride(1f, 2.5f, 1f);
-                        InterruptPathing(4.3f);
-                        SetTarget(null);
-                        yield return new WaitForSeconds(Random.Range(1.5f, 2.5f));
-                        GetComponent<FoxSounds>().VoiceFox(5);
-                    }
-                    yield break;
+                    currentPathingState = PathingCheckStates.WaitingToCancel;
+                    pathingCheckSubTime = Time.time + 8f;
                 }
-
-                timeOut += checkingTime;
-                checkingTime = 0;
-
-                while (!(checkingTime > checkingTimeLimit || !weHaveAPath || animal.CurrentAnimState.IsTag("Action")))
-                {
-                    checkingTime += Time.deltaTime;
-                    if (Agent.path.corners.Length > 1)
-                    {
-                        if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .121f)
-                        {
-                            weHaveAPath = false;
-                        }
-                    }
-                    yield return new WaitForEndOfFrame();
-                }
-                timeOut += checkingTime;
-                checkingTime = 0;
-                yield return new WaitForEndOfFrame();
             }
+            else if (currentPathingState == PathingCheckStates.ProvingAbsence)
+            {
+                if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .121f)
+                {
+                    currentPathingState = PathingCheckStates.ProvingPresence;
+                    pathingCheckSubTime = Time.time + 4f;
+                }
+                else if (pathingCheckSubTime < Time.time)
+                {
+                    currentPathingState = PathingCheckStates.NotChecking;
+                }
+            }
+            else if (currentPathingState == PathingCheckStates.WaitingToCancel)
+            {
+                if (pathingCheckSubTime < Time.time || Agent.isOnNavMesh && Agent.remainingDistance < Agent.stoppingDistance)
+                {
+                    TriggerHeadOverride(1f, 2.5f, 1f);
+                    InterruptPathing(4.3f);
+                    SetTarget(null);
+                    StartCoroutine(FoxVoiceDelay());
+                }
+            }
+        }
+
+        IEnumerator FoxVoiceDelay()
+        {
+            yield return new WaitForSeconds(Random.Range(1.5f, 2.5f));
+            GetComponent<FoxSounds>().VoiceFox(5);
         }
 
         public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
@@ -531,6 +514,7 @@ namespace MalbersAnimations
                     isWandering = false;
                     Target_is_ActionZone = target.GetComponent<ActionZone>();
                     Target_is_Waypoint = target.GetComponent<MWayPoint>();
+                    target_Has_Rigidibody = target.GetComponent<Rigidbody>();
 
                     if (Target_is_ActionZone)
                     {

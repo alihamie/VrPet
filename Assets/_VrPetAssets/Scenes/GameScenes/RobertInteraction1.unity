@@ -1235,10 +1235,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.5
   NextTarget: {fileID: 757262633}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &193467540
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1501,10 +1512,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.5
   NextTarget: {fileID: 757262633}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &216778555
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1808,10 +1830,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &224681364
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4086,10 +4119,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &603413334
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5034,10 +5078,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.32
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!1 &757634387
 GameObject:
   m_ObjectHideFlags: 0
@@ -5351,10 +5406,21 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.5
   NextTarget: {fileID: 1190944747}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &762081879
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11592,10 +11658,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.3
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &1190944749
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12012,10 +12089,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.3
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &1264563970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17563,10 +17651,21 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.63
   NextTarget: {fileID: 1190944747}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &1588822861
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18174,10 +18273,21 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.5
   NextTarget: {fileID: 0}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &1615465675
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18648,7 +18758,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1801714600943220, guid: 157b06a9f8fccfc499b2b1fe691a48d2, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114759122231130548, guid: 157b06a9f8fccfc499b2b1fe691a48d2,
         type: 2}
@@ -19442,6 +19552,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1072295891}
   jawOffset: 0
+  currentTarget: 2
 --- !u!1001 &1684450161
 Prefab:
   m_ObjectHideFlags: 0
@@ -22439,7 +22550,7 @@ MonoBehaviour:
   AutoSpeed: 1
   ToTrot: 4
   ToRun: 8
-  debug: 0
+  debug: 1
   isWandering: 1
 --- !u!1001 &1958132215
 Prefab:
@@ -22912,10 +23023,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  invokeGrab: 0
+  invokeEnable: 0
+  invokeEnd: 0
+  invokeAction: 0
+  invokeSight: 0
   stoppingDistance: 0.45
   NextTarget: {fileID: 757262633}
   EditorShowEvents: 1
   EditorAI: 1
+  EditorShowForce: 1
+  forceEnable: 0
+  forceAction: 0
+  forceEnd: 0
+  forceSight: 0
+  forceGrab: 0
 --- !u!65 &2020023483
 BoxCollider:
   m_ObjectHideFlags: 0

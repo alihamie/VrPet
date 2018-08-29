@@ -66,24 +66,19 @@ namespace MalbersAnimations
             Animal animal = other.GetComponentInParent<Animal>();
             AnimalAIControl animalAIControl = other.GetComponentInParent<AnimalAIControl>();
 
-            if (animal && other.gameObject.layer == 20) // In short, the entering object needs to have the Animal and AnimalAIControl scripts attached and be on the Animal Layer for us to do anything.
-            {
-                if (animalAIControl)
-                {
-                    if (animalAIControl.isWandering == true)
-                    {
-                        return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
-                    }
-                }
-
-                if (HeadOnly && !other.name.ToLower().Contains("head"))
-                {
-                    return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
-                }
-            }
-            else
+            if (!animal || !(other.gameObject.layer == 20)) // In short, the entering object needs to have the Animal and AnimalAIControl scripts attached and be on the Animal Layer for us to do anything.
             {
                 return;
+            }
+
+            if (animalAIControl && animalAIControl.isWandering == true)
+            {
+                return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
+            }
+
+            if (HeadOnly && !other.name.ToLower().Contains("head"))
+            {
+                return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
             }
 
             StartCoroutine(startAnimation(ID, animal, animalAIControl));
@@ -98,37 +93,22 @@ namespace MalbersAnimations
             {
                 ai.SetClosestGrabbableItem(transform);
 
-                if (id == 25) // If we're trying to grab the object, we need to be faster if the object is going faster.
+                if (id == 25 && (rigidbody.velocity.sqrMagnitude > .25f || rigidbody.angularVelocity.sqrMagnitude > .09)) // If we're trying to grab the object, we need to be faster if the object is going faster.
                 {
-                    if (rigidbody.velocity.sqrMagnitude > .25f || rigidbody.angularVelocity.sqrMagnitude > .09)
-                    {
-                        id = 19;
-                    }
+                    id = 19;
                 }
             }
 
             while (!animal.CurrentAnimState.IsTag("Idle") || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
-                if (ai)
+                if (ai && (ai.target != transform || grabReceiver && grabReceiver.grabMode))
                 {
-                    if (ai.target != transform)
-                    { // I'm kinda suprised I didn't think to put this check in earlier.
-                        enabled = false;
-                        Physics.IgnoreLayerCollision(20, 8, false);
-                        yield break;
-                    }
-                    else if (grabReceiver)
-                    {
-                        if (grabReceiver.grabMode)
-                        {
-                            enabled = false;
-                            Physics.IgnoreLayerCollision(20, 8, false);
-                            yield break;
-                        }
-                    }
-
-                    yield return new WaitForEndOfFrame();
+                    enabled = false;
+                    Physics.IgnoreLayerCollision(20, 8, false);
+                    yield break;
                 }
+
+                yield return new WaitForEndOfFrame();
             }
 
             if (id != -1) // -1 is the id of the attack animation. Which isn't set up as an action, so I think it'll cause some problems if I try to treat it like one.
@@ -161,12 +141,9 @@ namespace MalbersAnimations
 
             Physics.IgnoreLayerCollision(8, 20, false); // Yes, that's right. ALL COLLISION BETWEEN LAYERS 8 and 20. Because otherwise I'd have to record each collision and disable it on a case-by-case basis. Less elegant though. If the CPU cost for doing this on a case-by-case basis isn't too high, I could probably do the more elegant solution.
 
-            if (ai)
+            if (ai && ai.target == transform)
             {
-                if (ai.target == transform)
-                {
-                    ai.SetTarget(NextTarget, true);
-                }
+                ai.SetTarget(NextTarget, true);
             }
 
             onEnd.Invoke();
@@ -200,40 +177,21 @@ namespace MalbersAnimations
             }
         }
 
-        public override bool Equals(object target)
-        {
-            if (target is ActionZone)
-            {
-                ActionZone targetToCopy = (ActionZone)target;
-                ID = targetToCopy.ID;
-                NextTarget = targetToCopy.NextTarget;
-                onSight = targetToCopy.onSight;
-                onAction = targetToCopy.onAction;
-                onEnd = targetToCopy.onEnd;
-                onGrab = targetToCopy.onGrab;
-                onEnable = targetToCopy.onEnable;
-
-                BoxCollider myCollider = GetComponent<BoxCollider>();
-                BoxCollider copiedCollider = targetToCopy.gameObject.GetComponent<BoxCollider>();
-
-                myCollider.size = copiedCollider.size;
-                myCollider.center = copiedCollider.center;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public override int GetHashCode()
-        {
-            return index.GetHashCode();
-        }
-
         public void CopyActionzone(ActionZone targetToCopy)
         {
-            Equals(targetToCopy);
+            ID = targetToCopy.ID;
+            NextTarget = targetToCopy.NextTarget;
+            onSight = targetToCopy.onSight;
+            onAction = targetToCopy.onAction;
+            onEnd = targetToCopy.onEnd;
+            onGrab = targetToCopy.onGrab;
+            onEnable = targetToCopy.onEnable;
+
+            BoxCollider myCollider = GetComponent<BoxCollider>();
+            BoxCollider copiedCollider = targetToCopy.gameObject.GetComponent<BoxCollider>();
+
+            myCollider.size = copiedCollider.size;
+            myCollider.center = copiedCollider.center;
         }
 
 #if UNITY_EDITOR
