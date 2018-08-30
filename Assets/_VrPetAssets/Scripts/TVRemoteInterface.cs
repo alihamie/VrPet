@@ -23,7 +23,7 @@ namespace EasyInputVR.Misc
 
         Vector2 touchPosition;
         Vector2 previousTouchPosition;
-        float swipeRotation;
+        float swipeRotation, totalSwipe = 0;
         bool previousGrabMode, touching, padClick, previousPadClick;
 
         void Start()
@@ -33,15 +33,10 @@ namespace EasyInputVR.Misc
             laser = rightHandAnchor.GetChild(0).GetComponent<StandardControllers.StandardLaserPointer>();
         }
 
-        void OnEnable()
+        void OnDisable() // This section of code is just to make sure we properly disassociate this script from those events.
         {
-            EasyInputHelper.On_Touch += localTouch;
-            EasyInputHelper.On_ClickStart += clickStart;
-            EasyInputHelper.On_ClickEnd += clickEnd;
-        }
-
-        void OnDisable()
-        {
+            EasyInputHelper.On_TouchStart -= localTouchStart;
+            EasyInputHelper.On_TouchEnd -= localTouchEnd;
             EasyInputHelper.On_Touch -= localTouch;
             EasyInputHelper.On_ClickStart -= clickStart;
             EasyInputHelper.On_ClickEnd -= clickEnd;
@@ -50,36 +45,48 @@ namespace EasyInputVR.Misc
         void Update()
         {
             // This bit is just to hide the laser and the controller's model while the remote is grabbed. Hiding the laser isn't entirely cosmetic, so if that become an issue I'll need to change that script instead.
-            if (remote.grabMode && !previousGrabMode)
-            {
-                previousGrabMode = remote.grabMode;
-                laser.stopLaser();
-                controllerModel.SetActive(false);
-                PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.REMOTE;
-            }
-            else if (!remote.grabMode && previousGrabMode)
-            {
-                previousGrabMode = remote.grabMode;
-                laser.startLaser();
-                controllerModel.SetActive(true);
-                padClick = false;
-                stateManager.ChangeState(-1);
-                PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.START;
-            }
-
             if (remote.grabMode)
             {
-                transform.rotation = rightHandAnchor.rotation;
-            }
+                if (!previousGrabMode)
+                {
+                    EasyInputHelper.On_TouchStart += localTouchStart;
+                    EasyInputHelper.On_TouchEnd += localTouchEnd;
+                    EasyInputHelper.On_Touch += localTouch;
+                    EasyInputHelper.On_ClickStart += clickStart;
+                    EasyInputHelper.On_ClickEnd += clickEnd;
+                    previousGrabMode = remote.grabMode;
+                    laser.stopLaser();
+                    controllerModel.SetActive(false);
+                    PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.REMOTE;
+                }
 
-            if (padClick && !previousPadClick)
-            {
-                TouchClickEvaluator();
-                previousPadClick = padClick;
+                transform.rotation = rightHandAnchor.rotation;
+
+                if (padClick && !previousPadClick)
+                {
+                    TouchClickEvaluator();
+                    previousPadClick = padClick;
+                }
+                else if (!padClick && previousPadClick)
+                {
+                    previousPadClick = padClick;
+                }
             }
-            else if (!padClick && previousPadClick)
+            else
             {
-                previousPadClick = padClick;
+                if (previousGrabMode)
+                {
+                    EasyInputHelper.On_TouchStart -= localTouchStart;
+                    EasyInputHelper.On_TouchEnd -= localTouchEnd;
+                    EasyInputHelper.On_Touch -= localTouch;
+                    EasyInputHelper.On_ClickStart -= clickStart;
+                    EasyInputHelper.On_ClickEnd -= clickEnd;
+                    previousPadClick = padClick = previousGrabMode = false;
+                    laser.startLaser();
+                    controllerModel.SetActive(true);
+                    stateManager.ChangeState(-1);
+                    PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.START;
+                }
             }
         }
 
@@ -91,8 +98,8 @@ namespace EasyInputVR.Misc
         void localTouch(InputTouch touch)
         {
             previousTouchPosition = touchPosition;
-            touchPosition = touch.currentTouchPosition;
-            swipeRotation = Vector2.SignedAngle(previousTouchPosition, touchPosition);
+            touchPosition = touch.currentTouchPosition; // We're dividing by Time.deltaTime on the next line because otherwise lag would cause us to strongly overestimate the signedAngle generated.
+            swipeRotation = Vector2.SignedAngle(previousTouchPosition, touchPosition) / Time.deltaTime;
 
             if (stateManager.activeChildNumber == 0)
             {
@@ -101,8 +108,19 @@ namespace EasyInputVR.Misc
 
             if (stateManager.activeChildNumber == 1)
             {
-                ChannelMenuNumberSwiper();
+                totalSwipe += (touchPosition.x - previousTouchPosition.x);
+
+                if (totalSwipe > 1.2f || totalSwipe < -1.2f)
+                {
+                    ChannelMenuNumberSwiper((int)Mathf.Sign(totalSwipe));
+                    totalSwipe = 0;
+                }
             }
+        }
+
+        void localTouchEnd(InputTouch touch)
+        {
+            totalSwipe = 0f;
         }
 
         void clickStart(ButtonClick button)
@@ -152,15 +170,10 @@ namespace EasyInputVR.Misc
             }
         }
 
-        void ChannelMenuNumberSwiper()
+        void ChannelMenuNumberSwiper(int currentSwipeDirection)
         {
-            // And here's where we use the rotation around the touchpad to swipe left or right. This method of input probably becomes inadviseable at around 20, though submenus can probably extend that.
-
-            if (Mathf.Abs(swipeRotation) > 10f && buttonManager.selectedInt == buttonManager.moveNum && touchPosition.magnitude > .2f)
-            {
-                buttonManager.selectedInt = buttonManager.selectedInt + (int)(Mathf.Sign(swipeRotation));
-                tvSpeaker.PlayOneShot(selectNoise);
-            }
+            buttonManager.selectedInt -= currentSwipeDirection;
+            tvSpeaker.PlayOneShot(selectNoise);
         }
 
         void TouchClickEvaluator()
@@ -177,8 +190,8 @@ namespace EasyInputVR.Misc
             }
             else if (stateManager.activeChildNumber == 1)
             {
-                buttonManager.PlaySelected();
                 stateManager.ChangeState(-1);
+                buttonManager.PlaySelected();
                 tvSpeaker.PlayOneShot(choiceNoise);
             }
             else if (stateManager.activeChildNumber > 1)

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using EasyInputVR.Core;
-using UnityEngine.Events;
+﻿using EasyInputVR.Core;
+using MalbersAnimations;
+using UnityEngine;
 
 namespace EasyInputVR.StandardControllers
 {
@@ -156,10 +155,6 @@ namespace EasyInputVR.StandardControllers
                     temp.z = initialRotation.eulerAngles.z;
 
                 this.transform.localRotation = Quaternion.Euler(temp);
-
-                
-
-
             }
         }
 
@@ -268,6 +263,12 @@ namespace EasyInputVR.StandardControllers
                 initialRotation = this.transform.localRotation;
                 if (laserTransform != null)
                     initialTwist = laserTransform.localRotation.eulerAngles.z;
+
+                ActionZone actionZone = GetComponent<ActionZone>();
+                if (actionZone)
+                {
+                    actionZone.onGrab.Invoke();
+                }
             }
 
             if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTouchClick)
@@ -284,7 +285,7 @@ namespace EasyInputVR.StandardControllers
                 clicking = false;
                 previousClicking = false;
                 grabMode = false;
-                this.foxTargetManager.GoToFetchItem(this.transform);
+                foxTargetManager.GoToFetchItem(transform);
                 if (myRigidbody != null)
                 {
                     if (dropCondition == EasyInputConstants.DROP_MODE.Drop)

@@ -19,7 +19,6 @@ public class ChannelButtonManager : MonoBehaviour {
 	void Start () {
         buttonChildren = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
-
         {
             buttonChildren[i] = transform.GetChild(i);
         }

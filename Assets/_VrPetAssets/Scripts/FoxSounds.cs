@@ -2,10 +2,11 @@
 
 public class FoxSounds : MonoBehaviour
 {
-
-    public GameObject foxHead;
     public float foxVolume = .4f;
     public Transform foxSoundMasterList;
+
+    private float timerDelay = .75f;
+    private float timer = 0f;
 
     FoxSoundList[] soundListReferences;
     AudioSource foxAudio;
@@ -14,13 +15,17 @@ public class FoxSounds : MonoBehaviour
 
     void Start()
     {
-        foxAudio = foxHead.GetComponent<AudioSource>();
+        foxAudio = GetComponent<MalbersAnimations.AnimalAIControl>().animalHead.GetComponent<AudioSource>();
     }
 
     //Then it's as simple as choosing an entry on the list to play with an animation even attached to an animation. Or you can just call it whenever you think is appropriate. I use playoneshot here, it won't interrupt itself.
     public void VoiceFox(int listNumber)
     {
-        foxClips = foxSoundMasterList.GetChild(listNumber).GetComponent<FoxSoundList>().FoxSound;
-        foxAudio.PlayOneShot(foxClips[Random.Range(0, foxClips.Length)], foxVolume);
+        if (timer < Time.time)
+        {
+            foxClips = foxSoundMasterList.GetChild(listNumber).GetComponent<FoxSoundList>().FoxSound;
+            foxAudio.PlayOneShot(foxClips[Random.Range(0, foxClips.Length)], foxVolume);
+            timer = Time.time + timerDelay;
+        }
     }
 }
