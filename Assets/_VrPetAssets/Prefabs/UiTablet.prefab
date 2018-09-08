@@ -2836,6 +2836,7 @@ MonoBehaviour:
   driverCamera: {fileID: 0}
   faderLeft: {fileID: 0}
   fadeRight: {fileID: 0}
+  laser: {fileID: 0}
 --- !u!114 &114380343396091624
 MonoBehaviour:
   m_ObjectHideFlags: 1

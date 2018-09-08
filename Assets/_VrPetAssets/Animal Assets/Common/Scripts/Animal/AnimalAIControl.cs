@@ -344,7 +344,7 @@ namespace MalbersAnimations
                 {
                     TriggerHeadOverride(1f, 2.5f, 1f);
                     InterruptPathing(4.3f);
-                    SetTarget(null);
+                    SetTarget(null, true, true);
                     StartCoroutine(FoxVoiceDelay());
                 }
             }
@@ -492,7 +492,7 @@ namespace MalbersAnimations
         {
             if (!targetOverride || ignoreOverride)
             {
-                if (resetOverride)
+                if (target == null || resetOverride)
                 {
                     targetOverride = false;
                     if (currentMovementState != MovementStates.NormalMovement)
@@ -524,7 +524,6 @@ namespace MalbersAnimations
                 else
                 {
                     isWandering = true;
-                    targetOverride = false; // This should mean that whenever the fox is wandering, it'll have targetOverride shut off. Just in case.
                     Target_is_ActionZone = null;
                     Target_is_Waypoint = null;
                     Agent.stoppingDistance = DefaultStoppingDistance;

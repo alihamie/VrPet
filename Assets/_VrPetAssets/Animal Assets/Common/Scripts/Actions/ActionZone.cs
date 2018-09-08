@@ -46,6 +46,7 @@ namespace MalbersAnimations
         void OnEnable()
         {
             onEnable.Invoke();
+            firstTimeTrigger = false;
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -81,10 +82,10 @@ namespace MalbersAnimations
                 return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
             }
 
-            StartCoroutine(startAnimation(ID, animal, animalAIControl));
+            StartCoroutine(StartAnimation(ID, animal, animalAIControl));
         }
 
-        IEnumerator startAnimation(int id, Animal animal, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
+        IEnumerator StartAnimation(int id, Animal animal, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
         {
             firstTimeTrigger = true; // This only needs to trigger once. Can't just set enabled to false because that'd turn the coroutines off. Or so I think. Haven't tested it, only read it on the internet. But when has the internet ever lied to me?
             Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -99,7 +100,7 @@ namespace MalbersAnimations
                 }
             }
 
-            while (!animal.CurrentAnimState.IsTag("Idle") || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
+            while ((!animal.CurrentAnimState.IsTag("Idle")|| animal.CurrentAnimState.IsName("")) || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
                 if (ai && (ai.target != transform || grabReceiver && grabReceiver.grabMode))
                 {
