@@ -7,6 +7,4 @@ public class RcToyClickButton: BaseToyClickButton {
         base.OnPointerDown(eventData);
         this.tabletFunctionality.ToggleCarbutton();
     }
-
-
 }

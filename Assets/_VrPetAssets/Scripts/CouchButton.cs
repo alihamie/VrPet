@@ -41,14 +41,14 @@ public class CouchButton : BaseToyClickButton
         faderLeft.FadeOutExit += FadeOutExit;
     }
 
-    private void Update()
-    {
-        if (fakeButton)
-        {
-            OnPointerDown(null);
-            fakeButton = false;
-        }
-    }
+    //private void Update()
+    //{
+    //    if (fakeButton)
+    //    {
+    //        OnPointerDown(null);
+    //        fakeButton = false;
+    //    }
+    //}
 
     private void OnDestroy()
     {
@@ -72,7 +72,10 @@ public class CouchButton : BaseToyClickButton
 
             foreach (GameObject link in offMeshLinks)
             {
-                link.SetActive(true);
+                if (link)
+                {
+                    link.SetActive(true);
+                }
             }
         }
         else if (imFading)
@@ -87,7 +90,10 @@ public class CouchButton : BaseToyClickButton
 
             foreach (GameObject link in offMeshLinks)
             {
-                link.SetActive(false);
+                if (link)
+                {
+                    link.SetActive(false);
+                }
             }
         }
 

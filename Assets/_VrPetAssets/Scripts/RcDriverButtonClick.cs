@@ -1,7 +1,7 @@
 ﻿using EasyInputVR.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using EasyInputVR.StandardControllers;
 
 public class RcDriverButtonClick : BaseToyClickButton
 {
@@ -12,6 +12,7 @@ public class RcDriverButtonClick : BaseToyClickButton
     public Transform driverCamera;
     public OVRScreenFade faderLeft;
     public OVRScreenFade fadeRight;
+    public StandardLaserPointer laser;
 
     private Vector3 initialCameraPosition;
     private Vector3 initialCameraScale;
@@ -29,9 +30,9 @@ public class RcDriverButtonClick : BaseToyClickButton
 
     private void Start()
     {
-        screenManager = this.gameObject.GetComponentInParent<TabletScreenManager>();
-        visibility = this.transform.root.GetComponent<TabletVisibility>();
-        tabletFunctionality = this.transform.GetComponentInParent<TabletFunctionality>();
+        screenManager = gameObject.GetComponentInParent<TabletScreenManager>();
+        visibility = transform.root.GetComponent<TabletVisibility>();
+        tabletFunctionality = transform.GetComponentInParent<TabletFunctionality>();
         initialCameraPosition = mainCamera.position;
         initialCameraScale = mainCamera.localScale;
         initialCameraRotation = mainCamera.rotation;
@@ -53,15 +54,16 @@ public class RcDriverButtonClick : BaseToyClickButton
 
     public void SwitchToDriverCamera()
     {
-        if (!this.tabletFunctionality.isCarActive)
+        if (!tabletFunctionality.isCarActive)
         {
-            this.tabletFunctionality.ToggleCarbutton();
+            tabletFunctionality.ToggleCarbutton();
         }
         PlayerState.CURRENTSTATE = PlayerState.PLAYERSTATE.DRIVING;
         mainCamera.parent = tabletFunctionality.car;
         mainCamera.localScale = driverCamera.localScale;
         mainCamera.position = driverCamera.position;
         mainCamera.rotation = driverCamera.rotation;
+        laser.stopLaser();
     }
 
     public void SwitchToStartCamera()
@@ -71,8 +73,9 @@ public class RcDriverButtonClick : BaseToyClickButton
         mainCamera.localScale = initialCameraScale;
         mainCamera.position = initialCameraPosition;
         mainCamera.rotation = initialCameraRotation;
-        this.tabletFunctionality.ToggleCarbutton();
-        this.tabletFunctionality.targetManager.WanderAgain();
+        tabletFunctionality.ToggleCarbutton();
+        tabletFunctionality.targetManager.WanderAgain();
+        laser.startLaser();
     }
 
     private void Update()
