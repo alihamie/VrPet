@@ -5,8 +5,9 @@ using EasyInputVR.StandardControllers;
 
 public class RcDriverButtonClick : BaseToyClickButton
 {
-	//for ben ===remove later===
-	public bool triggerCar = false;
+#if UNITY_EDITOR
+    public bool triggerCar = false;
+#endif
 
     public Transform mainCamera;
     public Transform driverCamera;
@@ -16,6 +17,7 @@ public class RcDriverButtonClick : BaseToyClickButton
 
     private Vector3 initialCameraPosition;
     private Vector3 initialCameraScale;
+    private Vector3 initialTabletPosition;
     private Quaternion initialCameraRotation;
     private bool padClick;
     private bool prevPadClick;
@@ -36,6 +38,7 @@ public class RcDriverButtonClick : BaseToyClickButton
         initialCameraPosition = mainCamera.position;
         initialCameraScale = mainCamera.localScale;
         initialCameraRotation = mainCamera.rotation;
+        initialTabletPosition = transform.root.position;
     }
 
     void OnEnable()
@@ -64,6 +67,7 @@ public class RcDriverButtonClick : BaseToyClickButton
         mainCamera.position = driverCamera.position;
         mainCamera.rotation = driverCamera.rotation;
         laser.stopLaser();
+        transform.root.position += new Vector3(0, -5f, 0);
     }
 
     public void SwitchToStartCamera()
@@ -76,15 +80,18 @@ public class RcDriverButtonClick : BaseToyClickButton
         tabletFunctionality.ToggleCarbutton();
         tabletFunctionality.targetManager.WanderAgain();
         laser.startLaser();
+        transform.root.position = initialTabletPosition;
     }
 
     private void Update()
     {
-		if(triggerCar)
+#if UNITY_EDITOR
+        if (triggerCar)
 		{
 			triggerCar = false;
 			SwitchToDriverCamera();
 		}
+#endif
 
         //TODO make a global delegate to figure out quick pad Click instad of doing this everytime
         if (padClick == true && prevPadClick == false && PlayerState.CURRENTSTATE == PlayerState.PLAYERSTATE.DRIVING)
@@ -96,7 +103,6 @@ public class RcDriverButtonClick : BaseToyClickButton
 
         prevPadClick = padClick;
     }
-
 
     void ClickStart(ButtonClick button)
     {

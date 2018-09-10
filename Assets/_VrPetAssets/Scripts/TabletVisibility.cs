@@ -11,7 +11,7 @@ public class TabletVisibility : MonoBehaviour
 
     private void Awake()
     {
-        UiTablet = this.transform.GetChild(0);
+        UiTablet = transform.GetChild(0);
     }
 
     void OnEnable()
@@ -56,6 +56,4 @@ public class TabletVisibility : MonoBehaviour
         EasyInputHelper.On_ClickStart -= ClickStart;
         EasyInputHelper.On_ClickEnd -= ClickEnd;
     }
-
-
 }
