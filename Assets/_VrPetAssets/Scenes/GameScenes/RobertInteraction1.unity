@@ -6040,6 +6040,12 @@ Prefab:
       propertyPath: m_Name
       value: AmbienceGenerator(Ambulance)
       objectReference: {fileID: 0}
+    - target: {fileID: 82956092073180812, guid: 8e02296b044304a4fbbfd024177d6448,
+        type: 2}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 243482821950649932, guid: 1dd706bb85d8aef4e83a6229dbd62c36,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e02296b044304a4fbbfd024177d6448, type: 2}
   m_IsPrefabParent: 0
@@ -18137,6 +18143,7 @@ MonoBehaviour:
   offMeshLinks: []
   faderLeft: {fileID: 1072295892}
   fadeRight: {fileID: 1305801501}
+  music: {fileID: 24100000, guid: 1dd706bb85d8aef4e83a6229dbd62c36, type: 2}
   imFading: 0
   fakeButton: 0
 --- !u!114 &1609894723
@@ -20451,7 +20458,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1356630253106918, guid: 139f7472efc30a54382f2423b256c8a4, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1424057406135676, guid: 139f7472efc30a54382f2423b256c8a4, type: 2}
       propertyPath: m_IsActive

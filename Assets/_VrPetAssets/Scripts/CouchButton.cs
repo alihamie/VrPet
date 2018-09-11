@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Audio;
 
 public class CouchButton : BaseToyClickButton
 {
@@ -19,21 +20,26 @@ public class CouchButton : BaseToyClickButton
 
     public OVRScreenFade faderLeft;
     public OVRScreenFade fadeRight;
+    public AudioMixer music;
 
     private bool onCouch;
+    [HideInInspector]
     public bool imFading;
+#if UNITY_EDITOR
     public bool fakeButton;
+#endif
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        imFading = true;
-
-        faderLeft.FadeOut();
-        fadeRight.FadeOut();
+        if (!imFading)
+        {
+            imFading = true;
+            faderLeft.FadeOut();
+            fadeRight.FadeOut();
+        }
     }
 
-
-    void Start()
+    private void Awake()
     {
         initialCameraPosition = cameraRig.position;
         initialCameraRotation = cameraRig.rotation;
@@ -41,14 +47,16 @@ public class CouchButton : BaseToyClickButton
         faderLeft.FadeOutExit += FadeOutExit;
     }
 
-    //private void Update()
-    //{
-    //    if (fakeButton)
-    //    {
-    //        OnPointerDown(null);
-    //        fakeButton = false;
-    //    }
-    //}
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (fakeButton)
+        {
+            OnPointerDown(null);
+            fakeButton = false;
+        }
+    }
+#endif
 
     private void OnDestroy()
     {
@@ -67,6 +75,7 @@ public class CouchButton : BaseToyClickButton
             television.position = initialTelevisionPosition;
             tablet.position = initialTabletPosition;
             tablet.rotation = initialTabletRotation;
+            music.SetFloat("MusicVolume", 0);
 
             onCouch = false;
 
@@ -85,6 +94,7 @@ public class CouchButton : BaseToyClickButton
             television.position = tableTVPosition.position;
             tablet.position = couchTablet.position;
             tablet.rotation = couchTablet.rotation;
+            music.SetFloat("MusicVolume", -80f);
 
             onCouch = true;
 

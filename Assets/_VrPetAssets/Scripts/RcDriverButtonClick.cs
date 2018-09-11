@@ -25,9 +25,12 @@ public class RcDriverButtonClick : BaseToyClickButton
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        faderLeft.FadeOut();
-        fadeRight.FadeOut();
-        imFading = true;
+        if (!imFading)
+        {
+            faderLeft.FadeOut();
+            fadeRight.FadeOut();
+            imFading = true;
+        }
     }
 
     private void Start()
