@@ -37,7 +37,6 @@ namespace EasyInputVR.StandardControllers
         public void OnEnable()
         {
             EasyInputHelper.On_Motion += localMotion;
-
         }
 
         public void OnDestroy()

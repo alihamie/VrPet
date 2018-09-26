@@ -57,6 +57,7 @@ namespace MalbersAnimations
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 {
                     M.HeadOnly = EditorGUILayout.Toggle(new GUIContent("Head Only", "Enable only when the 'Head' bone enter the trigger zone"), M.HeadOnly);
+                    M.nextTargetOverride = EditorGUILayout.Toggle(new GUIContent("Next Target Override", "If enabled, the fox will ignore any attempt to set its target by the player"), M.nextTargetOverride);
                 }
                 EditorGUILayout.EndVertical();
                 //EditorGUILayout.BeginVertical(EditorStyles.helpBox);
@@ -127,6 +128,7 @@ namespace MalbersAnimations
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onAction"), new GUIContent("On Animal Action"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onSight"), new GUIContent("On The Animal First Seeing This"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnd"), new GUIContent("On The Action Ending"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onCancel"), new GUIContent("On Actionzone Being Disabled Without Triggering"));
                 }
                 EditorGUILayout.EndVertical();
 

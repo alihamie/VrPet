@@ -1,46 +1,48 @@
 ﻿using EasyInputVR.StandardControllers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ClickGrabSimulator : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-
     public StandardGrabReceiver grabItem;
     public GameObject pointer;
-    bool hovering = false;
+    private bool hovering = false, previousHovering = false;
 
     private void Update()
     {
-        if (hovering)
+        if (hovering && previousHovering)
         {
             grabItem.Hover(grabItem.transform.position, pointer.transform);
         }
-        else
+        else if (hovering != previousHovering)
         {
-            grabItem.HoverExit(grabItem.transform.position, pointer.transform);
-        }
-    }
+            previousHovering = hovering;
 
-    public void ToggleHover()
-    {
-        hovering = !hovering;
+            if (hovering)
+            {
+                grabItem.HoverEnter(grabItem.transform.position, pointer.transform);
+            }
+            else
+            {
+                grabItem.HoverExit(grabItem.transform.position, pointer.transform);
+            }
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        ToggleHover();
+        hovering = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        ToggleHover();
+        hovering = false;
     }
 
+    // See if Hover needs to be called instead, considering the original order of how this was all coded.
     public void OnPointerDown(PointerEventData eventData)
     {
-        ToggleHover();
+        hovering = false;
         grabItem.HoverExit(grabItem.transform.position, pointer.transform);
     }
 }

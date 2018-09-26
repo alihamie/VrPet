@@ -60,7 +60,7 @@ namespace EasyInputVR.StandardControllers
 
         public void SetIsGrabbed(bool isGrabbed)
         {
-            this.isGrabbedByFox = isGrabbed;
+            isGrabbedByFox = isGrabbed;
         }
 
         void OnEnable()
@@ -179,7 +179,6 @@ namespace EasyInputVR.StandardControllers
                     myRigidbody.angularVelocity = Vector3.zero;
                 }
             }
-
         }
 
         public override void Hover(Vector3 hitPosition, Transform pointerTransform)
@@ -267,7 +266,7 @@ namespace EasyInputVR.StandardControllers
                 ActionZone actionZone = GetComponent<ActionZone>();
                 if (actionZone)
                 {
-                    actionZone.onGrab.Invoke();
+                    actionZone.StartGrabDropInvoking();
                 }
             }
 

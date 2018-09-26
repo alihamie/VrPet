@@ -11,5 +11,4 @@ namespace EasyInputVR.StandardControllers
         public abstract void HoverEnter(Vector3 hitPosition, Transform pointerTransform);
         public abstract void HoverExit(Vector3 hitPosition, Transform pointerTransform);
     }
-
 }

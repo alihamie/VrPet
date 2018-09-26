@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DemoTime : MonoBehaviour {
-
-
     public float totalTime;
     private bool isHalfTime;
     public Transform windowEvent;
@@ -13,13 +11,13 @@ public class DemoTime : MonoBehaviour {
     public AnimalAIControl aiControl;
     bool once = true;
 
-	void Start () {
+	void Start ()
+    {
         totalTime = totalTime + Time.time;
 	}
-	
 
-	void Update () {
-
+	void Update ()
+    {
         if (!isHalfTime && Time.time >= totalTime / 2)
         {
             isHalfTime = true;
@@ -41,6 +39,5 @@ public class DemoTime : MonoBehaviour {
             aiControl.SetTarget(sleepEvent);
             this.enabled = false;
         }
-
 	}
 }

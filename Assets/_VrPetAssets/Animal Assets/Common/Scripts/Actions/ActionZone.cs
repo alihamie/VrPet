@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using EasyInputVR.StandardControllers;
 
 namespace MalbersAnimations
 {
@@ -14,6 +15,7 @@ namespace MalbersAnimations
         public int ID;                                  //ID of the Action Zone (Value)
         public int index;                               //Index of the Action Zone (List index)
         public bool HeadOnly;                           //Use the Trigger for heads only
+        public bool nextTargetOverride;
 
         public bool Align;                              //Align the Animal entering to the Aling Point
         public Transform AlingPoint;
@@ -21,18 +23,21 @@ namespace MalbersAnimations
         public AnimationCurve AlignCurve = new AnimationCurve(K);
 
         public bool AlignPos = true, AlignRot = true, AlignLookAt = false;
-        bool firstTimeTrigger;
+        public bool readyToTrigger;
+        private bool firstTimeTrigger, currentlyInvoking;
+        private float grabDropCycleTime = 5f;
 
         public UnityEvent onGrab = new UnityEvent();
         public UnityEvent onEnable = new UnityEvent();
         public UnityEvent onEnd = new UnityEvent();
         public UnityEvent onAction = new UnityEvent();
         public UnityEvent onSight = new UnityEvent();
+        public UnityEvent onCancel = new UnityEvent();
 
-        private EasyInputVR.StandardControllers.StandardGrabReceiver grabReceiver;
+        private StandardGrabReceiver grabReceiver;
 
 #if UNITY_EDITOR
-        public bool invokeGrab, invokeEnable, invokeEnd, invokeAction, invokeSight;
+        public bool invokeGrab, invokeEnable, invokeEnd, invokeAction, invokeSight, invokeCancel;
 #endif
         //───────AI───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         public float stoppingDistance = 0.5f;
@@ -40,14 +45,60 @@ namespace MalbersAnimations
 
         private void Start()
         {
-            grabReceiver = GetComponent<EasyInputVR.StandardControllers.StandardGrabReceiver>();
+            grabReceiver = GetComponent<StandardGrabReceiver>();
         }
 
-        void OnEnable()
+        public void StartGrabDropInvoking()
         {
-            onEnable.Invoke();
-            firstTimeTrigger = false;
+            if (!currentlyInvoking)
+            {
+                StartCoroutine(GrabDropInvokingCycle());
+            }
         }
+
+        IEnumerator GrabDropInvokingCycle()
+        {
+            bool bailOut = false;
+            float timer = 0f;
+
+            onGrab.Invoke();
+            currentlyInvoking = true;
+
+            while (grabReceiver.grabMode)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
+            onEnable.Invoke();
+
+            while (!firstTimeTrigger || !bailOut)
+            {
+                yield return new WaitForEndOfFrame();
+                timer += Time.deltaTime;
+
+                if (timer > grabDropCycleTime)
+                {
+                    bailOut = true;
+                    onCancel.Invoke();
+                }
+            }
+
+            currentlyInvoking = false;
+        }
+
+        //void OnEnable()
+        //{
+        //    onEnable.Invoke();
+        //    firstTimeTrigger = false;
+        //}
+
+        //private void OnDisable()
+        //{
+        //    if (!firstTimeTrigger)
+        //    {
+        //        onCancel.Invoke();
+        //    }
+        //}
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -59,7 +110,7 @@ namespace MalbersAnimations
 
         void OnTriggerStay(Collider other)
         {
-            if (!enabled || firstTimeTrigger)
+            if (!readyToTrigger || firstTimeTrigger)
             {
                 return;
             }
@@ -72,7 +123,7 @@ namespace MalbersAnimations
                 return;
             }
 
-            if (animalAIControl && animalAIControl.isWandering == true)
+            if (animalAIControl && (animalAIControl.isWandering == true || animalAIControl.target != transform))
             {
                 return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
             }
@@ -100,16 +151,23 @@ namespace MalbersAnimations
                 }
             }
 
-            while ((!animal.CurrentAnimState.IsTag("Idle")|| animal.CurrentAnimState.IsName("")) || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
+            //float distanceToCross = Mathf.Pow(stoppingDistance + .3f, 2f);
+
+            while (!animal.CurrentAnimState.IsTag("Idle") || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
                 if (ai && (ai.target != transform || grabReceiver && grabReceiver.grabMode))
                 {
-                    enabled = false;
+                    readyToTrigger = false;
                     Physics.IgnoreLayerCollision(20, 8, false);
                     yield break;
                 }
 
                 yield return new WaitForEndOfFrame();
+            }
+
+            if (ai)
+            {
+                ai.SetTargetOverride(true);
             }
 
             if (id != -1) // -1 is the id of the attack animation. Which isn't set up as an action, so I think it'll cause some problems if I try to treat it like one.
@@ -144,6 +202,10 @@ namespace MalbersAnimations
 
             if (ai && ai.target == transform)
             {
+                if (!nextTargetOverride)
+                {
+                    ai.SetTargetOverride(false);
+                }
                 ai.SetTarget(NextTarget, true);
             }
 
@@ -151,8 +213,7 @@ namespace MalbersAnimations
 
             animal.ActionEmotion(-1); // Reset the ActionID int parameter for the Animator.
             animal = null; // These three lines are just cleanup for next time, to make sure everything is properly triggered.
-            firstTimeTrigger = false;
-            enabled = false;
+            readyToTrigger = firstTimeTrigger = false;
         }
 
         /// <summary>
@@ -182,6 +243,7 @@ namespace MalbersAnimations
         {
             ID = targetToCopy.ID;
             NextTarget = targetToCopy.NextTarget;
+            nextTargetOverride = targetToCopy.nextTargetOverride;
             onSight = targetToCopy.onSight;
             onAction = targetToCopy.onAction;
             onEnd = targetToCopy.onEnd;

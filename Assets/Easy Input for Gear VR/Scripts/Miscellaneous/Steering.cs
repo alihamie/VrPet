@@ -24,8 +24,7 @@ namespace EasyInputVR.Misc
         // The vars. These change. Sometimes a lot.
         public bool gasPressed;
 
-        private float actualSpeed = 0;
-        private bool brakePressed;
+        public float actualSpeed = 0;
         private float horizontal;
 
         // Below is the stuff that makes engine go vroom. I considered having it in a seperate script, but I don't know if I'll ever need to make things go vroom in sync with their speed outside this context.
@@ -79,18 +78,24 @@ namespace EasyInputVR.Misc
         {
             if (Mathf.Abs(actualSpeed) > 0 && !gasPressed)
             {
-                float previousSign = Mathf.Sign(actualSpeed);
-                actualSpeed -= Time.deltaTime * previousSign;
+                actualSpeed *= (2 - Mathf.Min(Time.deltaTime, 2)) / 2;
 
-                if (previousSign != Mathf.Sign(actualSpeed))
+                if (Mathf.Abs(actualSpeed) < .4f)
                 {
                     actualSpeed = 0;
                 }
+                //float previousSign = Mathf.Sign(actualSpeed);
+                //actualSpeed -= Time.deltaTime * previousSign;
+
+                //if (previousSign != Mathf.Sign(actualSpeed))
+                //{
+                //    actualSpeed = 0;
+                //}
             }
 
             //Steering
             steerBall(myOrientation);
-            
+
             //This makes the wheel meshes rotate and move in sync with the wheel colliders.
             for (int i = 0; i < 4; i++)
             {
@@ -160,12 +165,7 @@ namespace EasyInputVR.Misc
 
         void localTouch(InputTouch touch)
         {
-            actualSpeed = touch.currentTouchPosition.y * maxSpeed;
-
-            if (Mathf.Sign(actualSpeed) == -1)
-            {
-                actualSpeed *= .6f;
-            }
+            actualSpeed = (touch.currentTouchPosition.y + .3f) * maxSpeed / 1.3f;
         }
 
         void localTouchEnd(InputTouch touch)
@@ -179,11 +179,8 @@ namespace EasyInputVR.Misc
             {
                 engineNoiseSource.PlayOneShot(carHorn);
             }
-            //if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTouchClick)
-            //{
-            //    brakePressed = true;
-            //}
-            //else if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTrigger)
+
+            //if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTrigger)
             //{
             //    gasPressed = true;
             //}
@@ -191,11 +188,7 @@ namespace EasyInputVR.Misc
 
         void localClickEnd(ButtonClick button)
         {
-            //if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTouchClick)
-            //{
-            //    brakePressed = false;
-            //}
-            //else if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTrigger)
+            //if (button.button == EasyInputConstants.CONTROLLER_BUTTON.GearVRTrigger)
             //{
             //    gasPressed = false;
             //}

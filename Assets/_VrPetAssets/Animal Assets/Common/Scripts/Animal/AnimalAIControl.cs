@@ -120,7 +120,25 @@ namespace MalbersAnimations
         {
 #if UNITY_EDITOR
             UpdateTarget();
+
+            //for (int i = 0; i < animalAnimator.GetCurrentAnimatorClipInfo(0).Length; i++)
+            //{
+            //    Debug.Log(animalAnimator.GetCurrentAnimatorClipInfo(0)[i].clip);
+            //}
+
+            //Debug.Log(animalAnimator.GetCurrentAnimatorStateInfo(0).);
+
+            //for (int i = 0; i < animalAnimator.GetCurrentAnimatorStateInfo(0).length; i++)
+            //{
+            //    Debug.Log(animalAnimator.GetCurrentAnimatorStateInfo(0));
+            //}
 #endif
+
+            if (Mathf.Abs(transform.position.y) > 5f)
+            { // This is a rudimentary attempt to detect when the fox has clipped entirely out of the world. Somehow. It apparently happened once when resetting the scene multiple times, so this is more of an experimental fix than an absolute one. Also, we are checking positive values of Y as well, just in case the fox somehow ends up on the roof. Just. In. Case.
+                transform.position = new Vector3(0, 3f, 0);
+            }
+
             DisableAgent();
             TryActionZone();
             timer += Time.deltaTime;
@@ -477,7 +495,14 @@ namespace MalbersAnimations
             }
             else if (currentMovementState == MovementStates.SlowWalk)
             {
-                animalAnimator.speed = .3f;
+                if (Agent.remainingDistance < 2f)
+                {
+                    animalAnimator.speed = .3f;
+                }
+                else
+                { // The following is a simple linear equation to ensure that animalAnimator.Speed = 1 at 4 or higher, and .3 at 2 or lower.
+                    animalAnimator.speed = Mathf.Min(1f, (Agent.remainingDistance * .35f) - .4f);
+                }
             }
             else
             {
@@ -506,7 +531,7 @@ namespace MalbersAnimations
 
                 if (Target_is_ActionZone)
                 {
-                    Target_is_ActionZone.enabled = false;
+                    Target_is_ActionZone.readyToTrigger = false;
                 }
 
                 if (target)
@@ -518,7 +543,7 @@ namespace MalbersAnimations
 
                     if (Target_is_ActionZone)
                     {
-                        Target_is_ActionZone.enabled = true;
+                        Target_is_ActionZone.readyToTrigger = true;
                     }
                 }
                 else
