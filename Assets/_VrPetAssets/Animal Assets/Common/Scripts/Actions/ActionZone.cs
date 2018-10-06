@@ -24,15 +24,13 @@ namespace MalbersAnimations
 
         public bool AlignPos = true, AlignRot = true, AlignLookAt = false;
         public bool readyToTrigger;
-        private bool firstTimeTrigger, currentlyInvoking;
-        private float grabDropCycleTime = 5f;
+        private bool firstTimeTrigger;
 
         public UnityEvent onGrab = new UnityEvent();
         public UnityEvent onEnable = new UnityEvent();
         public UnityEvent onEnd = new UnityEvent();
         public UnityEvent onAction = new UnityEvent();
         public UnityEvent onSight = new UnityEvent();
-        public UnityEvent onCancel = new UnityEvent();
 
         private StandardGrabReceiver grabReceiver;
 
@@ -47,58 +45,6 @@ namespace MalbersAnimations
         {
             grabReceiver = GetComponent<StandardGrabReceiver>();
         }
-
-        public void StartGrabDropInvoking()
-        {
-            if (!currentlyInvoking)
-            {
-                StartCoroutine(GrabDropInvokingCycle());
-            }
-        }
-
-        IEnumerator GrabDropInvokingCycle()
-        {
-            bool bailOut = false;
-            float timer = 0f;
-
-            onGrab.Invoke();
-            currentlyInvoking = true;
-
-            while (grabReceiver.grabMode)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            onEnable.Invoke();
-
-            while (!firstTimeTrigger || !bailOut)
-            {
-                yield return new WaitForEndOfFrame();
-                timer += Time.deltaTime;
-
-                if (timer > grabDropCycleTime)
-                {
-                    bailOut = true;
-                    onCancel.Invoke();
-                }
-            }
-
-            currentlyInvoking = false;
-        }
-
-        //void OnEnable()
-        //{
-        //    onEnable.Invoke();
-        //    firstTimeTrigger = false;
-        //}
-
-        //private void OnDisable()
-        //{
-        //    if (!firstTimeTrigger)
-        //    {
-        //        onCancel.Invoke();
-        //    }
-        //}
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -157,7 +103,7 @@ namespace MalbersAnimations
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
                 if (ai && (ai.target != transform || grabReceiver && grabReceiver.grabMode))
                 {
-                    readyToTrigger = false;
+                    firstTimeTrigger = readyToTrigger = false;
                     Physics.IgnoreLayerCollision(20, 8, false);
                     yield break;
                 }

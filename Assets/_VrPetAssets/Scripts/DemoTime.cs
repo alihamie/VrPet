@@ -31,7 +31,6 @@ public class DemoTime : MonoBehaviour {
             once = false;
         }
 
-
         if (Time.time >= totalTime)
         {
             aiControl.GetComponentInParent<Animator>().SetBool("ThrewItem", true);

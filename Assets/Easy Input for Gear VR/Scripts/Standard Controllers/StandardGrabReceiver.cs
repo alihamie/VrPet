@@ -71,7 +71,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_ClickStart += clickStart;
             EasyInputHelper.On_ClickEnd += clickEnd;
 
-            myRigidbody = this.GetComponent<Rigidbody>();
+            myRigidbody = GetComponent<Rigidbody>();
         }
 
         void OnDestroy()
@@ -81,9 +81,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_TouchStart -= localTouchStart;
             EasyInputHelper.On_ClickStart -= clickStart;
             EasyInputHelper.On_ClickEnd -= clickEnd;
-
         }
-
 
         void FixedUpdate()
         {
@@ -266,7 +264,7 @@ namespace EasyInputVR.StandardControllers
                 ActionZone actionZone = GetComponent<ActionZone>();
                 if (actionZone)
                 {
-                    actionZone.StartGrabDropInvoking();
+                    actionZone.onGrab.Invoke();
                 }
             }
 

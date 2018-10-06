@@ -128,7 +128,6 @@ namespace MalbersAnimations
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onAction"), new GUIContent("On Animal Action"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onSight"), new GUIContent("On The Animal First Seeing This"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("onEnd"), new GUIContent("On The Action Ending"));
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("onCancel"), new GUIContent("On Actionzone Being Disabled Without Triggering"));
                 }
                 EditorGUILayout.EndVertical();
 

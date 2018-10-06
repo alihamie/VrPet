@@ -134,8 +134,8 @@ namespace MalbersAnimations
             //}
 #endif
 
-            if (Mathf.Abs(transform.position.y) > 5f)
-            { // This is a rudimentary attempt to detect when the fox has clipped entirely out of the world. Somehow. It apparently happened once when resetting the scene multiple times, so this is more of an experimental fix than an absolute one. Also, we are checking positive values of Y as well, just in case the fox somehow ends up on the roof. Just. In. Case.
+            if (transform.position.y < -20f)
+            { // This is a simple check to see if the Fox has managed to clip entirely out of the playable area and fall into the void.
                 transform.position = new Vector3(0, 3f, 0);
             }
 
@@ -144,8 +144,9 @@ namespace MalbersAnimations
             timer += Time.deltaTime;
             Agent.nextPosition = agent.transform.position; // Update the Agent Position to the Transform position
 
-            if (!Agent.isOnNavMesh || !Agent.enabled || interruptTimer > timer)
+            if (!Agent.isOnNavMesh || !Agent.enabled)
             {
+                animalAnimator.speed = 1f;
                 return;
             }
 
@@ -313,6 +314,11 @@ namespace MalbersAnimations
                 }
             }
 
+            if (interruptTimer > timer)
+            {
+                Direction = Vector3.zero;
+            }
+
             animal.Move(Direction);                                 //Set the Movement to the Animal
 
             if (AutoSpeed)
@@ -327,7 +333,7 @@ namespace MalbersAnimations
         {
             if (currentPathingState == PathingCheckStates.ProvingPresence)
             {
-                if (target_Has_Rigidibody && target_Has_Rigidibody.velocity.sqrMagnitude > .25f)
+                if ((target_Has_Rigidibody && target_Has_Rigidibody.velocity.sqrMagnitude > .25f) || animal.CurrentAnimState.IsTag("Action"))
                 {
                     pathingCheckEndTime += Time.deltaTime;
                     pathingCheckSubTime += Time.deltaTime;
@@ -335,7 +341,7 @@ namespace MalbersAnimations
                 else if (Agent.path.corners.Length > 1 && (Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude < .121f)
                 {
                     currentPathingState = PathingCheckStates.ProvingAbsence;
-                    pathingCheckSubTime = Time.time + 4f;
+                    pathingCheckSubTime = Time.time + 16f; // This right here is fairly important. It's a hard limit of 16 seconds on arriving at any target in the room. This might need to be adjusted if the fox is moving faster or slower than usual. But, I think, if this is the case then we might be losing the attention of the players...
                 }
                 else if (pathingCheckSubTime < Time.time || pathingCheckEndTime < Time.time)
                 {
@@ -346,6 +352,11 @@ namespace MalbersAnimations
             }
             else if (currentPathingState == PathingCheckStates.ProvingAbsence)
             {
+                if (!(animal.CurrentAnimState.IsTag("Locomotion") || animal.CurrentAnimState.IsTag("Jump") || animal.CurrentAnimState.IsTag("Recover")))
+                {
+                    pathingCheckSubTime += Time.deltaTime;
+                }
+
                 if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .121f)
                 {
                     currentPathingState = PathingCheckStates.ProvingPresence;
@@ -353,7 +364,9 @@ namespace MalbersAnimations
                 }
                 else if (pathingCheckSubTime < Time.time)
                 {
-                    currentPathingState = PathingCheckStates.NotChecking;
+                    cannotPathToTarget = true;
+                    currentPathingState = PathingCheckStates.WaitingToCancel;
+                    pathingCheckSubTime = Time.time + 8f;
                 }
             }
             else if (currentPathingState == PathingCheckStates.WaitingToCancel)
@@ -495,14 +508,16 @@ namespace MalbersAnimations
             }
             else if (currentMovementState == MovementStates.SlowWalk)
             {
-                if (Agent.remainingDistance < 2f)
-                {
-                    animalAnimator.speed = .3f;
-                }
-                else
-                { // The following is a simple linear equation to ensure that animalAnimator.Speed = 1 at 4 or higher, and .3 at 2 or lower.
-                    animalAnimator.speed = Mathf.Min(1f, (Agent.remainingDistance * .35f) - .4f);
-                }
+                animalAnimator.speed = .7f;
+
+                //if (Agent.remainingDistance < 2f)
+                //{
+                //    animalAnimator.speed = .3f;
+                //}
+                //else
+                //{ // The following is a simple linear equation to ensure that animalAnimator.Speed = 1 at 4 or higher, and .3 at 2 or lower.
+                //    animalAnimator.speed = Mathf.Min(1f, (Agent.remainingDistance * .35f) - .4f);
+                //}
             }
             else
             {
@@ -515,6 +530,18 @@ namespace MalbersAnimations
         /// </summary>
         public void SetTarget(Transform target, bool ignoreOverride = false, bool resetOverride = false)
         {
+            ActionZone targetActionZone = null;
+
+            if (target)
+            { // It's a little bit silly having this out here, but I need to make sure that onEnable is always invoked on actionzones when this is called, even if the fox never actually goes for the stated object.
+                targetActionZone = target.GetComponent<ActionZone>();
+
+                if (targetActionZone)
+                {
+                    targetActionZone.onEnable.Invoke();
+                }
+            }
+
             if (!targetOverride || ignoreOverride)
             {
                 if (target == null || resetOverride)
@@ -537,7 +564,7 @@ namespace MalbersAnimations
                 if (target)
                 {
                     isWandering = false;
-                    Target_is_ActionZone = target.GetComponent<ActionZone>();
+                    Target_is_ActionZone = targetActionZone;
                     Target_is_Waypoint = target.GetComponent<MWayPoint>();
                     target_Has_Rigidibody = target.GetComponent<Rigidbody>();
 
