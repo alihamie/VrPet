@@ -11,16 +11,16 @@ public class TabletFunctionality : MonoBehaviour
 
     void Start()
     {
-        screenManager = this.GetComponent<TabletScreenManager>();
+        screenManager = GetComponent<TabletScreenManager>();
         carInitialPosition = car.transform.position;
         isCarActive = false;
     }
 
     public void ToggleCarbutton()
     {
-        this.car.gameObject.SetActive(!this.car.gameObject.activeSelf);
-        this.car.transform.position = carInitialPosition;
-        isCarActive = this.car.gameObject.activeSelf;
+        car.gameObject.SetActive(!car.gameObject.activeSelf);
+        car.transform.position = carInitialPosition;
+        isCarActive = car.gameObject.activeSelf;
         if (isCarActive)
         {
             chaseCar();

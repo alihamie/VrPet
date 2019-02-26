@@ -5,30 +5,28 @@ using UnityEngine.EventSystems;
 
 public class BaseToyClickButton : MonoBehaviour, IPointerDownHandler {
 
-
     protected TabletScreenManager screenManager;
     protected TabletVisibility visibility;
     protected TabletFunctionality tabletFunctionality;
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        screenManager.GoBack(this.transform);
+        screenManager.GoBack(transform);
         visibility.ToggleTablet();
-        if (this.tabletFunctionality.car.gameObject.activeSelf && !this.transform.name.Equals("Exit"))
+        if (tabletFunctionality.car.gameObject.activeSelf && !transform.name.Equals("Exit"))
         {
-            this.tabletFunctionality.ToggleCarbutton();
+            tabletFunctionality.ToggleCarbutton();
         }
     }
 
     public TabletScreenManager GetScreenManager()
     {
-        return this.screenManager;
+        return screenManager;
     }
 
-    // Use this for initialization
     void Start () {
-        screenManager = this.gameObject.GetComponentInParent<TabletScreenManager>();
-        visibility = this.transform.root.GetComponent<TabletVisibility>();
-        tabletFunctionality = this.transform.GetComponentInParent<TabletFunctionality>();
+        screenManager = gameObject.GetComponentInParent<TabletScreenManager>();
+        visibility = transform.root.GetComponent<TabletVisibility>();
+        tabletFunctionality = transform.GetComponentInParent<TabletFunctionality>();
     }
 }

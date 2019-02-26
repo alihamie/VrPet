@@ -57,6 +57,7 @@ namespace MalbersAnimations
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 {
                     M.HeadOnly = EditorGUILayout.Toggle(new GUIContent("Head Only", "Enable only when the 'Head' bone enter the trigger zone"), M.HeadOnly);
+                    M.nextTargetOverride = EditorGUILayout.Toggle(new GUIContent("Next Target Override", "If enabled, the fox will ignore any attempt to set its target by the player"), M.nextTargetOverride);
                 }
                 EditorGUILayout.EndVertical();
                 //EditorGUILayout.BeginVertical(EditorStyles.helpBox);

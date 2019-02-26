@@ -3,29 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimationTimeTrigger : StateMachineBehaviour {
+    public enum PossibleAnimTriggers
+    {
+        Float = 0,
+        Int = 1,
+        BoolOrTrigger = 2,
+        DirectAnimationCall = 3
+    }
 
-	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-	//override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    public PossibleAnimTriggers currentAnimTrigger = PossibleAnimTriggers.Float;
+    public string conditionOrAnimationName = "";
+    public float floatToSet = 0;
+    public int intToSet = 0;
+    public bool boolToSet = false;
 
-	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    public float timeLimit = 0;
+    private float timer;
 
-	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        timer = 0;
+    }
 
-	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
-	//override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (timer > timeLimit)
+        {
+            switch (currentAnimTrigger)
+            {
+                case PossibleAnimTriggers.Float:
+                    animator.SetFloat(conditionOrAnimationName, floatToSet);
+                    break;
+                case PossibleAnimTriggers.Int:
+                    animator.SetInteger(conditionOrAnimationName, intToSet);
+                    break;
+                case PossibleAnimTriggers.BoolOrTrigger:
+                    animator.SetBool(conditionOrAnimationName, boolToSet);
+                    break;
+                case PossibleAnimTriggers.DirectAnimationCall:
+                    animator.Play(conditionOrAnimationName);
+                    break;
+                default:
+                    animator.Play(conditionOrAnimationName);
+                    break;
+            }
+        }
 
-	// OnStateIK is called right after Animator.OnAnimatorIK(). Code that sets up animation IK (inverse kinematics) should be implemented here.
-	//override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+        timer += Time.deltaTime;
+    }
 }

@@ -43,8 +43,6 @@ namespace EasyInputVR.StandardControllers
         ButtonClick currentButton;
         Vector3 currentPosition;
 
-
-
         void OnEnable()
         {
             EasyInputHelper.On_ClickEnd += clickEndMethod;
@@ -213,10 +211,6 @@ namespace EasyInputVR.StandardControllers
                 clicking = false;
                 currentButton = button;
             }
-
         }
-
-
     }
-
 }

@@ -38,7 +38,7 @@ public class OVRScreenFade : MonoBehaviour
     private float uiFadeAlpha = 0;
 
 	private Material fadeMaterial = null;
-    private bool isFading = false;
+    public bool isFading = false;
 
     public delegate void FadeState();
     public FadeState FadeOutExit;

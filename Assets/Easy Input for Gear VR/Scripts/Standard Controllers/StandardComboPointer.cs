@@ -116,7 +116,6 @@ namespace EasyInputVR.StandardControllers
                         }
                         else if (lastHitGameObject == rayHit.transform.gameObject)
                         {
-
                             //we are hitting the same object as last frame
                             EasyInputUtilities.notifyEvents(rayHit, lastRayHit, lastHitGameObject, true, false, false, hmd.transform);
                         }

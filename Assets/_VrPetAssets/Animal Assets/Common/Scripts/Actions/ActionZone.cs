@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using EasyInputVR.StandardControllers;
 
 namespace MalbersAnimations
 {
@@ -14,6 +15,7 @@ namespace MalbersAnimations
         public int ID;                                  //ID of the Action Zone (Value)
         public int index;                               //Index of the Action Zone (List index)
         public bool HeadOnly;                           //Use the Trigger for heads only
+        public bool nextTargetOverride;
 
         public bool Align;                              //Align the Animal entering to the Aling Point
         public Transform AlingPoint;
@@ -21,7 +23,8 @@ namespace MalbersAnimations
         public AnimationCurve AlignCurve = new AnimationCurve(K);
 
         public bool AlignPos = true, AlignRot = true, AlignLookAt = false;
-        bool firstTimeTrigger;
+        public bool readyToTrigger;
+        private bool firstTimeTrigger;
 
         public UnityEvent onGrab = new UnityEvent();
         public UnityEvent onEnable = new UnityEvent();
@@ -29,10 +32,10 @@ namespace MalbersAnimations
         public UnityEvent onAction = new UnityEvent();
         public UnityEvent onSight = new UnityEvent();
 
-        private EasyInputVR.StandardControllers.StandardGrabReceiver grabReceiver;
+        private StandardGrabReceiver grabReceiver;
 
 #if UNITY_EDITOR
-        public bool invokeGrab, invokeEnable, invokeEnd, invokeAction, invokeSight;
+        public bool invokeGrab, invokeEnable, invokeEnd, invokeAction, invokeSight, invokeCancel;
 #endif
         //───────AI───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         public float stoppingDistance = 0.5f;
@@ -40,12 +43,7 @@ namespace MalbersAnimations
 
         private void Start()
         {
-            grabReceiver = GetComponent<EasyInputVR.StandardControllers.StandardGrabReceiver>();
-        }
-
-        void OnEnable()
-        {
-            onEnable.Invoke();
+            grabReceiver = GetComponent<StandardGrabReceiver>();
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -58,7 +56,7 @@ namespace MalbersAnimations
 
         void OnTriggerStay(Collider other)
         {
-            if (!enabled || firstTimeTrigger)
+            if (!readyToTrigger || firstTimeTrigger)
             {
                 return;
             }
@@ -71,7 +69,7 @@ namespace MalbersAnimations
                 return;
             }
 
-            if (animalAIControl && animalAIControl.isWandering == true)
+            if (animalAIControl && (animalAIControl.isWandering == true || animalAIControl.target != transform))
             {
                 return; // If the AnimalAIControl script is attached, but the animal is wandering, also do nothing.
             }
@@ -80,11 +78,10 @@ namespace MalbersAnimations
             {
                 return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
             }
-
-            StartCoroutine(startAnimation(ID, animal, animalAIControl));
+            StartCoroutine(StartAnimation(ID, animal, animalAIControl));
         }
 
-        IEnumerator startAnimation(int id, Animal animal, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
+        IEnumerator StartAnimation(int id, Animal animal, AnimalAIControl ai) // Here's where we make the Fox do a dance... figuratively.
         {
             firstTimeTrigger = true; // This only needs to trigger once. Can't just set enabled to false because that'd turn the coroutines off. Or so I think. Haven't tested it, only read it on the internet. But when has the internet ever lied to me?
             Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -103,12 +100,17 @@ namespace MalbersAnimations
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.
                 if (ai && (ai.target != transform || grabReceiver && grabReceiver.grabMode))
                 {
-                    enabled = false;
+                    firstTimeTrigger = readyToTrigger = false;
                     Physics.IgnoreLayerCollision(20, 8, false);
                     yield break;
                 }
 
                 yield return new WaitForEndOfFrame();
+            }
+
+            if (ai)
+            {
+                ai.SetTargetOverride(true);
             }
 
             if (id != -1) // -1 is the id of the attack animation. Which isn't set up as an action, so I think it'll cause some problems if I try to treat it like one.
@@ -143,6 +145,10 @@ namespace MalbersAnimations
 
             if (ai && ai.target == transform)
             {
+                if (!nextTargetOverride)
+                {
+                    ai.SetTargetOverride(false);
+                }
                 ai.SetTarget(NextTarget, true);
             }
 
@@ -150,8 +156,7 @@ namespace MalbersAnimations
 
             animal.ActionEmotion(-1); // Reset the ActionID int parameter for the Animator.
             animal = null; // These three lines are just cleanup for next time, to make sure everything is properly triggered.
-            firstTimeTrigger = false;
-            enabled = false;
+            readyToTrigger = firstTimeTrigger = false;
         }
 
         /// <summary>
@@ -181,6 +186,7 @@ namespace MalbersAnimations
         {
             ID = targetToCopy.ID;
             NextTarget = targetToCopy.NextTarget;
+            nextTargetOverride = targetToCopy.nextTargetOverride;
             onSight = targetToCopy.onSight;
             onAction = targetToCopy.onAction;
             onEnd = targetToCopy.onEnd;

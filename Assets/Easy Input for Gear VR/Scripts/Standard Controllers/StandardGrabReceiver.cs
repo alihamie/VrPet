@@ -60,7 +60,7 @@ namespace EasyInputVR.StandardControllers
 
         public void SetIsGrabbed(bool isGrabbed)
         {
-            this.isGrabbedByFox = isGrabbed;
+            isGrabbedByFox = isGrabbed;
         }
 
         void OnEnable()
@@ -71,7 +71,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_ClickStart += clickStart;
             EasyInputHelper.On_ClickEnd += clickEnd;
 
-            myRigidbody = this.GetComponent<Rigidbody>();
+            myRigidbody = GetComponent<Rigidbody>();
         }
 
         void OnDestroy()
@@ -81,9 +81,7 @@ namespace EasyInputVR.StandardControllers
             EasyInputHelper.On_TouchStart -= localTouchStart;
             EasyInputHelper.On_ClickStart -= clickStart;
             EasyInputHelper.On_ClickEnd -= clickEnd;
-
         }
-
 
         void FixedUpdate()
         {
@@ -179,7 +177,6 @@ namespace EasyInputVR.StandardControllers
                     myRigidbody.angularVelocity = Vector3.zero;
                 }
             }
-
         }
 
         public override void Hover(Vector3 hitPosition, Transform pointerTransform)
