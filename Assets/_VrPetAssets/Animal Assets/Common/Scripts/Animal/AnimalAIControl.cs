@@ -120,18 +120,6 @@ namespace MalbersAnimations
         {
 #if UNITY_EDITOR
             UpdateTarget();
-
-            //for (int i = 0; i < animalAnimator.GetCurrentAnimatorClipInfo(0).Length; i++)
-            //{
-            //    Debug.Log(animalAnimator.GetCurrentAnimatorClipInfo(0)[i].clip);
-            //}
-
-            //Debug.Log(animalAnimator.GetCurrentAnimatorStateInfo(0).);
-
-            //for (int i = 0; i < animalAnimator.GetCurrentAnimatorStateInfo(0).length; i++)
-            //{
-            //    Debug.Log(animalAnimator.GetCurrentAnimatorStateInfo(0));
-            //}
 #endif
 
             if (transform.position.y < -20f)
@@ -356,7 +344,7 @@ namespace MalbersAnimations
                 {
                     pathingCheckSubTime += Time.deltaTime;
                 }
-
+                
                 if ((Agent.path.corners[Agent.path.corners.Length - 1] - target.position).sqrMagnitude > .121f)
                 {
                     currentPathingState = PathingCheckStates.ProvingPresence;
@@ -509,15 +497,6 @@ namespace MalbersAnimations
             else if (currentMovementState == MovementStates.SlowWalk)
             {
                 animalAnimator.speed = .7f;
-
-                //if (Agent.remainingDistance < 2f)
-                //{
-                //    animalAnimator.speed = .3f;
-                //}
-                //else
-                //{ // The following is a simple linear equation to ensure that animalAnimator.Speed = 1 at 4 or higher, and .3 at 2 or lower.
-                //    animalAnimator.speed = Mathf.Min(1f, (Agent.remainingDistance * .35f) - .4f);
-                //}
             }
             else
             {

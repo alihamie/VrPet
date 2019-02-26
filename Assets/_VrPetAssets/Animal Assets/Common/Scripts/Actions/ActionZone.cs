@@ -78,7 +78,6 @@ namespace MalbersAnimations
             {
                 return; // Finally, if HeadOnly is enabled then the collider needs to be attached to a head to trigger anything.
             }
-
             StartCoroutine(StartAnimation(ID, animal, animalAIControl));
         }
 
@@ -96,8 +95,6 @@ namespace MalbersAnimations
                     id = 19;
                 }
             }
-
-            //float distanceToCross = Mathf.Pow(stoppingDistance + .3f, 2f);
 
             while (!animal.CurrentAnimState.IsTag("Idle") || Mathf.Abs(animal.transform.position.y - transform.position.y) > .12f)
             { // This is a final sanity check to make sure that we haven't managed to fall or jump away from the object after pathing into it's trigger.

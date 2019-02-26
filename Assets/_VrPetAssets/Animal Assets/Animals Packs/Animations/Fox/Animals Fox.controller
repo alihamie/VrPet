@@ -6922,8 +6922,7 @@ MonoBehaviour:
     Active: 1
   onTimeMessage: []
 --- !u!114 &114065674870803214
-MonoBehaviour:
-  m_ObjectHideFlags: 1
+MonoBehaviour:  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
